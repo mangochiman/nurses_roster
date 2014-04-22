@@ -1,0 +1,28 @@
+<form action="create">
+	<table>
+	  <tr>
+		<td>First Name</td>
+        <td><%= text_field_tag(:first_name) %></td>
+	  </tr>
+	  <tr>
+		 <td>Last Name </td>
+         <td><%= text_field_tag(:last_name) %></td>
+	  </tr>
+	  <tr>
+		<td>Gender</td> 
+		<td><input name="gender" type="radio" value="male" /> Male
+		<input name="gender" type="radio" value="female"/> Female</td>
+	  </tr>
+	  <tr>
+		<td>Grade </td>
+		<td><input name="grade" type="radio" value="A" /> A
+		<input name="grade" type="radio" value="B" /> B
+		<input name="grade" type="radio" value="C" /> C
+		<input name="grade" type="radio" value="D" /> D<td/>
+      </tr>
+	  <tr>
+		<td><%= submit_tag("Submit")%></td>
+		<td></td>
+	  </tr>
+	</table>
+</form> 

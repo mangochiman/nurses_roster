@@ -1,0 +1,54 @@
+<script>
+function checkDefaultValues(){
+<% if @nurse.gender.upcase == 'MALE'%>
+	document.getElementById('male').checked = true;
+<% end %>
+<% if @nurse.gender.upcase == 'FEMALE'%>
+	document.getElementById('female').checked = true;
+<% end %>
+
+<% if @nurse.grade.upcase == 'A'%>
+	document.getElementById('grade_A').checked = true;
+<% end %>
+<% if @nurse.grade.upcase == 'B'%>
+	document.getElementById('grade_B').checked = true;
+<% end %>
+<% if @nurse.grade.upcase == 'C'%>
+	document.getElementById('grade_C').checked = true;
+<% end %>
+<% if @nurse.grade.upcase == 'D'%>
+	document.getElementById('grade_D').checked = true;
+<% end %>
+}
+window.setTimeout("checkDefaultValues();", 150);
+</script>
+<form action="create_updated_details" >
+	<table>
+	  <tr>
+		<td>First Name</td>
+        <td><%= text_field_tag(:first_name, @nurse.first_name) %></td>
+	  </tr>
+	  <tr>
+		 <td>Last Name </td>
+         <td><%= text_field_tag(:last_name, @nurse.last_name) %></td>
+	  </tr>
+	  <tr>
+		<td>Gender</td> 
+		<td><input name="gender" id="male" type="radio" value="male" /> Male
+		<input id="female" name="gender" type="radio" value="female"/> Female</td>
+	  </tr>
+	  <tr>
+		<td>Grade </td>
+		<td>
+		<input id = 'grade_A' name="grade" type="radio" value="A" /> A
+		<input id = 'grade_B' name="grade" type="radio" value="B" /> B
+		<input id = 'grade_C' name="grade" type="radio" value="C" /> C
+		<input id = 'grade_D' name="grade" type="radio" value="D" /> D<td/>
+      </tr>
+	  <tr>
+		<td><%= submit_tag("Submit")%></td>
+		<td></td>
+	  </tr>
+	</table>
+<%= hidden_field_tag(:nurse_id, params[:nurse_id])%>
+</form> 

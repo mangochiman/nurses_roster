@@ -1,0 +1,37 @@
+<script>
+current_nurse_id = ""
+function newNursePath(){
+	window.location='/nurses/new'
+}
+
+function setGlobalVariable(element){
+	current_nurse_id = element.id
+	//window.location = '/nurses/update_details?nurse_id=' + current_nurse_id
+}
+
+function editNursePath(){
+	window.location = '/nurses/update_details?nurse_id=' + current_nurse_id
+}
+</script>
+<table>
+<tr>
+	<td>&nbsp;</td>
+	<td>First Name</td>
+	<td>Last Name</td>
+	<td>Gender</td>
+	<td>Grade</td>
+</tr>
+<% @nurses.each do |nurse| %>
+<tr>
+	<td><input onclick="setGlobalVariable(this)" id= "<%= nurse.id %>" name="nurse" type="radio" value="female"/></td>
+	<td><%= nurse.first_name %></td>
+	<td><%= nurse.last_name %></td>
+	<td><%= nurse.gender %></td>
+	<td><%= nurse.grade %></td>
+</tr>
+<% end %>
+<tr>
+<td colspan="3"><input onclick="editNursePath();" type="button" value="Update details" /></td>
+<td colspan="3"><input onclick="newNursePath();" type="button" value="New nurse" /></td>
+</tr>
+</table>
