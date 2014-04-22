@@ -1,0 +1,22 @@
+late_shift:
+ minimum_level: 4
+ minimum_trained_staff: 2
+ maximum_staff: 6
+	
+night_shift:
+ minimum_level: 2
+ minimum_trained_staff: 2
+ maximum_staff: 6
+
+long_day_shift:
+ minimum_level: 2
+ minimum_trained_staff: 2
+ maximum_staff: 6
+
+special_case:
+ late_Shift:
+  monday:
+   minimum_level: 3
+   minimum_trained_staff: 1
+   maximum_staff: 5
+
