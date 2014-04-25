@@ -1,0 +1,24 @@
+<script>
+
+</script>
+
+
+<table style="width: 100%">
+	<th style="width: 15%">
+	&nbsp;
+	</th>
+	<% @roster2.keys.length.times do |i| %>
+	<th style="margin-left:10%;"><%= @roster2.keys[i]%></th>
+	<% end %>
+
+	<% @roster2.values.collect{|v| v.keys}.flatten.uniq.each do |name| %>
+	<tr>
+		<td ><%= name %> </td>
+		<% @roster2.keys.each do |date| %>
+		<td><%= @roster2[date][name] || 0%></td>
+		<% end  %>
+	<tr>
+	<%end%>
+
+<table>
+

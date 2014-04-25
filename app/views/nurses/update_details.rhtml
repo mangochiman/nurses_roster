@@ -1,23 +1,25 @@
 <script>
 function checkDefaultValues(){
-<% if @nurse.gender.upcase == 'MALE'%>
-	document.getElementById('male').checked = true;
-<% end %>
-<% if @nurse.gender.upcase == 'FEMALE'%>
-	document.getElementById('female').checked = true;
-<% end %>
 
-<% if @nurse.grade.upcase == 'A'%>
-	document.getElementById('grade_A').checked = true;
-<% end %>
-<% if @nurse.grade.upcase == 'B'%>
-	document.getElementById('grade_B').checked = true;
-<% end %>
-<% if @nurse.grade.upcase == 'C'%>
-	document.getElementById('grade_C').checked = true;
-<% end %>
-<% if @nurse.grade.upcase == 'D'%>
-	document.getElementById('grade_D').checked = true;
+	<% if @nurse.gender.upcase == 'MALE'%>
+		document.getElementById('male').checked = true;
+	<% end %>
+	<% if @nurse.gender.upcase == 'FEMALE'%>
+		document.getElementById('female').checked = true;
+	<% end %>
+<% unless @nurse.grade.blank?%>
+	<% if @nurse.grade.upcase == 'A'%>
+		document.getElementById('grade_A').checked = true;
+	<% end %>
+	<% if @nurse.grade.upcase == 'B'%>
+		document.getElementById('grade_B').checked = true;
+	<% end %>
+	<% if @nurse.grade.upcase == 'C'%>
+		document.getElementById('grade_C').checked = true;
+	<% end %>
+	<% if @nurse.grade.upcase == 'D'%>
+		document.getElementById('grade_D').checked = true;
+	<% end %>
 <% end %>
 }
 window.setTimeout("checkDefaultValues();", 150);

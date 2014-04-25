@@ -25,6 +25,31 @@ class RosterController < ApplicationController
 			end
 			free_shifts = available_shifts
 		end
+		Roster.create_roster(roster, start_date, end_date)
 		return roster
+	end
+
+	def view_roster
+		roster_obj = Roster.all
+		@roster = {}
+		@roster2 = {}
+		roster_obj.each do |roster|
+			nurse_name = roster.nurse.first_name.to_s + ' ' + roster.nurse.last_name.to_s
+			roster_date = roster.shift.shift_date.to_s
+			shift_name = roster.shift.shift_type.name
+			@roster[nurse_name] = {} if @roster[nurse_name].blank?
+			@roster[nurse_name][roster_date] = {} if @roster[nurse_name][roster_date].blank?
+			@roster[nurse_name][roster_date] = shift_name
+	
+		#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+			@roster2[roster_date] = {} if @roster2[roster_date].blank?
+			@roster2[roster_date][nurse_name] = {} if @roster2[roster_date][nurse_name]
+			@roster2[roster_date][nurse_name] = shift_name
+		#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		
+		end	
+		@x = {"01-jan-14" => {"ernest" =>2 , "john" => 3}, "02-jan-14" => {"john" => 9, "ernest" =>7},
+		"03-jan-14" => {"ernest" =>6 , "john" => 4}}
+		return @roster2
 	end
 end
