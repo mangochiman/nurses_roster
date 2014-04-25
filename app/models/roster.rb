@@ -140,4 +140,18 @@ class Roster < ActiveRecord::Base
 	
 	def self.validate_combination_of_unprefered_shifts_during_week_ends
 	end
+	
+	def self.validate_one_shift_per_person(roster)
+		modified_nurse_ids = []
+		roster.each do |rdate, rdata|
+			rdata.each do |shift, nurse_ids|
+				nurse_ids.each do |nurse_id|
+					modified_nurse_ids << nurse_id unless modified_nurse_ids.include?(nurse_id)
+				end
+				roster[rdate][shift] = modified_nurse_ids
+				modified_nurse_ids = []
+			end
+		end
+		return roster
+	end
 end
