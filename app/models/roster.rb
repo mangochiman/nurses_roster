@@ -231,9 +231,9 @@ class Roster < ActiveRecord::Base
 					night_shifts = [] if night_shifts.last == rshift
 				end
 
-				night_shifts << rshift if night_shifts.blank? && rshift.match(/Night/)
+				night_shifts << rshift if night_shifts.blank? && rshift.match(/Night/i)
 				unless night_shifts.blank?
-					if (night_shifts.last.match(/Night/))
+					if (night_shifts.last.match(/Night/i))
 						prev_date = (date.to_date - 1.day).to_s
 						day_off_ids = roster[prev_date][day_off]
 						unless (day_off_ids.blank?)
@@ -242,7 +242,6 @@ class Roster < ActiveRecord::Base
 							roster[prev_date][day_off] = {}
 							roster[prev_date][day_off] = nurse_id
 						end
-						night_shifts << rshift
 					end
 				end
 
