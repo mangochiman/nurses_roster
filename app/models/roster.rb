@@ -186,7 +186,8 @@ class Roster < ActiveRecord::Base
 	end
 
 	def self.validate_absence_of_shift_that_should_not_be_consecutive(roster)
-
+		#No night shifts after night shifts
+		#No early shift after late shift
 	end
 	
 	def self.validate_combination_of_unprefered_shifts_during_week_ends
@@ -222,29 +223,34 @@ class Roster < ActiveRecord::Base
 	def self.validate_presence_of_day_off_before_night(roster)
 		day_off = "Day Off"
 		night_shifts = []
+	
 		roster_hash = Nurse.roster_hash_by_nurse(roster)
 		roster_hash.each do |nurse_id, rvalues|
 			rvalues = rvalues.sort_by{|date, shift| date.to_date}
+			first_roster_date = rvalues.first[0]
 			rvalues.each do |rdate, rshift|
 				unless night_shifts.blank?
-					night_shifts << rshift
-					night_shifts = [] if night_shifts.last == rshift
-				end
-
-				night_shifts << rshift if night_shifts.blank? && rshift.match(/Night/i)
-				unless night_shifts.blank?
-					if (night_shifts.last.match(/Night/i))
-						prev_date = (date.to_date - 1.day).to_s
-						day_off_ids = roster[prev_date][day_off]
-						unless (day_off_ids.blank?)
-							roster[prev_date][day_off] = (day_off_ids << nurse_id)
-						else
-							roster[prev_date][day_off] = {}
-							roster[prev_date][day_off] = nurse_id
-						end
+					if rshift.match(/Night/i)					
+						night_shifts << rshift					
+					else
+						night_shifts = []
 					end
 				end
 
+				night_shifts << rshift if night_shifts.blank? && rshift.match(/Night/i) && first_roster_date != rdate
+				unless night_shifts.blank?
+					if (night_shifts.count == 1)
+						prev_date = (rdate.to_date - 1.day).strftime("%d-%b-%Y").downcase
+						day_off_ids = roster[prev_date][day_off] rescue nil
+						unless (day_off_ids.blank?)
+							roster[prev_date][day_off] = (day_off_ids << [nurse_id])
+						else
+							roster[prev_date] = {} if roster[prev_date].blank?
+							roster[prev_date][day_off] = {} if roster[prev_date][day_off].blank?
+							roster[prev_date][day_off] = [nurse_id]
+						end
+					end					
+				end
 			end
 		end
 	   	return roster
