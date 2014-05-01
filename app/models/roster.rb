@@ -174,11 +174,32 @@ class Roster < ActiveRecord::Base
     end
   end
   
-	def self.validate_presence_of_experienced_staff_per_shift(roster, shift_name)
+	def self.validate_presence_of_trained_staff_per_shift(roster, rdate)
 
+		#Needs definition of trained. As of now grade A and grade B == trained
+		required_grades = ["A", "B"]
+		shift_constraints = YAML.load_file("#{Rails.root.to_s}/config/constraints.yml")
+		roster[rdate].each do |shift, nurses_ids|
+			required_trained_nurses = shift_constraints[shift]["minimum_trained_staff"]
+			rostered_trained_nurses = Nurse.find(:all, :conditions => ["nurse_id IN (?) AND grade IN (?)", nurses_ids, required_grades]).count
+			if (rostered_trained_nurses < required_trained_nurses)
+				required = required_trained_nurses - rostered_trained_nurses
+				total_trained_nurses = Nurse.find(:all, :conditions =>["grade IN (?)", required_grades]).map(&:id)
+				addition_nurses = self.randomize_available_nurses(total_trained_nurses, roster, rdate,  required)
+				nurses_on_duty = roster[rdate][shift]
+				nurses_on_duty = (nurses_on_duty << addition_nurses).flatten
+				roster[rdate][shift] = nurses_on_duty
+			end
+		end
+		return roster
 	end
 
-	def self.validate_presence_of_all_shifts
+	def self.validate_presence_of_all_shifts(roster, rdate)
+		roster = self.validate_presence_of_night_shift(roster, rdate)
+		roster = self.validate_presence_of_early_shift(roster, rdate)
+		roster = self.validate_presence_of_late_shift(roster, rdate)
+		roster = self.validate_presence_of_long_day_shift(roster, rdate)
+		return roster
 	end
 
 	def self.validate_absence_of_rejected_shift_per_nurse(roster, nurse)
