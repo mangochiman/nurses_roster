@@ -233,11 +233,15 @@ class Roster < ActiveRecord::Base
 	end
 
 	def self.validate_absence_of_shift_that_should_not_be_consecutive(roster)
-		#No night shifts after night shifts
-		#No early shift after late shift
+		#No night shifts after night shifts 
+		#No early shift after late shift ['late shift', 'early shift']
+		#Something to work on ['night', 'night', 'day off', 'day off', 'night']
+		#If a person has worked >= 3 nites in a row, no nite shift after day off
+		# if >=2 day offs, do no start a nite shift for atleast three days
 	end
 	
 	def self.validate_combination_of_unprefered_shifts_during_week_ends
+
 	end
 	
 	def self.validate_one_shift_per_person(roster)
