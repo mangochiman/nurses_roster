@@ -3,6 +3,7 @@ class Nurse < ActiveRecord::Base
     set_primary_key :nurse_id
 	
 	has_many :rosters
+	has_many :shift_rejections
 
 	def self.roster_hash_by_nurse(roster)
 	#the roster is like {"25-jan-2014"=>{"Night Shift"=>[1]}, "22-jan-2014"=>{"Night Shift"=>[1, 2]}, "21-jan-2014"=>{"Night Shift"=>[1, 2]}, "26-jan-2014"=>{"Night Shift"=>[1]}, "23-jan-2014"=>{"Night Shift"=>[1]}, "24-jan-2014"=>{"Night Shift"=>[1]}} to
@@ -62,5 +63,24 @@ class Nurse < ActiveRecord::Base
 			required_shifts[rdate] = rshift
 		end
 		return required_shifts
+	end
+
+	def self.roster_hash_rejection_by_nurse(roster, rejection_type)	
+		roster_rejection_by_nurse = {}	
+		rejection_type_id = ShiftRejectionType.find_by_rejection_type(rejection_type).id
+		nurse_shift_rejection_ids = ShiftRejection.find(:all, :conditions => ["shift_rejection_type_id =?", 			rejection_type_id]).map(&:nurse_id).uniq
+
+		nurse_shift_rejection_ids.each do |nurse_id|
+			rejected_nurse_shifts = ShiftRejection.find(:all, :conditions => ["shift_rejection_type_id =? AND nurse_id =?", rejection_type_id, nurse_id])
+			roster_rejection_by_nurse[nurse_id] = {} if roster_rejection_by_nurse[nurse_id].blank?
+			rejected_nurse_shifts.each do |rshift|
+				day = rshift.date_or_day
+				roster_rejection_by_nurse[nurse_id][day] = [] if roster_rejection_by_nurse[nurse_id][day].blank?
+				shift = ShiftType.find(rshift.shift_type_id).name
+				roster_rejection_by_nurse[nurse_id][day] << shift
+			end
+		end
+
+		return roster_rejection_by_nurse
 	end
 end

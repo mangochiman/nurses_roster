@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140418092612) do
+ActiveRecord::Schema.define(:version => 20140502083804) do
 
   create_table "nurse", :primary_key => "nurse_id", :force => true do |t|
     t.string   "first_name"
@@ -32,6 +32,21 @@ ActiveRecord::Schema.define(:version => 20140418092612) do
   create_table "shift", :primary_key => "shift_id", :force => true do |t|
     t.integer  "shift_type_id"
     t.date     "shift_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "shift_rejection", :primary_key => "shift_rejection_id", :force => true do |t|
+    t.integer  "shift_rejection_type_id"
+    t.integer  "shift_type_id"
+    t.integer  "nurse_id"
+    t.string   "date_or_day"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "shift_rejection_type", :primary_key => "shift_rejection_type_id", :force => true do |t|
+    t.string   "rejection_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

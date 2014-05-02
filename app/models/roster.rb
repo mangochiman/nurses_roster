@@ -202,8 +202,34 @@ class Roster < ActiveRecord::Base
 		return roster
 	end
 
-	def self.validate_absence_of_rejected_shift_per_nurse(roster, nurse)
+	def self.validate_absence_of_rejected_shift_per_nurse(roster)
+		nurse_roster_hash = Nurse.roster_hash_by_nurse(roster)
+		routine_rejections = Nurse.roster_hash_rejection_by_nurse(roster, 'routine')
+		special_rejections = Nurse.roster_hash_rejection_by_nurse(roster, 'special')
 
+		nurse_roster_hash.each do |nurse_id, values|
+			 nurse_routine_rejections = routine_rejections[nurse_id]
+			 next if nurse_routine_rejections.blank?
+			 values.each do |rdate, rshift|
+				nurse_routine_rejections.each do |day, shifts|
+					next unless (rdate.strftime("%A").upcase.match(day))
+					nurses_on_duty = roster[rdate][rshift]
+					nurses_on_duty = (nurses_on_duty - [nurse_id])
+					roster[rdate][rshift] = nurses_on_duty
+			 end
+						
+			 nurse_special_rejections = special_rejections[nurse_id]
+			 next if nurse_special_rejections.blank?
+			 values.each do |rdate, rshift|
+				nurse_special_rejections.each do |date, shifts|
+					next unless (rdate.to_date == date.to_date)
+					nurses_on_duty = roster[rdate][rshift]
+					nurses_on_duty = (nurses_on_duty - [nurse_id])
+					roster[rdate][rshift] = nurses_on_duty
+			 end								
+		end
+	
+		return roster
 	end
 
 	def self.validate_absence_of_shift_that_should_not_be_consecutive(roster)
