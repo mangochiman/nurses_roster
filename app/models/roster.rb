@@ -213,6 +213,7 @@ class Roster < ActiveRecord::Base
 			 values.each do |rdate, rshift|
 				nurse_routine_rejections.each do |day, shifts|
 					next unless (rdate.strftime("%A").upcase.match(day))
+					next unless shifts.include?(rshift)
 					nurses_on_duty = roster[rdate][rshift]
 					nurses_on_duty = (nurses_on_duty - [nurse_id])
 					roster[rdate][rshift] = nurses_on_duty
@@ -223,6 +224,7 @@ class Roster < ActiveRecord::Base
 			 values.each do |rdate, rshift|
 				nurse_special_rejections.each do |date, shifts|
 					next unless (rdate.to_date == date.to_date)
+					next unless shifts.include?(rshift)
 					nurses_on_duty = roster[rdate][rshift]
 					nurses_on_duty = (nurses_on_duty - [nurse_id])
 					roster[rdate][rshift] = nurses_on_duty
@@ -232,12 +234,50 @@ class Roster < ActiveRecord::Base
 		return roster
 	end
 
-	def self.validate_absence_of_shift_that_should_not_be_consecutive(roster)
+	def self.validate_absence_of_shift_that_should_not_be_consecutive(roster, nurse_id, start_date, end_date)
 		#No night shifts after night shifts 
 		#No early shift after late shift ['late shift', 'early shift']
 		#Something to work on ['night', 'night', 'day off', 'day off', 'night']
 		#If a person has worked >= 3 nites in a row, no nite shift after day off
 		# if >=2 day offs, do no start a nite shift for atleast three days
+		#consecutive days off probably means a nurse was on night duty
+		nurse_roster = {}
+		off_days = []
+		consecutive_days_off_shifts= []
+		nurse_off_days = Nurse.roster_hash_by_nurse(roster)[nurse_id]
+		off_days = Nurse.roster_hash_by_nurse(roster)[nurse_id].to_a
+		night_shift = "Night Shift"
+		allowed_shifts = (ShiftType.all.map(&:name) - [night_shift])
+		day_off = "Day Off"
+		off_days.each do |date, shift|
+			unless consecutive_days_off_shifts.blank?
+				consecutive_days_off_shifts << shift if consecutive_days_off_shifts.last[1] == shift
+				if (consecutive_days_off_shifts.count >=2)
+					if (consecutive_days_off_shifts.include?(day_off))
+						unless (consecutive_days_off_shifts.last[1] == shift)
+							start_date = date.to_date
+							end_date = date + 3.days
+							(start_date..end_date).to_a.each do |rdate|
+								rdate = rdate.strftime("%d-%b-%Y").downcase
+								next unless nurse_off_days[rdate].match(/NIGHT/i)
+								nurses_on_duty = roster[rdate][night_shift]
+								nurses_on_duty = (nurses_on_duty - [nurse_id])
+								roster[rdate][night_shift] = nurses_on_duty
+								random_shift = allowed_shifts.shuffle.last
+								ids_on_duty = roster[rdate][random_shift]
+								ids_on_duty = (ids_on_duty << nurse_id).flatten
+								roster[rdate][random_shift] = ids_on_duty							
+							end
+						end
+					end
+				end
+
+				consecutive_days_off_shifts = [] unless consecutive_days_off_shifts.last[1] == shift
+			end
+			consecutive_days_off_shifts << shift if consecutive_days_off_shifts.blank?
+		end
+
+		return roster
 	end
 	
 	def self.validate_combination_of_unprefered_shifts_during_week_ends
