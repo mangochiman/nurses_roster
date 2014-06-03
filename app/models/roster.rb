@@ -105,7 +105,7 @@ class Roster < ActiveRecord::Base
 			unless consecutive_shifts.blank?
 				consecutive_shifts << shift if consecutive_shifts.last[1] == shift
 				if (consecutive_shifts.count > 3)
-					roster[date][nurse_id] = day_off if (consecutive_shifts.last[1].match(/Night/i)
+					roster[date][nurse_id] = day_off if (consecutive_shifts.last[1].match(/Night/i))
 				end
 
 				consecutive_shifts = [] unless consecutive_shifts.last[1] == shift
@@ -206,7 +206,6 @@ class Roster < ActiveRecord::Base
       end
       return roster
     end
-  end
   
 	def self.validate_presence_of_trained_staff_per_shift(roster, rdate)
 
@@ -279,19 +278,20 @@ class Roster < ActiveRecord::Base
 			 next if nurse_special_rejections.blank?
 			 values.each do |rdate, rshift|
 
-				nurse_special_rejections.each do |date, shifts|
-					next unless (rdate.to_date == date.to_date)
-					shifts.each do |rejected_shift|
-						next unless rshift == rejected_shift
-						nurses_on_duty = roster[rdate][rshift]
-						nurses_on_duty = (nurses_on_duty - [nurse_id])
-						roster[rdate][rshift] = nurses_on_duty
-					end
-			 end								
-		end
-	
-		return roster
-	end
+          nurse_special_rejections.each do |date, shifts|
+            next unless (rdate.to_date == date.to_date)
+            shifts.each do |rejected_shift|
+              next unless rshift == rejected_shift
+              nurses_on_duty = roster[rdate][rshift]
+              nurses_on_duty = (nurses_on_duty - [nurse_id])
+              roster[rdate][rshift] = nurses_on_duty
+            end
+         end
+        end
+      end
+    end
+    return roster
+  end
 
 	def self.validate_absence_of_shift_that_should_not_be_consecutive(roster, nurse_id, start_date, end_date)
 		#No night shifts after night shifts 
@@ -516,5 +516,5 @@ class Roster < ActiveRecord::Base
 		end
 		return roster
 	end
-							
+
 end

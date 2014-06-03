@@ -8,23 +8,43 @@ class RosterController < ApplicationController
 		end_date = start_date + 7.days
 		roster_dates = (start_date..end_date).to_a
 		roster = {}
-		required = 3 #Needs to be dynamic
+    shift_constraints = YAML.load_file("#{Rails.root.to_s}/config/constraints.yml")
+    
 		roster_dates.each do |rdate|
 			rdate = rdate.to_s
 			roster[rdate] = {}
 			while !(free_shifts.blank?)
 				random_shift = free_shifts.shuffle.last
+        required = shift_constraints[random_shift]["maximum_staff"]
 				roster[rdate][random_shift] = []
-				if (roster[rdate].keys.blank?)
-					random_nurses = Roster.randomize_nurses(required) #This needs to receive available nurses
-				else
-					random_nurses = Roster.randomize_available_nurses(available_nurses, roster, rdate, required)
-				end
+        random_nurses = Roster.randomize_nurses(required) if (roster[rdate].keys.blank?)
+        random_nurses = Roster.randomize_available_nurses(available_nurses, roster, rdate, required) unless (roster[rdate].keys.blank?)
 				roster[rdate][random_shift] += random_nurses
 				free_shifts = free_shifts - [random_shift]
 			end
 			free_shifts = available_shifts
+      roster = Roster.validate_presence_of_all_shifts(roster, rdate)
+      roster = Roster.validate_presence_of_enough_staff_per_shift(roster, rdate, available_nurses)
+      roster = Roster.validate_presence_of_trained_staff_per_shift(roster, rdate)
 		end
+
+    available_nurses.each do |nurse_id|
+      roster = Roster.validate_sequence_of_night_shifts(roster, nurse_id)
+      roster = Roster.validate_absence_of_shift_that_should_not_be_consecutive(roster, nurse_id, start_date, end_date)
+    end
+    
+    roster = Roster.validate_monthly_hours(roster)
+    roster = Roster.validate_absence_of_rejected_shift_per_nurse(roster)
+    roster = Roster.validate_presence_of_day_off_before_night(roster)
+    roster = Roster.validate_one_shift_per_person(roster)
+    roster = Roster.validate_presence_of_day_off_within_seven_days(roster)
+    roster = Roster.validate_presence_of_night_within_two_weeks(roster)
+    roster = Roster.validate_presence_of_maximum_nights_per_month(roster, 3)
+    roster = Roster.validate_presence_of_early_shift_within_three_days(roster)
+    roster = Roster.validate_presence_of_late_shift_within_three_days(roster)
+    roster = Roster.validate_presence_of_long_day_shift_within_three_days(roster)
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    
 		Roster.create_roster(roster, start_date, end_date)
 		return roster
 	end
