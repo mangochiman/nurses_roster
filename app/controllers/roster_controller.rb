@@ -15,7 +15,7 @@ class RosterController < ApplicationController
 			roster[rdate] = {}
 			while !(free_shifts.blank?)
 				random_shift = free_shifts.shuffle.last
-        required = shift_constraints[random_shift]["maximum_staff"]
+        required = 3#shift_constraints[random_shift]["maximum_staff"]
 				roster[rdate][random_shift] = []
         random_nurses = Roster.randomize_nurses(required) if (roster[rdate].keys.blank?)
         random_nurses = Roster.randomize_available_nurses(available_nurses, roster, rdate, required) unless (roster[rdate].keys.blank?)
@@ -34,17 +34,17 @@ class RosterController < ApplicationController
     end
     
     roster = Roster.validate_monthly_hours(roster)
-    roster = Roster.validate_absence_of_rejected_shift_per_nurse(roster)
+    #roster = Roster.validate_absence_of_rejected_shift_per_nurse(roster)
     roster = Roster.validate_presence_of_day_off_before_night(roster)
-    roster = Roster.validate_one_shift_per_person(roster)
     roster = Roster.validate_presence_of_day_off_within_seven_days(roster)
     roster = Roster.validate_presence_of_night_within_two_weeks(roster)
     roster = Roster.validate_presence_of_maximum_nights_per_month(roster, 3)
     roster = Roster.validate_presence_of_early_shift_within_three_days(roster)
     roster = Roster.validate_presence_of_late_shift_within_three_days(roster)
     roster = Roster.validate_presence_of_long_day_shift_within_three_days(roster)
+    roster = Roster.validate_one_shift_per_person(roster)
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    
+    raise roster.inspect
 		Roster.create_roster(roster, start_date, end_date)
 		return roster
 	end

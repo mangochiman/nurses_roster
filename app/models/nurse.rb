@@ -11,7 +11,7 @@ class Nurse < ActiveRecord::Base
 		roster_hash = {}
 		roster.each do |rdate, rvalues|
 			rvalues.each do |shift, nurse_ids|
-				nurse_ids.each do |nurse_id|
+				nurse_ids.flatten.each do |nurse_id|
 					roster_hash[nurse_id] = {} if roster_hash[nurse_id].blank?
 					roster_hash[nurse_id][rdate] = {} if roster_hash[nurse_id][rdate].blank?
 					roster_hash[nurse_id][rdate] = shift

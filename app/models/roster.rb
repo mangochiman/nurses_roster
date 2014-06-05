@@ -23,7 +23,7 @@ class Roster < ActiveRecord::Base
 		end
 		assigned_ids = assigned_ids.flatten
 		free_ids = nurses_ids - assigned_ids
-		selected_nurses += free_ids.shuffle[1..required]
+		selected_nurses += free_ids.shuffle[1..required].to_a
 		return selected_nurses
 	end
 
@@ -54,7 +54,7 @@ class Roster < ActiveRecord::Base
 		minimimum_level = shift_constraints[night_shift]["minimum_level"]
 		required = minimimum_level
 		unless roster[rdate].keys.include?('Night Shift')
-			roster[rdate]["Night Shift"] = Roster.randomize_available_nurses(nurses_ids, roster, rdate,  required)
+			roster[rdate]["Night Shift"] = Roster.randomize_available_nurses(nurses_ids, roster, rdate,  required).flatten
 		end
 		return roster
 	end
@@ -66,7 +66,7 @@ class Roster < ActiveRecord::Base
 		minimimum_level = shift_constraints[early_shift]["minimum_level"]
 		required = minimimum_level
 		unless roster[rdate].keys.include?('Early Shift')
-			roster[rdate]["Early Shift"] = Roster.randomize_available_nurses(nurses_ids, roster, rdate,  required)
+			roster[rdate]["Early Shift"] = Roster.randomize_available_nurses(nurses_ids, roster, rdate,  required).flatten
 		end
 		return roster
 	end
@@ -78,7 +78,7 @@ class Roster < ActiveRecord::Base
 		minimimum_level = shift_constraints[late_shift]["minimum_level"]
 		required = minimimum_level
 		unless roster[rdate].keys.include?('Late Shift')
-			roster[rdate]["Late Shift"] = Roster.randomize_available_nurses(nurses_ids, roster, rdate,  required)
+			roster[rdate]["Late Shift"] = Roster.randomize_available_nurses(nurses_ids, roster, rdate,  required).flatten
 		end
 		return roster
 	end
@@ -90,7 +90,7 @@ class Roster < ActiveRecord::Base
 		minimimum_level = shift_constraints[long_day_shift]["minimum_level"]
 		required = minimimum_level
 		unless roster[rdate].keys.include?('Long Day Shift')
-			roster[rdate]["Long Day Shift"] = Roster.randomize_available_nurses(nurses_ids, roster_obj, rdate,  required)
+			roster[rdate]["Long Day Shift"] = Roster.randomize_available_nurses(nurses_ids, roster, rdate,  required)
 		end
 		return roster
 	end
@@ -100,7 +100,7 @@ class Roster < ActiveRecord::Base
 		night_shifts = []
 		consecutive_shifts= []
 		night_shifts = Nurse.roster_hash_by_nurse(roster)[nurse_id].to_a #Important to sort this by date
-		day_off = "Day Off"
+		day_off = "Day Off Shift"
 		night_shifts.each do |date, shift|
 			unless consecutive_shifts.blank?
 				consecutive_shifts << shift if consecutive_shifts.last[1] == shift
@@ -134,7 +134,7 @@ class Roster < ActiveRecord::Base
 					shift_hours = Shift.hours(rshift)
 					ids_on_duty = roster[rdate][rshift]
 					ids_on_duty = ids_on_duty - [nurse_id]
-					roster[rdate][rshift] = ids_on_duty
+					roster[rdate][rshift] = ids_on_duty.flatten
 					hours_worked = hours_worked - shift_hours
 					break if hours_worked <= required_hours
 				end
@@ -146,66 +146,69 @@ class Roster < ActiveRecord::Base
 	def self.validate_presence_of_enough_staff_per_shift(roster, rdate, nurses_ids)
 		shift_constraints = YAML.load_file("#{Rails.root.to_s}/config/constraints.yml")
 		special_case = shift_constraints["Special Case"]
-		shift_count = build_total_nurses_per_shift(roster, rdate)
+		shift_count = self.build_total_nurses_per_shift(roster, rdate)
 		#{"minimum_level"=>2, "maximum_staff"=>6, "minimum_trained_staff"=>2}
+    #raise shift_count.inspect
 		shift_count.each do |shift, total_nurses|
-			minimum_level = shift_constraints[shift]["minimum_level"]
-			maximum_staff = shift_constraints[shift]["maximum_staff"]
-			minimum_trained_staff = shift_constraints[shift]["minimum_trained_staff"]
-			nurse_count = total_nurses
+        minimum_level = shift_constraints[shift]["minimum_level"] rescue nil
+        maximum_staff = shift_constraints[shift]["maximum_staff"] rescue nil
+        minimum_trained_staff = shift_constraints[shift]["minimum_trained_staff"] rescue nil
+        next if minimum_level.blank?
+        next if maximum_staff.blank?
+        next if minimum_trained_staff.blank?
+        nurse_count = total_nurses
 
-			if (total_nurses < minimum_level)
-				total_shortage_staff = maximum_staff - total_nurses
-				nurses = self.randomize_available_nurses(nurses_ids, roster, rdate,  total_shortage_staff)
-				nurse_ids = (roster[rdate][shift] + nurses).uniq
-				roster[rdate][shift] = nurse_ids
-			end
+        if (total_nurses < minimum_level)
+          total_shortage_staff = maximum_staff - total_nurses
+          nurses = self.randomize_available_nurses(nurses_ids, roster, rdate,  total_shortage_staff)
+          nurse_ids = (roster[rdate][shift] + nurses).uniq
+          roster[rdate][shift] = nurse_ids.flatten
+        end
 
-			if (total_nurses > maximum_staff)
-				total_extra_staff = total_nurses - maximum_staff
-				nurse_ids = roster[rdate][shift]
-				required_nurses = nurse_ids - nurse_ids.shuffle[0...total_extra_staff]
-				roster[rdate][shift] = required_nurses
-			end
+        if (total_nurses > maximum_staff)
+          total_extra_staff = total_nurses - maximum_staff
+          nurse_ids = roster[rdate][shift]
+          required_nurses = nurse_ids - nurse_ids.shuffle[0...total_extra_staff]
+          roster[rdate][shift] = required_nurses.flatten
+        end
 
-			min_level = nil
-			min_trained_staff = nil
-			max_level = nil
+        min_level = nil
+        min_trained_staff = nil
+        max_level = nil
 
-			unless (special_case[shift]).blank?
-				special_case[shift].each do |day, values|
-					if (rdate.to_date.strftime("%A").match(day))
-						values.each do |rule, value|
-							min_level = value if rule.match(/minimum_level/i)
-							min_trained_staff = value if rule.match(/minimum_trained_staff/i)
-							max_level = value if rule.match(/maximum_staff/i)
-						end
+        unless (special_case[shift]).blank?
+          special_case[shift].each do |day, values|
+            if (rdate.to_date.strftime("%A").match(day))
+              values.each do |rule, value|
+                min_level = value if rule.match(/minimum_level/i)
+                min_trained_staff = value if rule.match(/minimum_trained_staff/i)
+                max_level = value if rule.match(/maximum_staff/i)
+              end
 
-						unless (min_level.blank? && min_trained_staff.blank? && max_level.blank?)
-							if (total_nurses < min_level)
-								total_missing_staff = max_level - total_nurses
-								ids = self.randomize_available_nurses(nurses_ids, roster, rdate,  total_missing_staff)
-								nids = (roster[rdate][shift] + ids).uniq
-								roster[rdate][shift] = nids
-							end
+              unless (min_level.blank? && min_trained_staff.blank? && max_level.blank?)
+                if (total_nurses < min_level)
+                  total_missing_staff = max_level - total_nurses
+                  ids = self.randomize_available_nurses(nurses_ids, roster, rdate,  total_missing_staff)
+                  nids = (roster[rdate][shift] + ids).uniq
+                  roster[rdate][shift] = nids.flatten
+                end
 
-							if (total_nurses > max_level)
-								total_extra_staff = total_nurses - max_level
-								nurse_ids = roster[rdate][shift]
-								required_nurses = nurse_ids - nurse_ids.shuffle[0...total_extra_staff]
-								roster[rdate][shift] = required_nurses			
-							end
-						end
-						min_level = nil
-						min_trained_staff = nil
-						max_level = nil
-					end
-				end
-        	end
-
+                if (total_nurses > max_level)
+                  total_extra_staff = total_nurses - max_level
+                  nurse_ids = roster[rdate][shift]
+                  required_nurses = nurse_ids - nurse_ids.shuffle[0...total_extra_staff]
+                  roster[rdate][shift] = required_nurses.flatten
+                end
+              end
+              min_level = nil
+              min_trained_staff = nil
+              max_level = nil
+            end
+          end
+        end
       end
-      return roster
-    end
+    return roster
+  end
   
 	def self.validate_presence_of_trained_staff_per_shift(roster, rdate)
 
@@ -213,7 +216,8 @@ class Roster < ActiveRecord::Base
 		required_grades = ["A", "B"]
 		shift_constraints = YAML.load_file("#{Rails.root.to_s}/config/constraints.yml")
 		roster[rdate].each do |shift, nurses_ids|
-			required_trained_nurses = shift_constraints[shift]["minimum_trained_staff"]
+			required_trained_nurses = shift_constraints[shift]["minimum_trained_staff"] rescue nil
+      next if required_trained_nurses.blank?
 			rostered_trained_nurses = Nurse.find(:all, :conditions => ["nurse_id IN (?) AND 
 				grade IN (?)", nurses_ids, required_grades])
 			rostered_trained_nurses_ids = rostered_trained_nurses.map(&:id)
@@ -227,14 +231,14 @@ class Roster < ActiveRecord::Base
 				addition_nurses = self.randomize_available_nurses(total_trained_nurses, roster, rdate,  required)
 				nurses_on_duty = roster[rdate][shift]
 				nurses_on_duty = (nurses_on_duty << addition_nurses).flatten
-				roster[rdate][shift] = nurses_on_duty
+				roster[rdate][shift] = nurses_on_duty.flatten
 			end
 
 			if (rostered_trained_nurses > required_trained_nurses)
 				extra_trained_nurses = rostered_trained_nurses - required_trained_nurses
 				trained_nurse_ids = roster[rdate][shift]
 				required_nurses = trained_nurse_ids - trained_nurse_ids.shuffle[0...extra_trained_nurses]
-				roster[rdate][shift] = required_nurses
+				roster[rdate][shift] = required_nurses.flatten
 			end
 		end
 		return roster
@@ -270,7 +274,7 @@ class Roster < ActiveRecord::Base
 						next unless rshift == rejected_shift
 						nurses_on_duty = roster[rdate][rshift]
 						nurses_on_duty = (nurses_on_duty - [nurse_id])
-						roster[rdate][rshift] = nurses_on_duty
+						roster[rdate][rshift] = nurses_on_duty.flatten
 					end
 			 end
 						
@@ -284,7 +288,7 @@ class Roster < ActiveRecord::Base
               next unless rshift == rejected_shift
               nurses_on_duty = roster[rdate][rshift]
               nurses_on_duty = (nurses_on_duty - [nurse_id])
-              roster[rdate][rshift] = nurses_on_duty
+              roster[rdate][rshift] = nurses_on_duty.flatten
             end
          end
         end
@@ -307,7 +311,7 @@ class Roster < ActiveRecord::Base
 		off_days = Nurse.roster_hash_by_nurse(roster)[nurse_id].to_a
 		night_shift = "Night Shift"
 		allowed_shifts = (ShiftType.all.map(&:name) - [night_shift])
-		day_off = "Day Off"
+		day_off = "Day Off Shift"
 		off_days.each do |date, shift|
 			unless consecutive_days_off_shifts.blank?
 				consecutive_days_off_shifts << shift if consecutive_days_off_shifts.last[1] == shift
@@ -321,11 +325,11 @@ class Roster < ActiveRecord::Base
 								next unless nurse_off_days[rdate].match(/NIGHT/i)
 								nurses_on_duty = roster[rdate][night_shift]
 								nurses_on_duty = (nurses_on_duty - [nurse_id])
-								roster[rdate][night_shift] = nurses_on_duty
+								roster[rdate][night_shift] = nurses_on_duty.flatten
 								random_shift = allowed_shifts.shuffle.last
 								ids_on_duty = roster[rdate][random_shift]
 								ids_on_duty = (ids_on_duty << nurse_id).flatten
-								roster[rdate][random_shift] = ids_on_duty							
+								roster[rdate][random_shift] = ids_on_duty.flatten
 							end
 						end
 					end
@@ -344,24 +348,34 @@ class Roster < ActiveRecord::Base
 	end
 	
 	def self.validate_one_shift_per_person(roster)
-		modified_nurse_ids = []
+    hash = {}
 		roster.each do |rdate, rdata|
-			rdata.each do |shift, nurse_ids|
-				nurse_ids.each do |nurse_id|
-					modified_nurse_ids << nurse_id unless modified_nurse_ids.include?(nurse_id)
-				end
-				roster[rdate][shift] = modified_nurse_ids
-				modified_nurse_ids = []
-			end
+      rdata.each do |shift, nurse_ids|
+          nurse_ids.each do |nurse_id|
+            hash[nurse_id] = {} if hash[nurse_id].blank?
+            hash[nurse_id]["count"] = {} if hash[nurse_id]["count"].blank?
+            hash[nurse_id]["shifts"] = [] if hash[nurse_id]["shifts"].blank?
+            hash[nurse_id]["count"] = 0 if hash[nurse_id]["count"].blank?
+            hash[nurse_id]["count"]+=1
+            hash[nurse_id]["shifts"] << shift
+          end
+      end
+      hash.each do |nurse_id, values|
+        if (values["count"] >= 2)
+          selected_shift = values["shifts"].shuffle.first
+          ignored_shifts = values["shifts"] - [selected_shift]
+          ignored_shifts.each do |shift|
+            nurses_ids = roster[rdate][shift] - [nurse_id]
+            roster[rdate][shift] = nurses_ids
+          end
+        end
+      end
+      hash = {}
 		end
 		return roster
 	end
 
-	def self.validate_one_shift_per_person_per_day(roster)
-		##Very Important method
-	end
-
-	def build_total_nurses_per_shift(roster, rdate)
+	def self.build_total_nurses_per_shift(roster, rdate)
 		shift_count = {}
 		roster[rdate].each do |shift, nurse_ids|
 			shift_count[shift] = {} if shift_count[shift].blank?
@@ -371,14 +385,16 @@ class Roster < ActiveRecord::Base
 	end
 	
 	def self.validate_presence_of_day_off_before_night(roster)
-		day_off = "Day Off"
+		day_off = "Day Off Shift"
 		night_shifts = []
 	
 		roster_hash = Nurse.roster_hash_by_nurse(roster)
 		roster_hash.each do |nurse_id, rvalues|
 			rvalues = rvalues.sort_by{|date, shift| date.to_date}
+      #raise rvalues.inspect
 			first_roster_date = rvalues.first[0]
 			rvalues.each do |rdate, rshift|
+        #raise rshift.inspect
 				unless night_shifts.blank?
 					if rshift.match(/Night/i)					
 						night_shifts << rshift					
@@ -387,17 +403,29 @@ class Roster < ActiveRecord::Base
 					end
 				end
 
-				night_shifts << rshift if night_shifts.blank? && rshift.match(/Night/i) && first_roster_date != rdate
+				night_shifts << rshift if night_shifts.blank? && rshift.match(/Night/i) && first_roster_date.to_date != rdate.to_date
 				unless night_shifts.blank?
 					if (night_shifts.count == 1)
-						prev_date = (rdate.to_date - 1.day).strftime("%d-%b-%Y").downcase
+						prev_date = (rdate.to_date - 1.day).strftime("%Y-%m-%d").downcase #Needs rework
 						day_off_ids = roster[prev_date][day_off] rescue nil
+            #raise roster.inspect unless day_off_ids.blank?
 						unless (day_off_ids.blank?)
-							roster[prev_date][day_off] = (day_off_ids << [nurse_id])
-						else
+                unless (day_off_ids.include?(nurse_id))
+                  roster[prev_date][day_off] = (day_off_ids << [nurse_id]).flatten
+                  roster[prev_date].each do |shift, nurse_ids|
+                     next if shift == day_off
+                     if (nurse_ids.include?(nurse_id))
+                       ids = roster[prev_date][shift] - [nurse_id]
+                       roster[prev_date][shift] = ids
+                     end
+                  end
+                  #Make sure this nurse ID is removed from other shift on this day
+                end
+            end
+						if (day_off_ids.blank?)
 							roster[prev_date] = {} if roster[prev_date].blank?
-							roster[prev_date][day_off] = {} if roster[prev_date][day_off].blank?
-							roster[prev_date][day_off] = [nurse_id]
+							roster[prev_date][day_off] = [] if roster[prev_date][day_off].blank?
+							roster[prev_date][day_off] += [nurse_id].flatten
 						end
 					end					
 				end
@@ -408,16 +436,23 @@ class Roster < ActiveRecord::Base
 	
 	def self.validate_presence_of_day_off_within_seven_days(roster)
 		roster_hash = Nurse.roster_hash_by_nurse(roster)
-		day_off = "Day Off"
+		day_off = "Day Off Shift"
 		roster_hash.each do |nurse_id, rvalues|
 			shifts_and_dates = rvalues.sort_by{|date, shift| date.to_date}.in_groups_of(7)
 			shifts_and_dates.each do |data|
 				seven_consecutive_dates_and_shifts = data.flatten.reject{|x|x.blank?}
-				unless (seven_consecutive_dates_and_shifts.include?("Day Off"))
-					dates = seven_consecutive_dates_and_shifts.select{|d|d unless (d.to_date rescue nil).blank?}
+				unless (seven_consecutive_dates_and_shifts.include?("Day Off Shift"))
+            dates = seven_consecutive_dates_and_shifts.select{|d|d unless (d.to_date rescue nil).blank?}
 				  	rdate = dates.shuffle.last
-					nurses_on_duty = roster[rdate][day_off]
-				  	roster[rdate][day_off] = (nurses_on_duty << nurse_id)
+            nurses_on_duty = roster[rdate][day_off].to_a
+				  	roster[rdate][day_off] = (nurses_on_duty << nurse_id).flatten
+            roster[rdate].each do |shift, nurse_ids|
+               next if shift == day_off
+               if (nurse_ids.include?(nurse_id))
+                 ids = roster[rdate][shift] - [nurse_id]
+                 roster[rdate][shift] = ids
+               end
+            end
 				end
 			end
 		end
@@ -434,8 +469,15 @@ class Roster < ActiveRecord::Base
 				unless (fourteen_consecutive_dates_and_shifts.include?("Night Shift"))
 					dates = fourteen_consecutive_dates_and_shifts.select{|d|d unless (d.to_date rescue nil).blank?}
 				  	rdate = dates.shuffle.last
-					nurses_on_duty = roster[rdate][night_shift]
-				  	roster[rdate][late_shift] = (nurses_on_duty << nurse_id)
+            nurses_on_duty = roster[rdate][night_shift].to_a
+				  	roster[rdate][night_shift] = (nurses_on_duty << nurse_id).flatten
+            roster[rdate].each do |shift, nurse_ids|
+               next if shift == night_shift
+               if (nurse_ids.include?(nurse_id))
+                 ids = roster[rdate][shift] - [nurse_id]
+                 roster[rdate][shift] = ids
+               end
+            end
 				end
 			end
 		end
@@ -453,7 +495,7 @@ class Roster < ActiveRecord::Base
 				   total_nights = max_value
 				   shift_dates.each do |sdate|
 						ids_on_duty = roster[sdate][shift]
-						roster[sdate][shift] = (ids_on_duty - [nurse_id])
+						roster[sdate][shift] = (ids_on_duty - [nurse_id]).flatten
 						total_nights -= 1
 						break if total_nights <= max_value
 				   end
@@ -473,8 +515,15 @@ class Roster < ActiveRecord::Base
 				unless (three_consecutive_dates_and_shifts.include?("Early Shift"))
 				  dates = three_consecutive_dates_and_shifts.select{|d|d unless (d.to_date rescue nil).blank?}
 				  rdate = dates.shuffle.last
-				  nurses_on_duty = roster[rdate][early_shift]
-				  roster[rdate][early_shift] = (nurses_on_duty << nurse_id)
+				  nurses_on_duty = roster[rdate][early_shift].to_a
+				  roster[rdate][early_shift] = (nurses_on_duty << nurse_id).flatten.uniq
+          roster[rdate].each do |shift, nurse_ids|
+               next if shift == early_shift
+               if (nurse_ids.include?(nurse_id))
+                 ids = roster[rdate][shift] - [nurse_id]
+                 roster[rdate][shift] = ids
+               end
+          end
 				end
 			end
 		end
@@ -491,8 +540,15 @@ class Roster < ActiveRecord::Base
 				unless (three_consecutive_dates_and_shifts.include?("Late Shift"))
 				  dates = three_consecutive_dates_and_shifts.select{|d|d unless (d.to_date rescue nil).blank?}
 				  rdate = dates.shuffle.last
-				  nurses_on_duty = roster[rdate][late_shift]
-				  roster[rdate][late_shift] = (nurses_on_duty << nurse_id)
+				  nurses_on_duty = roster[rdate][late_shift].to_a
+				  roster[rdate][late_shift] = (nurses_on_duty << nurse_id).flatten.uniq
+          roster[rdate].each do |shift, nurse_ids|
+               next if shift == late_shift
+               if (nurse_ids.include?(nurse_id))
+                 ids = roster[rdate][shift] - [nurse_id]
+                 roster[rdate][shift] = ids
+               end
+          end
 				end
 			end
 		end
@@ -509,8 +565,15 @@ class Roster < ActiveRecord::Base
 				unless (three_consecutive_dates_and_shifts.include?("Long Day Shift"))
 				  dates = three_consecutive_dates_and_shifts.select{|d|d unless (d.to_date rescue nil).blank?}
 				  rdate = dates.shuffle.last
-				  nurses_on_duty = roster[rdate][long_day_shift]
-				  roster[rdate][long_day_shift] = (nurses_on_duty << nurse_id)
+				  nurses_on_duty = roster[rdate][long_day_shift].to_a
+				  roster[rdate][long_day_shift] = (nurses_on_duty << nurse_id).flatten.uniq
+          roster[rdate].each do |shift, nurse_ids|
+               next if shift == long_day_shift
+               if (nurse_ids.include?(nurse_id))
+                 ids = roster[rdate][shift] - [nurse_id]
+                 roster[rdate][shift] = ids
+               end
+          end
 				end
 			end
 		end
