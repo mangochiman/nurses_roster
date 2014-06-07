@@ -7,7 +7,7 @@
       }
 
       #header{
-        position: fixed;
+        position: absolute;
         top: 5%;
         border-width: 100%;
       }
@@ -33,8 +33,8 @@
         border: 4px solid #313131;
         border-radius: 47px 12px 47px 12px;
         top: 30%;
-        left: 21%;
-        width: 40%;
+        left: 13%;
+        width: 53%;
         height: 34%;
       }
       #login input {
@@ -45,7 +45,7 @@
       }
       .logo{
         position: absolute;
-        left: 63%;
+        left: 69%;
         top: 34%;
       }
       #submit_button {
@@ -67,7 +67,8 @@
         padding: 2px 0 10px;
         color: #336699;
         text-indent: 0;
-        float: right;
+        left: 68%;
+        top: 5%;
       }
       body {
         background-color: #82EFFF;
@@ -85,18 +86,34 @@
         height: 100%;
         background-color: white;
       }
+      #login_header{
+        background: url("../images/one.gif") repeat-x scroll 0 0 #3C3C3C;
+        color: #FEFEFE;
+        display: inline-block;
+        font-size: 19px;
+        letter-spacing: -1px;
+        line-height: 1em;
+        padding: 9px 20px 11px;
+        position: relative;
+        left: 60.5%;
+        top: -19%;
+      }
     </style>
   </head>
   <body>
     <div id="content">
       <div id="header">
-        <span class="app_name">Nurses Roster System</span>
+        
+      </div>
+      <div class="app_name">
+          <span>Nurses Roster System</span>
       </div>
       <div id="horizontal_line">
       </div>
 
           <div id="login">
-            <div style="position:absolute; left: 20%; top: 20%;">
+            <span id="login_header">Login to continue</span>
+            <div style="position:absolute; left: 20%; top: 31%;">
               <table>
                 <tr>
                   <td><label><strong>Username</strong></label></td>
