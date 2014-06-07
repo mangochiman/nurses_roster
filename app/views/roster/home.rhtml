@@ -1,0 +1,123 @@
+<html>
+  <head>
+    <title></title>
+    <style>
+      #content{
+
+      }
+
+      #header{
+        position: fixed;
+        top: 5%;
+        border-width: 100%;
+      }
+      #footer{
+        position: absolute;
+        bottom: 0%;
+        height: 43px;
+        width: 100%;
+        left: 0%;
+        background: url("../images/one.gif") repeat-x scroll center top rgba(0, 0, 0, 0);
+      }
+      #horizontal_line{
+        position: absolute;
+        height: 0%;
+        left: 0%;
+        top: 10%;
+        width: 100%;
+        border-bottom: 3px solid green;
+      }
+      #login{
+        position: absolute;
+        background-color: #FFFFFF;
+        border: 4px solid #313131;
+        border-radius: 47px 12px 47px 12px;
+        top: 30%;
+        left: 21%;
+        width: 40%;
+        height: 34%;
+      }
+      #login input {
+        background: none repeat fixed 0 0 #FFFFFF;
+        border: 1px solid #CCCCCC;
+        margin-top: 5px;
+        width: 200px;
+      }
+      .logo{
+        position: absolute;
+        left: 63%;
+        top: 34%;
+      }
+      #submit_button {
+        background: url("../images/two.gif") repeat-x scroll 0 0 #3C3C3C;
+        border-radius: 8px 8px 8px 8px;
+        color: #FEFEFE;
+        display: inline-block;
+        font-size: 19px;
+        letter-spacing: -1px;
+        line-height: 1.21em;
+        padding: 9px 20px 11px;
+        position: fixed;     
+      }
+      .app_name{
+        position: absolute;
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0 0 15px;
+        padding: 2px 0 10px;
+        color: #336699;
+        text-indent: 0;
+        float: right;
+      }
+      body {
+        background-color: #82EFFF;
+        background-image: url("images/bg.jpg");
+        background-repeat: repeat-x;
+        margin: 0;
+      }
+      #content{
+        position: absolute;
+        width: 70%;
+        clear: both;
+        border-left: 2px solid black;
+        border-right: 2px solid black;
+        margin-left: 15%;
+        height: 100%;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <div id="header">
+        <span class="app_name">Nurses Roster System</span>
+      </div>
+      <div id="horizontal_line">
+      </div>
+
+          <div id="login">
+            <div style="position:absolute; left: 20%; top: 20%;">
+              <table>
+                <tr>
+                  <td><label><strong>Username</strong></label></td>
+                  <td><input type="text" name="username"></input></td>
+                </tr>
+                <tr>
+                  <td><label><strong>Password</strong></label></td>
+                  <td><input type="password" name="password"></input></td>
+                </tr>
+                <tr>
+                  <td id="submit_button" colspan="2"> <span>Login</span></td>
+                </tr>
+                </table>
+            </div>
+          </div>
+          <div id="logo">
+            <%= image_tag("mw.gif", :class => "logo") %>
+          </div>
+  
+      <div id="footer">
+      </div>
+    </div>
+  </body>
+</html>

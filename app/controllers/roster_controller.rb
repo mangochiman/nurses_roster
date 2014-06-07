@@ -72,4 +72,8 @@ class RosterController < ApplicationController
 		"03-jan-14" => {"ernest" =>6 , "john" => 4}}
 		return @roster2
 	end
+
+  def home
+    
+  end
 end
