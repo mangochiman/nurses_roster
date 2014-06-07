@@ -17,7 +17,8 @@
         height: 43px;
         width: 100%;
         left: 0%;
-        background: url("../images/one.gif") repeat-x scroll center top rgba(0, 0, 0, 0);
+        background: url("../images/footer.gif") repeat-x scroll center top black;
+        padding: 30px 0 0;
       }
       #horizontal_line{
         position: absolute;
@@ -60,14 +61,13 @@
         position: fixed;     
       }
       .app_name{
-        position: absolute;
         font-size: 20px;
         font-weight: bold;
         margin: 0 0 15px;
         padding: 2px 0 10px;
         color: #336699;
         text-indent: 0;
-        left: 68%;
+        margin-left: 68%;
         top: 5%;
       }
       body {
@@ -98,6 +98,20 @@
         left: 60.5%;
         top: -19%;
       }
+
+      #password_reset{
+        background: url("../images/four.gif") repeat-x scroll 0 0 #3C3C3C;
+        border-radius: 8px 8px 8px 8px;
+        color: #FEFEFE;
+        display: inline-block;
+        font-size: 19px;
+        letter-spacing: -1px;
+        line-height: 1.5em;
+        padding: 9px 20px 11px;
+        margin-left: 79%;
+        margin-top: -2%;
+        z-index: 1;
+      }
     </style>
   </head>
   <body>
@@ -106,7 +120,7 @@
         
       </div>
       <div class="app_name">
-          <span>Nurses Roster System</span>
+          <span>Nurses Roster System(NRS)</span>
       </div>
       <div id="horizontal_line">
       </div>
@@ -132,8 +146,11 @@
           <div id="logo">
             <%= image_tag("mw.gif", :class => "logo") %>
           </div>
-  
+
       <div id="footer">
+        <div id="password_reset">
+          <span>Reset Password</span>
+        </div>
       </div>
     </div>
   </body>
