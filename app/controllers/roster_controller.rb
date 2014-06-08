@@ -76,4 +76,8 @@ class RosterController < ApplicationController
   def home
     
   end
+
+  def content
+    
+  end
 end

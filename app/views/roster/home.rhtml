@@ -40,7 +40,8 @@
       }
       #login input {
         background: none repeat fixed 0 0 #FFFFFF;
-        border: 1px solid #CCCCCC;
+        border: 2px solid #CCCCCC;
+        border-style: none none solid;
         margin-top: 5px;
         width: 200px;
       }
@@ -112,6 +113,8 @@
         margin-top: -2%;
         z-index: 1;
       }
+
+ 
     </style>
   </head>
   <body>
@@ -131,11 +134,11 @@
               <table>
                 <tr>
                   <td><label><strong>Username</strong></label></td>
-                  <td><input type="text" name="username"></input></td>
+                  <td><input type="text" name="username" id="username_input"></input></td>
                 </tr>
                 <tr>
                   <td><label><strong>Password</strong></label></td>
-                  <td><input type="password" name="password"></input></td>
+                  <td><input type="password" name="password" id="password_input"></input></td>
                 </tr>
                 <tr>
                   <td id="submit_button" colspan="2"> <span>Login</span></td>

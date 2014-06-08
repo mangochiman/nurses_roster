@@ -1,0 +1,141 @@
+<html>
+  <head>
+    <title></title>
+    <script>
+      function loadRosterData(obj){
+        setActiveTab(obj);
+      }
+
+      function loadNursesData(obj){
+        setActiveTab(obj);
+      }
+
+      function loadUsersData(obj){
+        setActiveTab(obj);
+      }
+
+      function loadSettingsData(obj){
+        setActiveTab(obj);
+      }
+
+      function loadHomeData(obj){
+        setActiveTab(obj);
+      }
+      
+      function setActiveTab(obj){
+        element = document.getElementById('active_tab');
+        if (element){
+          element.removeAttribute('id'); 
+        }
+        obj.setAttribute("id", 'active_tab');
+        console.log(obj)
+      }
+    </script>
+    <style>
+      #content{
+
+      }
+
+      #header{
+        position: absolute;
+        top: 5%;
+        border-width: 100%;
+      }
+      #footer{
+        position: absolute;
+        bottom: 0%;
+        height: 43px;
+        width: 100%;
+        left: 0%;
+        background: url("../images/footer.gif") repeat-x scroll center top black;
+        padding: 30px 0 0;
+      }
+      #horizontal_line{
+        position: absolute;
+        height: 0%;
+        left: 0%;
+        top: 10%;
+        width: 100%;
+        border-bottom: 1px solid green;
+      }
+ 
+      .app_name{
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0 0 15px;
+        padding: 2px 0 10px;
+        color: #336699;
+        text-indent: 0;
+        margin-left: 68%;
+        top: 5%;
+      }
+      body {
+        background-color: #82EFFF;
+        background-image: url("images/bg.jpg");
+        background-repeat: repeat-x;
+        margin: 0;
+      }
+      #content{
+        position: absolute;
+        width: 70%;
+        clear: both;
+        border-left: 2px solid black;
+        border-right: 2px solid black;
+        margin-left: 15%;
+        height: 100%;
+        background-color: white;
+      }
+
+
+      #logout{
+        position: absolute;
+        background: url("../images/four.gif") repeat-x scroll 0 0 #3C3C3C;
+        border-radius: 8px 8px 8px 8px;
+        color: #FEFEFE;
+        display: inline-block;
+        font-size: 19px;
+        letter-spacing: -1px;
+        line-height: 1.5em;
+        padding: 9px 20px 11px;
+        right: 2%;
+        margin-top: -2%;
+        z-index: 1;
+      }
+
+      #menu{
+        -moz-user-select: none;
+        margin-top: 1%;
+        margin-left: 63%;
+      
+      }
+      #active_tab{
+        border-bottom: 4px solid green;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <div id="header">
+        <div id="menu">
+          <span  onclick="loadRosterData(this);">Roster </span>|
+          <span onclick="loadNursesData(this)">Nurses </span>|
+          <span onclick="loadUsersData(this)">Users </span>|
+          <span onclick="loadSettingsData(this)">Settings </span>|
+          <span onclick="loadHomeData(this)">Home</span>
+        </div>
+      </div>
+      <!--<div class="app_name">
+          <span>Nurses Roster System(NRS)</span>
+      </div>-->
+      <div id="horizontal_line">
+      </div>
+
+      <div id="footer">
+        <div id="logout">
+          <span>logout</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
