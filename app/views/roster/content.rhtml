@@ -1,6 +1,7 @@
 <html>
   <head>
     <title></title>
+    <%= javascript_include_tag "cookies"%>
     <script>
       function loadRosterData(obj){
         setActiveTab(obj);
@@ -23,12 +24,31 @@
       }
       
       function setActiveTab(obj){
-        element = document.getElementById('active_tab');
-        if (element){
-          element.removeAttribute('id'); 
+        class_name = obj.getAttribute("class")
+        createCookie("active-tab", class_name, 1);
+        active_tab = readCookie('active-tab');
+        if (active_tab){
+          element = document.getElementsByClassName(active_tab)[0];
+          atab = document.getElementById('active_tab');
+          if (atab){
+            atab.removeAttribute('id');
+          }
+          element.setAttribute("id", 'active_tab');
         }
-        obj.setAttribute("id", 'active_tab');
+
         console.log(obj)
+      }
+
+      function loadActiveTab(){
+        active_tab = readCookie('active-tab');
+        if (active_tab){
+          element = document.getElementsByClassName(active_tab)[0];
+          atab = document.getElementById('active_tab');
+          if (atab){
+            atab.removeAttribute('id');
+          }
+          element.setAttribute("id", 'active_tab');
+        }
       }
     </script>
     <style>
@@ -111,18 +131,20 @@
       #active_tab{
         border-bottom: 4px solid green;
       }
-
+      .roster, .nurses, .users, .settings, .home{
+        cursor:  pointer;
+      }
     </style>
   </head>
-  <body>
+  <body onload="loadActiveTab();">
     <div id="content">
       <div id="header">
         <div id="menu">
-          <span  onclick="loadRosterData(this);">Roster </span>|
-          <span onclick="loadNursesData(this)">Nurses </span>|
-          <span onclick="loadUsersData(this)">Users </span>|
-          <span onclick="loadSettingsData(this)">Settings </span>|
-          <span onclick="loadHomeData(this)">Home</span>
+          <span class="roster" onclick="loadRosterData(this);">Roster </span>|
+          <span class="nurses" onclick="loadNursesData(this)">Nurses </span>|
+          <span class="users" onclick="loadUsersData(this)">Users </span>|
+          <span class="settings" onclick="loadSettingsData(this)">Settings </span>|
+          <span class="home" onclick="loadHomeData(this)">Home</span>
         </div>
       </div>
       <!--<div class="app_name">

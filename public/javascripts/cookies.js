@@ -22,18 +22,3 @@ function readCookie(name) {
 function eraseCookie(name) {
 	createCookie(name,"",-1);
 }
-
-function setCookie(){
-    rows = document.getElementById('parent_table').getElementsByTagName("TR");
-    for (var j = 0; j < rows.length; j++){
-        cells = rows[j].getElementsByTagName("TD");
-        for (var i = 0; i < cells.length; i++) {
-                if (cells[i].id){
-                    cells[i].onmousedown=function(){
-                        createCookie("active-tab",this.id,1)
-                    }
-                }
-        }
-        break;
-    }
-}
