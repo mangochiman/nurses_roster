@@ -78,6 +78,37 @@ class RosterController < ApplicationController
   end
 
   def content
-    
+    @roster_menu =  [
+                      ["Create Roster", 'image_1'],
+                      ["Edit Roster", "image_2"],
+                      ["Swap Shifts", "image_3"],
+                      ["Delete Roster", "image_4"],
+                      ["View Roster", "image_5"]
+                    ]
+
+    @nurses_menu =  [
+                      ["New Nurse", 'image_6'],
+                      ["Edit Nurse", "image_7"],
+                      ["Import from CSV", "image_8"],
+                      ["Delete Nurse", "image_9"]
+                    ]
+
+    @users_menu =  [
+                      ["New User", 'image_10'],
+                      ["Edit User", "image_11"],
+                      ["Delete User", "image_12"]
+                    ]
+                    
+    @settings_menu =  [
+                      ["Adjust Shift Settings", "image_13"],
+                      ["Set Routine Shift Rejections", "image_14"],
+                      ["Set Special Shift Rejections", "image_15"],
+                      ["Extra Settings", 'image_16']
+                    ]
+
+    @extra_settings_menu =  [
+                      ["Change My Username", "image_17"],
+                      ["Change My Password", 'image_18']
+                    ]
   end
 end
