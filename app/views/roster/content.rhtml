@@ -10,7 +10,7 @@
       var extra_settings_menu = "<%= @extra_settings_menu %>";
       
       function loadRosterData(obj){
-        setActiveTab(obj);
+        //setActiveTab(obj);
         var inner_content = document.getElementById('inner_content');
         html = "<table>";
         <%  @roster_menu.in_groups_of(4).each do |row| %>
@@ -31,12 +31,11 @@
             html+="</tr>";
         <% end %>
           html += "</table>";
-          console.log(html);
           inner_content.innerHTML=html;
       }
 
       function loadNursesData(obj){
-        setActiveTab(obj);
+        //setActiveTab(obj);
         var inner_content = document.getElementById('inner_content');
         html = "<table>";
         <%  @nurses_menu.in_groups_of(4).each do |row| %>
@@ -57,12 +56,11 @@
             html+="</tr>";
         <% end %>
           html += "</table>";
-          console.log(html);
           inner_content.innerHTML=html;
       }
 
       function loadUsersData(obj){
-        setActiveTab(obj);
+        //setActiveTab(obj);
         var inner_content = document.getElementById('inner_content');
         html = "<table>";
         <%  @users_menu.in_groups_of(4).each do |row| %>
@@ -83,12 +81,11 @@
             html+="</tr>";
         <% end %>
           html += "</table>";
-          console.log(html);
           inner_content.innerHTML=html;
       }
 
       function loadSettingsData(obj){
-        setActiveTab(obj);
+        //setActiveTab(obj);
         var inner_content = document.getElementById('inner_content');
         html = "<table>";
         <%  @settings_menu.in_groups_of(4).each do |row| %>
@@ -114,12 +111,11 @@
             html+="</tr>";
         <% end %>
           html += "</table>";
-          console.log(html);
           inner_content.innerHTML=html;
       }
 
       function loadHomeData(obj){
-        setActiveTab(obj);
+        //setActiveTab(obj);
         var inner_content = document.getElementById('inner_content');
         inner_content.innerHTML="";
       }
@@ -146,12 +142,11 @@
             html+="</tr>";
         <% end %>
           html += "</table>";
-          console.log(html);
           inner_content.innerHTML=html;
       }
       
       function setActiveTab(obj){
-        class_name = obj.getAttribute("class")
+        class_name = obj.getAttribute("class");
         createCookie("active-tab", class_name, 1);
         active_tab = readCookie('active-tab');
         if (active_tab){
@@ -162,18 +157,23 @@
           }
           element.setAttribute("id", 'active_tab');
         }
+
       }
 
       function loadActiveTab(){
         active_tab = readCookie('active-tab');
         if (active_tab){
           element = document.getElementsByClassName(active_tab)[0];
+          load_function = element.getAttribute('onclick');
+          
           atab = document.getElementById('active_tab');
           if (atab){
             atab.removeAttribute('id');
           }
           element.setAttribute("id", 'active_tab');
+          eval(load_function);
         }
+
       }
     </script>
     <style>
@@ -279,11 +279,11 @@
     <div id="content">
       <div id="header">
         <div id="menu">
-          <span class="roster" onclick="loadRosterData(this);">Roster </span>|
-          <span class="nurses" onclick="loadNursesData(this)">Nurses </span>|
-          <span class="users" onclick="loadUsersData(this)">Users </span>|
-          <span class="settings" onclick="loadSettingsData(this)">Settings </span>|
-          <span class="home" onclick="loadHomeData(this)">Home</span>
+          <span class="roster" onclick="loadRosterData(this);" onmousedown="setActiveTab(this)">Roster </span>|
+          <span class="nurses" onclick="loadNursesData(this)" onmousedown="setActiveTab(this)">Nurses </span>|
+          <span class="users" onclick="loadUsersData(this)" onmousedown="setActiveTab(this)">Users </span>|
+          <span class="settings" onclick="loadSettingsData(this)" onmousedown="setActiveTab(this)">Settings </span>|
+          <span class="home" onclick="loadHomeData(this)" onmousedown="setActiveTab(this)">Home</span>
         </div>
       </div>
       <!--<div class="app_name">
