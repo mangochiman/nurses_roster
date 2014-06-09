@@ -101,14 +101,14 @@ class RosterController < ApplicationController
                     
     @settings_menu =  [
                       ["Adjust Shift Settings", "adjust_02.png"],
-                      ["Set Routine Shift Rejections", "settings_01.png"],
+                      ["Set Routine Shift Rejections", "settings_02.png"],
                       ["Set Special Shift Rejections", "settings_01.png"],
                       ["Extra Settings", 'extra_settings_02.png']
                     ]
 
     @extra_settings_menu =  [
-                      ["Change My Username", "edit_username.png"],
-                      ["Change My Password", 'key.png']
+                      ["Edit Username", "edit_username.png"],
+                      ["Edit Password", 'password_01.png']
                     ]
   end
 end
