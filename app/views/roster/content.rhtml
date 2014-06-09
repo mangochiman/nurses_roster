@@ -18,7 +18,11 @@
             <% row.each do |caption, image| %>
               <%  next if caption.nil? %>
               <%  next if image.nil? %>
-              html+="<td>";
+              <% if caption.match(/Create Roster/i) %>
+                html+="<td onclick='createRoster();'>";
+              <% else %>
+                html+="<td>";
+              <% end %>
               html+='<%= image_tag("icons/#{image}", :class=>'icon') %>';
               html+="<br />"
               html+="<center><span class='caption'><%=  caption %></span></center"
@@ -194,11 +198,17 @@
         html+="</div>";
         
         html+= "<div id='create_roster_footer'>";
-        html+="<span id='cancel_button'>Cancel</span>";
+        html+="<span onclick='hideCreateRosterPopup();' id='cancel_button'>Cancel</span>";
         html+="</div>";
         
         html+="</div>";
         inner_content.innerHTML+=html
+      }
+
+      function hideCreateRosterPopup(){
+        create_roster_menu = document.getElementById('create_roster_menu')
+        create_roster_menu.parentNode.removeChild(create_roster_menu);
+        document.getElementById('shield').style.display='none';
       }
     </script>
     <style>
@@ -369,10 +379,11 @@
       background-color: #FFFFFF;
       border: 1px solid #EDEBEB;
       left: 2%;
-      padding: 7px 234px;
+      padding: 1.5% 43%;
       position: absolute;
       text-decoration: none;
       top: 15%;
+      cursor: pointer;
     }
     </style>
   </head>
