@@ -79,36 +79,36 @@ class RosterController < ApplicationController
 
   def content
     @roster_menu =  [
-                      ["Create Roster", 'image_1'],
-                      ["Edit Roster", "image_2"],
-                      ["Swap Shifts", "image_3"],
-                      ["Delete Roster", "image_4"],
-                      ["View Roster", "image_5"]
+                      ["Create Roster", 'create_01.png'],
+                      ["Edit Roster", "check_list.png"],
+                      ["Swap Shifts", "swap_01.png"],
+                      ["Delete Roster", "delete_01.png"],
+                      ["View Roster", "view_Details.png"]
                     ]
 
     @nurses_menu =  [
-                      ["New Nurse", 'image_6'],
-                      ["Edit Nurse", "image_7"],
-                      ["Import from CSV", "image_8"],
-                      ["Delete Nurse", "image_9"]
+                      ["New Nurse", 'nurse_02.png'],
+                      ["Edit Nurse", "edit_01.png"],
+                      ["Import from CSV", "upload.png"],
+                      ["Delete Nurse", "delete_01.png"]
                     ]
 
     @users_menu =  [
-                      ["New User", 'image_10'],
-                      ["Edit User", "image_11"],
-                      ["Delete User", "image_12"]
+                      ["New User", 'add_user.png'],
+                      ["Edit User", "edit_user.png"],
+                      ["Delete User", "delete_user.png"]
                     ]
                     
     @settings_menu =  [
-                      ["Adjust Shift Settings", "image_13"],
-                      ["Set Routine Shift Rejections", "image_14"],
-                      ["Set Special Shift Rejections", "image_15"],
-                      ["Extra Settings", 'image_16']
+                      ["Adjust Shift Settings", "adjust_02.png"],
+                      ["Set Routine Shift Rejections", "settings_01.png"],
+                      ["Set Special Shift Rejections", "settings_01.png"],
+                      ["Extra Settings", 'extra_settings_02.png']
                     ]
 
     @extra_settings_menu =  [
-                      ["Change My Username", "image_17"],
-                      ["Change My Password", 'image_18']
+                      ["Change My Username", "edit_username.png"],
+                      ["Change My Password", 'key.png']
                     ]
   end
 end
