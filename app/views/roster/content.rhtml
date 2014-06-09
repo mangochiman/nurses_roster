@@ -182,7 +182,7 @@
         html = "<div id='create_roster_menu'>";
         
         html+= "<div id='create_roster_header'>";
-        html+="<span></span>";
+        html+="<span style='position:absolute; top:4%; left:14%; top:30%;'>Create Roster</span>";
         html+="</div>";
 
         html+= "<div id='create_roster_content'>";
@@ -194,7 +194,7 @@
         html+="</div>";
         
         html+= "<div id='create_roster_footer'>";
-        html+="<span></span>";
+        html+="<span id='cancel_button'>Cancel</span>";
         html+="</div>";
         
         html+="</div>";
@@ -242,7 +242,7 @@
       }
       body {
         background-color: #82EFFF;
-        background-image: url("images/bg.jpg");
+        background-image: url("../images/bg.jpg");
         background-repeat: repeat-x;
         margin: 0;
       }
@@ -316,7 +316,6 @@
       position: absolute;
       height: 44%;
       width: 60%;
-      
       top: 20%;
       background-color: white;
       left: 20%;
@@ -364,6 +363,16 @@
 
     #input_label {
       font: 18px Georgia, casans-serif;
+    }
+
+    #cancel_button{
+      background-color: #FFFFFF;
+      border: 1px solid #EDEBEB;
+      left: 2%;
+      padding: 7px 234px;
+      position: absolute;
+      text-decoration: none;
+      top: 15%;
     }
     </style>
   </head>
