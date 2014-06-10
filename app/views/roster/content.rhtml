@@ -55,6 +55,8 @@
 
               <% if caption.match(/New Nurse/i) %>
                 html+="<td onclick='createNewNurse();'>";
+              <% elsif caption.match(/Edit Nurse/i) %>
+                html+="<td onclick='editNurseMenu();'>";
               <% else %>
                 html+="<td>";
               <% end %>
@@ -263,6 +265,17 @@
         inner_content.innerHTML+=html
      }
 
+     function editNurseMenu(){
+        var inner_content = document.getElementById('inner_content');
+        html = "<div id='edit_nurse_menu'>";
+        html+= "<div id='left_div'>";
+        html+="<table style='position:absolute; width:100%; margin-left:18%;'>";
+        html+="<tr><td>Filter </td><td><input name='search' type='text' id='search_input'/></td></tr>"
+        html+="</table>"
+        html+="</div>";
+        html+="</div>";
+        inner_content.innerHTML=html
+     }
     </script>
     <style>
       #content{
@@ -505,6 +518,28 @@
       text-decoration: none;
       top: 8%;
       cursor: pointer;
+    }
+
+    #edit_nurse_menu{
+      position: absolute;
+      width: 100%;
+      left: 0%;
+      top: 10.3%;
+      height: 80%;
+    }
+
+    #left_div{
+      position: absolute;
+      width: 40%;
+      border-right: 4px solid #FEF0C9;
+      background-color: #F1EDC2;
+      left: 0%;
+      height: 100%;
+      
+    }
+
+    #search_input{
+      height: 2em;
     }
     </style>
   </head>
