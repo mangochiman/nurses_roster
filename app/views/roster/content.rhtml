@@ -190,10 +190,10 @@
         html+="</div>";
 
         html+= "<div id='create_roster_content'>";
-        html+="<table style='margin-left: 13%; margin-top: 1%; width:80%;'>"
-        html+="<tr><td><span id='input_label'>Start Date</span></td><td><input type='text' name='start_date'></input></td></tr>";
+        html+="<table style='margin-left: 8%; margin-top: 1%; width:80%;'>"
+        html+="<tr><td><span id='input_label'>Start Date</span></td><td><input type='text' name='start_date'></input></td><td><img style='position: absolute; top:7%; height:30%;' src='../images/icons/calendar_year.png' class='calendar_icon'/></td></tr>";
         html+="<tr style='height:1em;'></tr>"
-        html+="<tr><td><span id='input_label'>End Date</span></td><td><input type='text' name='end_date'></input></td></tr>";
+        html+="<tr><td><span id='input_label'>End Date</span></td><td><input type='text' name='end_date'></input></td><td><img style='position: absolute; top:71%; height:30%;' src='../images/icons/calendar_year.png' class='calendar_icon'/></td></tr>";
         html+="</table>"
         html+="</div>";
         
@@ -358,7 +358,7 @@
       line-height: 0.5em;
       margin: 0;
       padding: 5px;
-      width: 82%;
+      width: 92%;
     }
     
     #create_roster_footer{
@@ -383,6 +383,10 @@
       position: absolute;
       text-decoration: none;
       top: 15%;
+      cursor: pointer;
+    }
+
+    .calendar_icon{
       cursor: pointer;
     }
     </style>
