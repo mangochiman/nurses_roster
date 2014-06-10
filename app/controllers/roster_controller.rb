@@ -90,13 +90,16 @@ class RosterController < ApplicationController
                       ["New Nurse", 'nurse_02.png'],
                       ["Edit Nurse", "edit_01.png"],
                       ["Import from CSV", "upload.png"],
-                      ["Delete Nurse", "delete_01.png"]
+                      ["Delete Nurse", "delete_01.png"],
+                      ["View Nurses", "view_01.png"]
                     ]
 
     @users_menu =  [
                       ["New User", 'add_user.png'],
                       ["Edit User", "edit_user.png"],
-                      ["Delete User", "delete_user.png"]
+                      ["Delete User", "delete_user.png"],
+                      ["Block User", "blocked_girl.png"],
+                      ["View Users", "view_01.png"]
                     ]
                     
     @settings_menu =  [
