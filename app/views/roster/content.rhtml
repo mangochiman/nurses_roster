@@ -2,6 +2,10 @@
   <head>
     <title></title>
     <%= javascript_include_tag "cookies"%>
+    <%= javascript_include_tag "jquery"%>
+    <%= javascript_include_tag "pickadate"%>
+    <%= stylesheet_link_tag "pickadate"%>
+
     <script>
       var roster_menu = "<%= @roster_menu %>";
       var nurses_menu = "<%= @nurses_menu %>";
@@ -191,9 +195,9 @@
 
         html+= "<div id='create_roster_content'>";
         html+="<table style='margin-left: 8%; margin-top: 1%; width:80%;'>"
-        html+="<tr><td><span id='input_label'>Start Date</span></td><td><input type='text' name='start_date'></input></td><td><img style='position: absolute; top:7%; height:30%;' src='../images/icons/calendar_year.png' class='calendar_icon'/></td></tr>";
+        html+="<tr><td><span id='input_label'>Start Date</span></td><td><input type='text'  class='date-input form-control'></input></td><td><img style='position: absolute; top:7%; height:30%;' src='../images/icons/calendar_year.png' class='calendar_icon date-button'/></td></tr> <div id='date-picker'> </div>";
         html+="<tr style='height:1em;'></tr>"
-        html+="<tr><td><span id='input_label'>End Date</span></td><td><input type='text' name='end_date'></input></td><td><img style='position: absolute; top:71%; height:30%;' src='../images/icons/calendar_year.png' class='calendar_icon'/></td></tr>";
+        html+="<tr><td><span id='input_label'>End Date</span></td><td><input type='text' ></input></td><td><img style='position: absolute; top:71%; height:30%;' src='../images/icons/calendar_year.png' class='calendar_icon'/></td></tr>";
         html+="</table>"
         html+="</div>";
         
