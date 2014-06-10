@@ -52,7 +52,13 @@
             <% row.each do |caption, image| %>
               <%  next if caption.nil? %>
               <%  next if image.nil? %>
-              html+="<td>";
+
+              <% if caption.match(/New Nurse/i) %>
+                html+="<td onclick='createNewNurse();'>";
+              <% else %>
+                html+="<td>";
+              <% end %>
+              
               html+='<%= image_tag("icons/#{image}", :class=>'icon') %>';
               html+="<br />"
               html+="<center><span class='caption'><%=  caption %></span></center"
@@ -196,9 +202,9 @@
 
         html+= "<div id='create_roster_content'>";
         html+="<table style='margin-left: 8%; margin-top: 1%; width:80%;'>"
-        html+="<tr><td><span id='input_label'>Start Date</span></td><td><input type='text'  id='start_date' onmousedown='loadDatePickers();'></input></td></tr>";
+        html+="<tr><td><span id='input_label'>Start Date</span></td><td><input type='text'  id='start_date' onmousedown='loadDatePicker();'></input></td></tr>";
         html+="<tr style='height:1em;'></tr>"
-        html+="<tr><td><span id='input_label'>End Date</span></td><td><input type='text' id='end_date'></input></td></tr>";
+        html+="<tr><td><span id='input_label'>End Date</span></td><td><input type='text' id='end_date' onmousedown='loadDatePicker();'></input></td></tr>";
         html+="</table>"
         html+="</div>";
         
@@ -215,11 +221,48 @@
         create_roster_menu.parentNode.removeChild(create_roster_menu);
         document.getElementById('shield').style.display='none';
       }
-      function loadDatePickers(){
+
+      function hideCreateNursePopup(){
+        create_nurse_menu = document.getElementById('create_nurse_menu')
+        create_nurse_menu.parentNode.removeChild(create_nurse_menu);
+        document.getElementById('shield').style.display='none';
+      }
+      
+      function loadDatePicker(){
         $( "#start_date" ).datepicker();
         $( "#end_date" ).datepicker();
       }
-      window.setTimeout("loadDatePickers();", 300);
+     function createNewNurse(){
+        var inner_content = document.getElementById('inner_content');
+        document.getElementById('shield').style.display='inline';
+        html = "<div id='create_nurse_menu'>";
+        
+        html+= "<div id='create_nurse_header'>";
+        html+="<span style='position:absolute; left:20%; top:32%;'>Create new nurse</span>";
+        html+="</div>";
+
+        html+= "<div id='create_nurse_content'>";
+        html+="<table style='margin-left: 20%; margin-top: 8%; width:80%;'>";
+        html+="<tr><td>Employee #</td><td><input type='text' name='employee_number'/></td></tr>";
+        html+="<tr style='height:1em;'></tr>";
+        html+="<tr><td>First Name</td> <td><input type='text' name='first_name'/></td></tr>";
+        html+="<tr style='height:1em;'></tr>";
+        html+="<tr><td>Last Name</td> <td><input type='text' name='last_name'/></td></tr>";
+        html+="<tr style='height:1em;'></tr>";
+        html+="<tr><td>Gender</td></tr>";
+        html+="<tr style='height:1em;'></tr>";
+        html+="<tr><td>Grade</td></tr>";
+        html+="</table>"
+        html+="</div>";
+
+        html+= "<div id='create_nurse_footer'>";
+        html+="<span id='save'>Save</span> <span id='cancel' onclick='hideCreateNursePopup();'>Cancel</span>";
+        html+="</div>";
+
+        html+="</div>";
+        inner_content.innerHTML+=html
+     }
+
     </script>
     <style>
       #content{
@@ -397,6 +440,70 @@
     }
 
     .calendar_icon{
+      cursor: pointer;
+    }
+
+    #create_nurse_menu{
+      z-index: 11;
+      position: absolute;
+      height: 75%;
+      width: 90%;
+      top: 12%;
+      background-color: white;
+      left: 5%;
+      border-bottom: 3px solid silver;
+    }
+
+    #create_nurse_header{
+      background-color: gray;
+      height: 50px;
+      width: 100%;
+      position: absolute;
+      left: 0%;
+      border-bottom: 2px solid black;
+    }
+
+    #create_ nurse_content input{
+      border: 1px solid black;
+      background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+      font-weight: bold;
+      float: left;
+      font-family: Arial,Helvetica,sans-serif;
+      font-size: 14px;
+      line-height: 0.5em;
+      margin: 0;
+      padding: 5px;
+      width: 105.5%;
+    }
+
+    #create_nurse_footer{
+      background-color: gray;
+      height: 50px;
+      width: 100%;
+      position: absolute;
+      width: 100%;
+      position: absolute;
+      bottom: 0px;
+    }
+
+    #save{
+      background-color: #FFFFFF;
+      border: 1px solid #EDEBEB;
+      left: 2%;
+      padding: 1.3% 20%;
+      position: absolute;
+      text-decoration: none;
+      top: 8%;
+      cursor: pointer;
+    }
+    #cancel{
+      background-color: #FFFFFF;
+      border: 1px solid #EDEBEB;
+      right: 2%;
+      padding: 1.3% 20%;
+      position: absolute;
+      text-decoration: none;
+      top: 8%;
       cursor: pointer;
     }
     </style>
