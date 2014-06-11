@@ -289,11 +289,9 @@
         html+="</div>";
 
         html+= "<div id='create_roster_content'>";
-        html+="<table style='margin-left: 8%; margin-top: 1%; width:80%;'>"
-
-        html+="<tr><td><span id='input_label'>Browse file</span></td></tr>";
-        
-        html+="</table>"
+        html+="<div style='position: absolute; left:10%; width:80%; margin-top:5%;'><span>Browse file</span><input style='position:absolute; width:40%; left:25%;' id='uploadFile' placeholder='Choose File' disabled='disabled'/>"
+        html+="<div class='fileUpload'><span onclick='getFile()'>Upload</span>"
+        html+="<div style='height:0px !important; width:0px !important;' id='hide_me'><input id='upfile' type='file' onchange='sub(this);' /></div></div></div>"
         html+="</div>";
 
         html+= "<div id='create_roster_footer'>";
@@ -303,7 +301,16 @@
         html+="</div>";
         inner_content.innerHTML+=html;
      }
-     
+
+       function getFile(){
+         document.getElementById("upfile").click();
+        }
+
+       function sub(obj){
+          var file = obj.value;
+          var fileName = file.split("\\");
+          document.getElementById("uploadFile").value = fileName[fileName.length-1];
+      }
     </script>
     <style>
       #content{
@@ -584,6 +591,41 @@
         position: absolute;
         width: 80%;
       }
+
+      #hide_me{
+        position: absolute;
+        height: 0%;
+      }
+      
+      .fileUpload span{
+         border-top: 1px solid #96d1f8;
+         background: gray;
+         background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+         background: -webkit-linear-gradient(top, gray, #808080);
+         background: -moz-linear-gradient(top, gray, #65a9d7);
+         background: -ms-linear-gradient(top, gray, #65a9d7);
+         background: -o-linear-gradient(top, gray, #65a9d7);
+         padding: 15px 63px;
+         -moz-border-radius: 15px;
+         border-radius: 15px;
+         -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+         -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+         box-shadow: rgba(0,0,0,1) 0 1px 0;
+         text-shadow: rgba(0,0,0,.4) 0 1px 0;
+         color: white;
+         font-size: 12px;
+         font-family: Georgia, serif;
+         position: absolute;
+         left: 71%;
+         top: -43%;
+         cursor: pointer;
+
+      }
+      #upfile{
+        border: 0px !important;
+        padding: 0px !important;
+      }
+      
     </style>
   </head>
   <body onload="loadActiveTab();">
