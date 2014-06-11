@@ -89,6 +89,8 @@
               <%  next if image.nil? %>
               <% if caption.match(/New User/i) %>
                 html+="<td onclick='createNewUser();'>";
+              <% elsif caption.match(/Edit User/i) %>
+                html+="<td onclick='editUserMenu();'>";
               <% else %>
                 html+="<td>";
               <% end %>
@@ -241,6 +243,12 @@
         create_csv_menu.parentNode.removeChild(create_csv_menu);
         document.getElementById('shield').style.display='none';
       }
+
+      function hideCreateUserPopup(){
+        create_user_menu = document.getElementById('create_user_menu')
+        create_user_menu.parentNode.removeChild(create_user_menu);
+        document.getElementById('shield').style.display='none';
+      }
       
       function loadDatePicker(){
         $( "#start_date" ).datepicker();
@@ -354,7 +362,21 @@
         html+="</div>";
         inner_content.innerHTML+=html;
       }
-      
+
+     function editUserMenu(){
+        var inner_content = document.getElementById('inner_content');
+        html = "<div id='edit_user_menu'>";
+        html+= "<div id='edit_left_div'>";
+        html+="<table style='position:absolute; width:100%; margin-left:1%;'>";
+        html+="<tr><td style='width:40%;'><span><input placeholder= 'Filter contacts' name='search' type='text' id='search_input'/><img onclick='document.getElementById(\"search_input\").value=\"\"' src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
+        html+="</table>"
+        html+="</div>";
+        html+= "<div id='content_header'>";
+        html+="<span>Edit user</span>";
+        html+="</div>";
+        html+="</div>";
+        inner_content.innerHTML=html;
+     }
     </script>
     <style>
       #content{
@@ -724,6 +746,41 @@
         padding: 5px;
         width: 65.5%;
       }
+
+      #edit_user_menu{
+      position: absolute;
+      width: 100%;
+      left: 0%;
+      top: 10.3%;
+      height: 80%;
+    }
+
+    #edit_left_div{
+      position: absolute;
+      width: 40%;
+      border-right: 4px solid #FEF0C9;
+      background-color: #F1EDC2;
+      left: 0%;
+      height: 100%;
+    }
+
+    #content_header{
+      position: absolute;
+      height: 20%;
+      left: 40.5%;
+      top: 0%;
+      width: 59.5%;
+    }
+
+    #content_header span{
+      position: absolute;
+      color: white;
+      padding: 2% 40%;
+      background-color: #7AC5CD;
+      font-weight: bold;
+      width: 20%;
+    }
+
     </style>
   </head>
   <body onload="loadActiveTab();">
