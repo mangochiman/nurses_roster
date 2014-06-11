@@ -91,6 +91,10 @@
                 html+="<td onclick='createNewUser();'>";
               <% elsif caption.match(/Edit User/i) %>
                 html+="<td onclick='editUserMenu();'>";
+              <% elsif caption.match(/Delete User/i) %>
+                html+="<td onclick='deleteUserMenu();'>";
+              <% elsif caption.match(/Block User/i) %>
+                html+="<td onclick='blockUserMenu();'>";
               <% else %>
                 html+="<td>";
               <% end %>
@@ -380,6 +384,37 @@
         html+="</div>";
         inner_content.innerHTML=html;
      }
+
+     function deleteUserMenu(){
+        var inner_content = document.getElementById('inner_content');
+        html = "<div id='edit_user_menu'>";
+        html+= "<div id='edit_left_div'>";
+        html+="<table style='position:absolute; width:100%; margin-left:1%;'>";
+        html+="<tr><td style='width:40%;'><span><input placeholder= 'Filter contacts' name='search' type='text' id='search_input'/><img onclick='document.getElementById(\"search_input\").value=\"\"' src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
+        html+="</table>"
+        html+="</div>";
+        html+= "<div id='content_header'>";
+        html+="<span style='background-color:#E9967A'>Delete user</span>";
+        html+="</div>";
+        html+="</div>";
+        inner_content.innerHTML=html;
+     }
+
+     function blockUserMenu(){
+      var inner_content = document.getElementById('inner_content');
+        html = "<div id='edit_user_menu'>";
+        html+= "<div id='edit_left_div'>";
+        html+="<table style='position:absolute; width:100%; margin-left:1%;'>";
+        html+="<tr><td style='width:40%;'><span><input placeholder= 'Filter contacts' name='search' type='text' id='search_input'/><img onclick='document.getElementById(\"search_input\").value=\"\"' src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
+        html+="</table>"
+        html+="</div>";
+        html+= "<div id='content_header'>";
+        html+="<span style='background-color:#CDCD00'>Block user</span>";
+        html+="</div>";
+        html+="</div>";
+        inner_content.innerHTML=html;
+     }
+
     </script>
     <style>
       #content{
