@@ -87,7 +87,11 @@
             <% row.each do |caption, image| %>
               <%  next if caption.nil? %>
               <%  next if image.nil? %>
-              html+="<td>";
+              <% if caption.match(/New User/i) %>
+                html+="<td onclick='createNewUser();'>";
+              <% else %>
+                html+="<td>";
+              <% end %>
               html+='<%= image_tag("icons/#{image}", :class=>'icon') %>';
               html+="<br />"
               html+="<center><span class='caption'><%=  caption %></span></center"
@@ -317,6 +321,40 @@
           var fileName = file.split("\\");
           document.getElementById("uploadFile").value = fileName[fileName.length-1];
       }
+
+      function createNewUser(){
+        var inner_content = document.getElementById('inner_content');
+        document.getElementById('shield').style.display='inline';
+        html = "<div id='create_user_menu'>";
+
+        html+= "<div id='create_user_header'>";
+        html+="<span style='position:absolute; left:20%; top:36%;'>Create new user</span>";
+        html+="</div>";
+
+        html+= "<div id='create_user_content'>";
+        html+="<table style='margin-left: 20%; margin-top: 8%; width:80%;'>";
+        html+="<tr style='height:1em;'></tr>";
+        html+="<tr><td>First Name</td> <td><input type='text' name='first_name'/></td></tr>";
+        html+="<tr style='height:1em;'></tr>";
+        html+="<tr><td>Last Name</td> <td><input type='text' name='last_name'/></td></tr>";
+        html+="<tr style='height:1em;'></tr>";
+        html+="<tr><td>Username</td><td><input type='text' name='username'/></td></tr>";
+        html+="<tr style='height:1em;'></tr>";
+        html+="<tr><td>Password</td><td><input type='password' name='password'/></td></tr>";
+        html+="<tr style='height:1em;'></tr>";
+        html+="<tr><td>Gender</td><td><select><option><%= '-' * 20 %>Please Select Gender<%= '-' * 20 %></option><option>Male</option><option>Female</option></select></td></tr>";
+        html+="<tr style='height:1em;'></tr>";
+        html+="</table>"
+        html+="</div>";
+
+        html+= "<div id='create_user_footer'>";
+        html+="<span id='save_user'>Save</span> <span id='cancel_user' onclick='hideCreateUserPopup();'>Cancel</span>";
+        html+="</div>";
+
+        html+="</div>";
+        inner_content.innerHTML+=html;
+      }
+      
     </script>
     <style>
       #content{
@@ -508,7 +546,7 @@
       border-bottom: 3px solid silver;
     }
 
-    #create_nurse_header{
+    #create_nurse_header, #create_user_header{
       background-color: gray;
       height: 50px;
       width: 100%;
@@ -530,7 +568,7 @@
       width: 65.5%;
     }
 
-    #create_nurse_footer{
+    #create_nurse_footer, #create_user_footer{
       background-color: gray;
       height: 50px;
       width: 100%;
@@ -640,6 +678,51 @@
         padding-bottom: 4px;
         padding-top: 4px;
         width: 66%;
+      }
+
+      #create_user_menu{
+        z-index: 11;
+        position: absolute;
+        height: 75%;
+        width: 90%;
+        top: 12%;
+        background-color: white;
+        left: 5%;
+        border-bottom: 3px solid silver;
+      }
+
+      #save_user{
+        background-color: #FFFFFF;
+        border: 1px solid #EDEBEB;
+        left: 2%;
+        padding: 1.3% 20%;
+        position: absolute;
+        text-decoration: none;
+        top: 8%;
+        cursor: pointer;
+      }
+
+      #cancel_user{
+        background-color: #FFFFFF;
+        border: 1px solid #EDEBEB;
+        right: 2%;
+        padding: 1.3% 20%;
+        position: absolute;
+        text-decoration: none;
+        top: 8%;
+        cursor: pointer;
+      }
+
+      #create_user_content input{
+        border: 1px solid black;
+        background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+        float: left;
+        font-family: Arial,Helvetica,sans-serif;
+        font-size: 14px;
+        line-height: 0.5em;
+        margin: 0;
+        padding: 5px;
+        width: 65.5%;
       }
     </style>
   </head>
