@@ -59,6 +59,8 @@
                 html+="<td onclick='editNurseMenu();'>";
               <% elsif caption.match(/Import from CSV/i) %>
                 html+="<td onclick='importFromCSVmenu();'>";
+              <% elsif caption.match(/Delete Nurse/i) %>
+                html+="<td onclick='deleteNurseMenu();'>";
               <% else %>
                 html+="<td>";
               <% end %>
@@ -401,7 +403,7 @@
      }
 
      function blockUserMenu(){
-      var inner_content = document.getElementById('inner_content');
+        var inner_content = document.getElementById('inner_content');
         html = "<div id='edit_user_menu'>";
         html+= "<div id='edit_left_div'>";
         html+="<table style='position:absolute; width:100%; margin-left:1%;'>";
@@ -415,6 +417,21 @@
         inner_content.innerHTML=html;
      }
 
+     function deleteNurseMenu(){
+        var inner_content = document.getElementById('inner_content');
+        html = "<div id='edit_user_menu'>";
+        html+= "<div id='edit_left_div'>";
+        html+="<table style='position:absolute; width:100%; margin-left:1%;'>";
+        html+="<tr><td style='width:40%;'><span><input placeholder= 'Filter contacts' name='search' type='text' id='search_input'/><img onclick='document.getElementById(\"search_input\").value=\"\"' src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
+        html+="</table>"
+        html+="</div>";
+        html+= "<div id='content_header'>";
+        html+="<span style='background-color:#E9967A'>Del. nurse</span>";
+        html+="</div>";
+        html+="</div>";
+        inner_content.innerHTML=html;
+     }
+     
     </script>
     <style>
       #content{
