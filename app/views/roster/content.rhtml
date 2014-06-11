@@ -57,6 +57,8 @@
                 html+="<td onclick='createNewNurse();'>";
               <% elsif caption.match(/Edit Nurse/i) %>
                 html+="<td onclick='editNurseMenu();'>";
+              <% elsif caption.match(/Import from CSV/i) %>
+                html+="<td onclick='importFromCSVmenu();'>";
               <% else %>
                 html+="<td>";
               <% end %>
@@ -270,12 +272,38 @@
         html = "<div id='edit_nurse_menu'>";
         html+= "<div id='left_div'>";
         html+="<table style='position:absolute; width:100%; margin-left:18%;'>";
-        html+="<tr><td>Filter </td><td><input name='search' type='text' id='search_input'/></td></tr>"
+        html+="<tr><td>Filter </td><td><span><input name='search' type='text' id='search_input'/><img src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
         html+="</table>"
         html+="</div>";
         html+="</div>";
         inner_content.innerHTML=html
      }
+
+     function importFromCSVmenu(){
+        var inner_content = document.getElementById('inner_content');
+        document.getElementById('shield').style.display='inline';
+        html = "<div id='create_csv_menu'>";
+
+        html+= "<div id='create_csv_header'>";
+        html+="<span style='position:absolute; top:4%; left:14%; top:30%;'>Browse file</span>";
+        html+="</div>";
+
+        html+= "<div id='create_roster_content'>";importFromCSVmenu()
+        html+="<table style='margin-left: 8%; margin-top: 1%; width:80%;'>"
+
+        html+="<tr><td><span id='input_label'>Browse file</span></td></tr>";
+        
+        html+="</table>"
+        html+="</div>";
+
+        html+= "<div id='create_roster_footer'>";
+        html+="<span onclick='hideCreateCSVPopup();' id='cancel_button'>Cancel</span>";
+        html+="</div>";
+
+        html+="</div>";
+        inner_content.innerHTML+=html;
+     }
+     
     </script>
     <style>
       #content{
@@ -387,7 +415,7 @@
       opacity: 0.87;
     }
 
-    #create_roster_menu{
+    #create_roster_menu, #create_csv_menu{
       z-index: 11;
       position: absolute;
       height: 44%;
@@ -398,7 +426,7 @@
       border-bottom: 3px solid silver;
     }
 
-    #create_roster_header{
+    #create_roster_header, #create_csv_header{
       background-color: gray;
       height: 50px;
       width: 100%;
@@ -407,7 +435,7 @@
       border-bottom: 2px solid black;
     }
 
-    #create_roster_content{
+    #create_roster_content, #create_csv_content{
       position: absolute;
       z-index: 11;
       top: 30%;
@@ -540,6 +568,12 @@
 
     #search_input{
       height: 2em;
+    }
+
+    #clear_image{
+      position: absolute;
+      left: 72%;
+      top: 3.5%;
     }
     </style>
   </head>
