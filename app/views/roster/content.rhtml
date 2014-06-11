@@ -271,8 +271,8 @@
         var inner_content = document.getElementById('inner_content');
         html = "<div id='edit_nurse_menu'>";
         html+= "<div id='left_div'>";
-        html+="<table style='position:absolute; width:100%; margin-left:18%;'>";
-        html+="<tr><td>Filter </td><td><span><input name='search' type='text' id='search_input'/><img src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
+        html+="<table style='position:absolute; width:100%; margin-left:1%;'>";
+        html+="<tr><td style='width:40%;'><span><input placeholder= 'Filter contacts' name='search' type='text' id='search_input'/><img onclick='document.getElementById(\"search_input\").value=\"\"' src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
         html+="</table>"
         html+="</div>";
         html+="</div>";
@@ -575,6 +575,15 @@
       left: 72%;
       top: 3.5%;
     }
+    td input{
+      border: 2px solid #808080;
+      height: 30px;
+      }
+
+      #search_input{
+        position: absolute;
+        width: 80%;
+      }
     </style>
   </head>
   <body onload="loadActiveTab();">
