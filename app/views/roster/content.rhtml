@@ -463,7 +463,23 @@
      }
 
      function addAnotherNurseRecord(){
-       
+
+        var inner_content = document.getElementById('inner_content');
+        document.getElementById('shield_two').style.display='inline';
+        html = "<div id='nurse_confirm_menu'>";
+
+        html+= "<div id='nurse_confirm_header'>";
+        html+="<span style='position:absolute; top:23%; left:10%;'>Record succcessfully Added</span>";
+        html+="</div>";
+
+        html+="<div id='nurse_confirm_content'>";
+        html+="<center><span>Do you want to add another <br />record?</span></center>";
+        html+="</div>";
+        html+="<div id='nurse_confirm_footer'>";
+        html+="<span id='add_nurse'>Add</span> <span id='exit'>Exit</span>";
+        html+="</div>";
+        html+="</div>";
+        inner_content.innerHTML+=html;
      }
     </script>
     <style>
@@ -565,7 +581,7 @@
          cursor: pointer;
       }
 
-      #shield{
+      #shield, #shield_two{
       position: absolute;
       background-color: black;
       width: 100%;
@@ -574,6 +590,10 @@
       top: 0%;
       z-index: 10;
       opacity: 0.87;
+    }
+    #shield_two{
+      z-index: 12 !important;
+      opacity: 0.20 !Important;
     }
 
     #create_roster_menu, #create_csv_menu{
@@ -869,11 +889,73 @@
       width: 20%;
     }
 
+    #nurse_confirm_menu{
+      z-index: 14;
+      position: absolute;
+      height: 25%;
+      width: 33%;
+      top: 30%;
+      background-color: white;
+      left: 35%;
+      border-bottom: 3px solid silver;
+
+    }
+
+    #nurse_confirm_header{
+      background-color: #838B8B;
+      height: 40px;
+      width: 100%;
+      position: absolute;
+      left: 0%;
+      border-bottom: 2px solid black;
+    }
+
+    #nurse_confirm_content{
+      position: absolute;
+      top: 30%;
+      width: 100%;
+    }
+
+    #nurse_confirm_footer{
+      background-color: #838B8B;
+      height: 40px;
+      width: 100%;
+      position: absolute;
+      width: 100%;
+      position: absolute;
+      bottom: 0px;
+      border-top: 2px solid black;
+    }
+
+    #add_nurse{
+      background-color: #FFFFFF;
+      border: 1px solid #EDEBEB;
+      left: 2%;
+      padding: 1% 10%;
+      position: absolute;
+      text-decoration: none;
+      top: 14%;
+      cursor: pointer;
+    }
+
+    #exit{
+      background-color: #FFFFFF;
+      border: 1px solid #EDEBEB;
+      right: 2%;
+      padding: 1% 10%;
+      position: absolute;
+      text-decoration: none;
+      top: 14%;
+      cursor: pointer;
+    }
     </style>
   </head>
   <body onload="loadActiveTab();">
     <div id="shield" style="display: none;">
 
+    </div>
+    
+    <div id="shield_two" style="display: none;">
     </div>
     <div id="content">
       
