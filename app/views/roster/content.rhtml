@@ -263,7 +263,7 @@
      function createNewNurse(){
         var inner_content = document.getElementById('inner_content');
         document.getElementById('shield').style.display='inline';
-        html = "<div id='create_nurse_menu'>";
+        html = "<form><div id='create_nurse_menu'>";
         
         html+= "<div id='create_nurse_header'>";
         html+="<span style='position:absolute; left:20%; top:32%;'>Create new nurse</span>";
@@ -287,7 +287,7 @@
         html+="<span id='save'>Save</span> <span id='cancel' onclick='hideCreateNursePopup();'>Cancel</span>";
         html+="</div>";
 
-        html+="</div>";
+        html+="</div></form>";
         inner_content.innerHTML+=html
      }
 
@@ -342,7 +342,7 @@
       function createNewUser(){
         var inner_content = document.getElementById('inner_content');
         document.getElementById('shield').style.display='inline';
-        html = "<div id='create_user_menu'>";
+        html = "<form><div id='create_user_menu'>";
 
         html+= "<div id='create_user_header'>";
         html+="<span style='position:absolute; left:20%; top:36%;'>Create new user</span>";
@@ -368,7 +368,7 @@
         html+="<span id='save_user'>Save</span> <span id='cancel_user' onclick='hideCreateUserPopup();'>Cancel</span>";
         html+="</div>";
 
-        html+="</div>";
+        html+="</div></form>";
         inner_content.innerHTML+=html;
       }
 
