@@ -271,20 +271,20 @@
 
         html+= "<div id='create_nurse_content'>";
         html+="<table style='margin-left: 20%; margin-top: 8%; width:80%;'>";
-        html+="<tr><td>Employee #</td><td><input type='text' name='employee_number'/></td></tr>";
+        html+="<tr><td>Employee #</td><td><input type='text' id='employee_number' employee_number'/></td></tr>";
         html+="<tr style='height:1em;'></tr>";
-        html+="<tr><td>First Name</td> <td><input type='text' name='first_name'/></td></tr>";
+        html+="<tr><td>First Name</td> <td><input type='text' id='first_name' name='first_name'/></td></tr>";
         html+="<tr style='height:1em;'></tr>";
-        html+="<tr><td>Last Name</td> <td><input type='text' name='last_name'/></td></tr>";
+        html+="<tr><td>Last Name</td> <td><input type='text' id='last_name' name='last_name'/></td></tr>";
         html+="<tr style='height:1em;'></tr>";
-        html+="<tr><td>Gender</td><td><select><option><%= '-' * 20 %>Please Select Gender<%= '-' * 20 %></option><option>Male</option><option>Female</option></select></td></tr>";
+        html+="<tr><td>Gender</td><td><select id='gender'><option><%= '-' * 20 %>Please Select Gender<%= '-' * 20 %></option><option>Male</option><option>Female</option></select></td></tr>";
         html+="<tr style='height:1em;'></tr>";
-        html+="<tr><td>Grade</td><td><select><option><%= '-' * 20 %>Please Select Grade<%= '-' * 20 %></option><option>A</option><option>B</option><option>C</option><option>D</option></select></td></tr>";
+        html+="<tr><td>Grade</td><td><select id='grade'><option><%= '-' * 20 %>Please Select Grade<%= '-' * 20 %></option><option>A</option><option>B</option><option>C</option><option>D</option></select></td></tr>";
         html+="</table>"
         html+="</div>";
 
         html+= "<div id='create_nurse_footer'>";
-        html+="<span id='save'>Save</span> <span id='cancel' onclick='hideCreateNursePopup();'>Cancel</span>";
+        html+="<span id='save' onclick='submitNewNurseForm();'>Save</span> <span id='cancel' onclick='hideCreateNursePopup();'>Cancel</span>";
         html+="</div>";
 
         html+="</div></form>";
@@ -431,7 +431,40 @@
         html+="</div>";
         inner_content.innerHTML=html;
      }
-     
+
+     function submitNewNurseForm(){
+      employee_number = document.getElementById('employee_number').value;
+      first_name = document.getElementById('first_name').value;
+      last_name = document.getElementById('last_name').value;
+      gender = document.getElementById('gender').options[document.getElementById('gender').options.selectedIndex].value;
+      grade = document.getElementById('grade').options[document.getElementById('grade').options.selectedIndex].value
+      jQuery.ajax({
+        type: "POST",
+        url: "/nurses/create",
+        data: "employee_number=" + employee_number + "&first_name=" + first_name + "&last_name=" + last_name + "&gender=" + gender + "&grade=" + grade,
+        success: function(){
+          resetFields();
+          addAnotherNurseRecord();
+        }
+
+      });
+     }
+
+     function resetFields(){
+        form_elements = document.getElementsByTagName('form')[0].elements;
+        for(i=0; i<form_elements.length; i++){
+            if (form_elements[i].type == "text"){
+              form_elements[i].value = "";
+            }
+            if (form_elements[i].tagName == "SELECT"){
+              form_elements[i].options.selectedIndex = 0;
+            }
+        }
+     }
+
+     function addAnotherNurseRecord(){
+       
+     }
     </script>
     <style>
       #content{

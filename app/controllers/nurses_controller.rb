@@ -9,15 +9,14 @@ class NursesController < ApplicationController
 
 	def create
 		first_name = params[:first_name]
-        last_name = params[:last_name]
+    last_name = params[:last_name]
 		gender = params[:gender]
-        grade = params[:grade]
-        if (Nurse.create(:first_name =>first_name, 
+    grade = params[:grade]
+    Nurse.create(:first_name =>first_name,
 						 :last_name =>last_name,
 						 :gender => gender, 
-						 :grade => grade ))
-			redirect_to :action => "list"
-		end
+						 :grade => grade )
+    render :text => true and return
 	end
 
 	def update_details
