@@ -465,7 +465,14 @@
      function addAnotherNurseRecord(){
 
         var inner_content = document.getElementById('inner_content');
-        document.getElementById('shield_two').style.display='inline';
+        if (document.getElementById('shield_two'))
+          document.getElementById('shield_two').style.display='inline';
+        else {
+          div = document.createElement('div');
+          div.id="shield_two";
+          div.style.display='inline';
+          $('body')[0].appendChild(div);
+        }
         html = "<div id='nurse_confirm_menu'>";
 
         html+= "<div id='nurse_confirm_header'>";
@@ -476,11 +483,25 @@
         html+="<center><span>Do you want to add another <br />record?</span></center>";
         html+="</div>";
         html+="<div id='nurse_confirm_footer'>";
-        html+="<span id='add_nurse'>Add</span> <span id='exit'>Exit</span>";
+        html+="<span id='add_nurse' onclick='addNurseRecord();'>Add</span> <span id='exit' onclick='rejectAddNurseRecord();'>Exit</span>";
         html+="</div>";
         html+="</div>";
         inner_content.innerHTML+=html;
      }
+
+     function addNurseRecord(){
+
+        nurse_confirm_menu = document.getElementById('nurse_confirm_menu');
+        nurse_confirm_menu.parentNode.removeChild(nurse_confirm_menu);
+
+        shield_two = document.getElementById('shield_two');
+        shield_two.parentNode.removeChild(shield_two);
+     }
+
+     function rejectAddNurseRecord(){
+      window.location='/roster/content'
+     }
+     
     </script>
     <style>
       #content{
