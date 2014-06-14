@@ -42,4 +42,19 @@ class NursesController < ApplicationController
 		 end
 	end
 
+  def display_all
+		nurses = Nurse.all
+    nurse_hash = {}
+    nurses.each do |nurse|
+      id = nurse.id
+      nurse_hash[id] = {}
+      nurse_hash[id]["first_name"] = nurse.first_name
+      nurse_hash[id]["last_name"] = nurse.last_name
+      nurse_hash[id]["gender"] = nurse.gender
+      nurse_hash[id]["grade"] = nurse.grade
+      nurse_hash[id]["date_created"] = nurse.created_at.to_date
+    end
+    render :json => nurse_hash and return
+	end
+
 end

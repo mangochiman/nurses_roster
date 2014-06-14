@@ -302,10 +302,43 @@
         html+= "<div id='content_header'>";
         html+="<span>Edit nurse</span>";
         html+="</div>";
+        html+="<div id='edit_nurse_content'>";
+        html+="</div>";
         html+="</div>";
         inner_content.innerHTML=html
      }
+     var value=setInterval('addEditNurseContent()', 500);
+     function addEditNurseContent(){
+       if (document.getElementById('edit_nurse_content')){
+         edit_nurse_content = document.getElementById('edit_nurse_content');
+         jQuery.ajax({
+            type: "POST",
+            url: "/nurses/display_all",
+            data: "",
+            success: function(result){
+              html = "<div style='position:absolute; overflow:auto; height: 75%; top:15%; width: 40%;'>";
+              html+="<table cellspacing='0' style='position:absolute; width:100%;'>"
+              for (var nurse_id in result) {
+                for (var field in result[nurse_id]){
+                  if ((field.match(/first_name/i)) || (field.match(/last_name/i))){
+                    if (field.match(/first_name/i)) var first_name = result[nurse_id][field]
+                    if (field.match(/last_name/i)) var last_name = result[nurse_id][field]
+                    if (first_name && last_name){
+                        html+="<tr class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td><img style='width:30%;' src='/images/icons/nurse_64.png'/></td><td><span>" + first_name + '</span></td><td><span> ' + last_name + "<span></td></tr>";
+                        
+                    }
+                  }
+                }
 
+                }
+                html += "</table></div>";
+                console.log(html);
+                edit_nurse_content.innerHTML= html;
+              }
+          });
+         value=window.clearInterval(value);
+       }
+     }
      function importFromCSVmenu(){
         var inner_content = document.getElementById('inner_content');
         document.getElementById('shield').style.display='inline';
@@ -387,6 +420,7 @@
         inner_content.innerHTML=html;
      }
 
+     
      function deleteUserMenu(){
         var inner_content = document.getElementById('inner_content');
         html = "<div id='edit_user_menu'>";
@@ -508,6 +542,10 @@
 
       }
 
+      tr.table_row td {
+        border-bottom:1pt solid black;
+      }
+ 
       #header{
         position: absolute;
         top: 5%;
@@ -969,6 +1007,7 @@
       top: 14%;
       cursor: pointer;
     }
+
     </style>
   </head>
   <body onload="loadActiveTab();">
