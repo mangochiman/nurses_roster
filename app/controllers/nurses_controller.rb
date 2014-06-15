@@ -48,9 +48,9 @@ class NursesController < ApplicationController
     nurses.each do |nurse|
       id = nurse.id
       nurse_hash[id] = {}
-      nurse_hash[id]["first_name"] = nurse.first_name
-      nurse_hash[id]["last_name"] = nurse.last_name
-      nurse_hash[id]["gender"] = nurse.gender
+      nurse_hash[id]["first_name"] = nurse.first_name.capitalize
+      nurse_hash[id]["last_name"] = nurse.last_name.capitalize
+      nurse_hash[id]["gender"] = nurse.gender.capitalize
       nurse_hash[id]["grade"] = nurse.grade
       nurse_hash[id]["date_created"] = nurse.created_at.to_date
     end
@@ -65,9 +65,9 @@ class NursesController < ApplicationController
       nurses.each do |nurse|
         id = nurse.id
         nurse_hash[id] = {}
-        nurse_hash[id]["first_name"] = nurse.first_name
-        nurse_hash[id]["last_name"] = nurse.last_name
-        nurse_hash[id]["gender"] = nurse.gender
+        nurse_hash[id]["first_name"] = nurse.first_name.capitalize
+        nurse_hash[id]["last_name"] = nurse.last_name.capitalize
+        nurse_hash[id]["gender"] = nurse.gender.capitalize
         nurse_hash[id]["grade"] = nurse.grade
         nurse_hash[id]["date_created"] = nurse.created_at.to_date
       end
