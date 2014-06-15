@@ -451,6 +451,9 @@
               html+="<td><span><b>" + date_created + "</b></span></td>";
               html+="<td><span>&nbsp;</span></td>";
             html+="</tr>";
+            html+="<tr style='line-height: 7px; !important;'>";
+              html+="<td colspan='3' id='save_edited_button'><span>Save</span></td>";
+            html+="</tr>";
           html+="</table>";
         html+="</div>"
         nurse_details.innerHTML=html;
@@ -710,7 +713,29 @@
          font-family: Georgia, serif;
          cursor: pointer;
       }
-      
+
+      #save_edited_button span{
+         position: absolute;
+         border-top: 1px solid #96d1f8;
+         background: gray;
+         background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+         background: -webkit-linear-gradient(top, gray, #808080);
+         background: -moz-linear-gradient(top, gray, #65a9d7);
+         background: -ms-linear-gradient(top, gray, #65a9d7);
+         background: -o-linear-gradient(top, gray, #65a9d7);
+         padding: 4% 52.5%;
+         -moz-border-radius: 15px;
+         border-radius: 15px;
+         -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+         -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+         box-shadow: rgba(0,0,0,1) 0 1px 0;
+         text-shadow: rgba(0,0,0,.4) 0 1px 0;
+         color: white;
+         font-size: 16px;
+         font-family: Georgia, serif;
+         cursor: pointer;
+      }
+
       #header{
         position: absolute;
         top: 5%;
