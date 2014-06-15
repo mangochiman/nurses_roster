@@ -324,7 +324,9 @@
                     if (field.match(/first_name/i)) var first_name = result[nurse_id][field]
                     if (field.match(/last_name/i)) var last_name = result[nurse_id][field]
                     if (first_name && last_name){
-                        html+="<tr class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td><img style='width:30%;' src='/images/icons/nurse_64.png'/></td><td><span>" + first_name + '</span></td><td><span> ' + last_name + "<span></td></tr>";
+                        html+="<tr onmouseover='changeBackgroundColor(this);' onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
+                        html+="<img style='width:30%;' src='/images/icons/nurse_64.png'/></td>"
+                        html+="<td><span>" + first_name + '</span></td><td><span> ' + last_name + "<span></td></tr>";
                         
                     }
                   }
@@ -338,6 +340,14 @@
           });
          value=window.clearInterval(value);
        }
+     }
+
+     function changeBackgroundColor(obj){
+      obj.style.backgroundColor='#F0FFFF'
+     }
+
+     function resetBackgroundColor(obj){
+      obj.style.backgroundColor=''
      }
      function importFromCSVmenu(){
         var inner_content = document.getElementById('inner_content');
@@ -545,7 +555,11 @@
       tr.table_row td {
         border-bottom:1pt solid black;
       }
- 
+      
+      tr.table_row{
+        cursor: pointer;
+      }
+
       #header{
         position: absolute;
         top: 5%;
