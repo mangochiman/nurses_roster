@@ -405,38 +405,50 @@
         date_created = obj.getAttribute("date_created");
         html = "";
         html+="<div>";
-          html+="<table>";
+          html+="<table style='position:absolute; width:80%; top:15%;'>";
             html+="<tr>";
               if (gender.match(/female/i)){
-                html+="<td rowspan='6'><span><img src='/images/icons/nurse_02.png'/></span></td>";
+                html+="<td rowspan='10'><span><img src='/images/icons/nurse_02.png'/></span></td>";
               }
               else {
-                html+="<td rowspan='6'><span><img src='/images/icons/nurse_03.png'/></span></td>";
+                html+="<td rowspan='10'><span><img src='/images/icons/nurse_03.png'/></span></td>";
               }
             html+="</tr>";
             html+="<tr>";
               html+="<td><span>First Name</span></td>";
-              html+="<td><span>" + first_name + "</span></td>";
-              html+="<td><span>&nbsp;</span></td>";
+              html+="<td><span><b>" + first_name + "</b></span></td>";
+              html+="<td id='edit_button'><span>Edit</span></td>";
+            html+="</tr>";
+            html+="<tr style='line-height: 7px; !important;'>";
+              html+="<td colspan='3'>&nbsp;</td>";
             html+="</tr>";
             html+="<tr>";
               html+="<td><span>Last Name</span></td>";
-              html+="<td><span>" + last_name + "</span></td>";
-              html+="<td><span>&nbsp;</span></td>";
+              html+="<td><span><b>" + last_name + "</b></span></td>";
+              html+="<td id='edit_button'><span>Edit</span></td>";
+            html+="</tr>";
+            html+="<tr style='line-height: 7px; !important;'>";
+              html+="<td colspan='3'>&nbsp;</td>";
             html+="</tr>";
             html+="<tr>";
               html+="<td><span>Gender</span></td>";
-              html+="<td><span>" + gender + "</span></td>";
-              html+="<td><span>&nbsp;</span></td>";
+              html+="<td><span><b>" + gender + "</b></span></td>";
+              html+="<td id='edit_button'><span>Edit</span></td>";
+            html+="</tr>";
+            html+="<tr style='line-height: 7px; !important;'>";
+              html+="<td colspan='3'>&nbsp;</td>";
             html+="</tr>";
             html+="<tr>";
               html+="<td><span>Grade</span></td>";
-              html+="<td><span>" + grade + "</span></td>";
-              html+="<td><span>&nbsp;</span></td>";
+              html+="<td><span><b>" + grade + "</b></span></td>";
+              html+="<td id='edit_button'><span>Edit</span></td>";
+            html+="</tr>";
+            html+="<tr style='line-height: 7px; !important;'>";
+              html+="<td colspan='3'>&nbsp;</td>";
             html+="</tr>";
             html+="<tr>";
               html+="<td><span>Date created</span></td>";
-              html+="<td><span>" + date_created + "</span></td>";
+              html+="<td><span><b>" + date_created + "</b></span></td>";
               html+="<td><span>&nbsp;</span></td>";
             html+="</tr>";
           html+="</table>";
@@ -678,6 +690,27 @@
         border: 1px solid #2F4F4F;
       }
 
+      #edit_button span{
+         border-top: 1px solid #96d1f8;
+         background: gray;
+         background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+         background: -webkit-linear-gradient(top, gray, #808080);
+         background: -moz-linear-gradient(top, gray, #65a9d7);
+         background: -ms-linear-gradient(top, gray, #65a9d7);
+         background: -o-linear-gradient(top, gray, #65a9d7);
+         padding: 14% 100%;
+         -moz-border-radius: 15px;
+         border-radius: 15px;
+         -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+         -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+         box-shadow: rgba(0,0,0,1) 0 1px 0;
+         text-shadow: rgba(0,0,0,.4) 0 1px 0;
+         color: white;
+         font-size: 12px;
+         font-family: Georgia, serif;
+         cursor: pointer;
+      }
+      
       #header{
         position: absolute;
         top: 5%;
