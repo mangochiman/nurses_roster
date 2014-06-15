@@ -57,4 +57,20 @@ class NursesController < ApplicationController
     render :json => nurse_hash and return
 	end
 
+    def search_nurses
+      value = params[:value]
+      #last_name = value.split(/\W+/)[1] rescue nil
+      nurses = Nurse.all(:conditions => ["first_name LIKE (?)", "%" + value + "%"])
+      nurse_hash = {}
+      nurses.each do |nurse|
+        id = nurse.id
+        nurse_hash[id] = {}
+        nurse_hash[id]["first_name"] = nurse.first_name
+        nurse_hash[id]["last_name"] = nurse.last_name
+        nurse_hash[id]["gender"] = nurse.gender
+        nurse_hash[id]["grade"] = nurse.grade
+        nurse_hash[id]["date_created"] = nurse.created_at.to_date
+      end
+      render :json => nurse_hash and return
+    end
 end

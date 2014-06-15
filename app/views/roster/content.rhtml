@@ -296,7 +296,7 @@
         html = "<div id='edit_nurse_menu'>";
         html+= "<div id='left_div'>";
         html+="<table style='position:absolute; width:100%; margin-left:1%;'>";
-        html+="<tr><td style='width:40%;'><span><input placeholder= 'Filter contacts' name='search' type='text' id='search_input'/><img onclick='document.getElementById(\"search_input\").value=\"\"' src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
+        html+="<tr><td style='width:40%;'><span><input onkeyup='searchNurses(this);' placeholder= 'Filter contacts' name='search' type='text' id='search_input'/><img onclick='document.getElementById(\"search_input\").value=\"\"' src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
         html+="</table>"
         html+="</div>";
         html+= "<div id='content_header'>";
@@ -334,7 +334,6 @@
 
                 }
                 html += "</table></div>";
-                console.log(html);
                 edit_nurse_content.innerHTML= html;
               }
           });
@@ -357,6 +356,39 @@
       }
       obj.id="active_row";
      }
+
+     function searchNurses(obj){
+      if (document.getElementById('edit_nurse_content')){
+         edit_nurse_content = document.getElementById('edit_nurse_content');
+         jQuery.ajax({
+            type: "POST",
+            url: "/nurses/search_nurses",
+            data: "value=" + obj.value,
+            success: function(result){
+              html = "<div style='position:absolute; overflow:auto; height: 75%; top:15%; width: 40%;'>";
+              html+="<table cellspacing='0' style='position:absolute; width:100%;'>"
+              for (var nurse_id in result) {
+                for (var field in result[nurse_id]){
+                  if ((field.match(/first_name/i)) || (field.match(/last_name/i))){
+                    if (field.match(/first_name/i)) var first_name = result[nurse_id][field]
+                    if (field.match(/last_name/i)) var last_name = result[nurse_id][field]
+                    if (first_name && last_name){
+                        html+="<tr onmousedown='setActiveRow(this);' onmouseover='changeBackgroundColor(this);' onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
+                        html+="<img style='width:30%;' src='/images/icons/nurse_64.png'/></td>"
+                        html+="<td><span>" + first_name + '</span></td><td><span> ' + last_name + "<span></td></tr>";
+
+                    }
+                  }
+                }
+
+                }
+                html += "</table></div>";
+                edit_nurse_content.innerHTML= html;
+              }
+          });
+       }
+     }
+     
      function importFromCSVmenu(){
         var inner_content = document.getElementById('inner_content');
         document.getElementById('shield').style.display='inline';
