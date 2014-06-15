@@ -460,6 +460,78 @@
         console.log(first_name + '--' + last_name + '--' + gender + '--' + grade + '--' + date_created);
      }
 
+     function editNurseFirstName(){
+        var inner_content = document.getElementById('inner_content');
+        document.getElementById('shield').style.display='inline';
+        html = "<div id='edit_first_name_menu'>";
+
+        html+= "<div id='edit_first_name_header'>";
+        html+="<span style='position:absolute; left:20%; top:36%;'>Edit first name</span>";
+        html+="</div>";
+
+        html+= "<div id='edit_first_name_content'>";
+        html+="<table style='margin-left: 20%; margin-top: 8%; width:80%;'>";
+        html+="<tr><td>First Name</td> <td><input type='text' name='first_name'/></td></tr>";  
+        html+="</table>"
+        html+="</div>";
+
+        html+= "<div id='edit_first_name_footer'>";
+        html+="<span id='save'>Okay</span> <span id='cancel_user'>Cancel</span>";
+        html+="</div>";
+
+        html+="</div></form>";
+        inner_content.innerHTML+=html;
+     }
+     function editNurseLastName(){
+        var inner_content = document.getElementById('inner_content');
+        document.getElementById('shield').style.display='inline';
+        html = "<div id='edit_last_name_menu'>";
+
+        html+= "<div id='edit_last_name_header'>";
+        html+="<span style='position:absolute; left:20%; top:36%;'>Edit last name</span>";
+        html+="</div>";
+
+        html+= "<div id='edit_last_name_content'>";
+        html+="<table style='margin-left: 20%; margin-top: 8%; width:80%;'>";
+        html+="<tr><td>Last Name</td> <td><input type='text' name='last_name'/></td></tr>";
+        html+="</table>"
+        html+="</div>";
+
+        html+= "<div id='edit_last_name_footer'>";
+        html+="<span id='save'>Okay</span> <span id='cancel_user'>Cancel</span>";
+        html+="</div>";
+
+        html+="</div></form>";
+        inner_content.innerHTML+=html;
+     }
+
+     function editNurseGender(){
+        var inner_content = document.getElementById('inner_content');
+        document.getElementById('shield').style.display='inline';
+        html = "<div id='edit_gender_menu'>";
+
+        html+= "<div id='edit_gender_header'>";
+        html+="<span style='position:absolute; left:20%; top:36%;'>Edit gender</span>";
+        html+="</div>";
+
+        html+= "<div id='edit_last_name_content'>";
+        html+="<table style='margin-left: 20%; margin-top: 8%; width:80%;'>";
+        html+="<tr><td>Last Name</td> <td><input type='text' name='last_name'/></td></tr>";
+        html+="</table>"
+        html+="</div>";
+
+        html+= "<div id='edit_last_name_footer'>";
+        html+="<span id='save'>Okay</span> <span id='cancel_user'>Cancel</span>";
+        html+="</div>";
+
+        html+="</div></form>";
+        inner_content.innerHTML+=html;
+     }
+
+     function editNurseGrade(){
+
+     }
+     
      function importFromCSVmenu(){
         var inner_content = document.getElementById('inner_content');
         document.getElementById('shield').style.display='inline';
@@ -709,7 +781,7 @@
          box-shadow: rgba(0,0,0,1) 0 1px 0;
          text-shadow: rgba(0,0,0,.4) 0 1px 0;
          color: white;
-         font-size: 12px;
+         font-size: 14px;
          font-family: Georgia, serif;
          cursor: pointer;
       }
@@ -723,7 +795,7 @@
          background: -moz-linear-gradient(top, gray, #65a9d7);
          background: -ms-linear-gradient(top, gray, #65a9d7);
          background: -o-linear-gradient(top, gray, #65a9d7);
-         padding: 4% 52.5%;
+         padding: 4% 57.2%;
          -moz-border-radius: 15px;
          border-radius: 15px;
          -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
