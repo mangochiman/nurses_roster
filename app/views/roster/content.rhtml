@@ -304,6 +304,8 @@
         html+="</div>";
         html+="<div id='edit_nurse_content'>";
         html+="</div>";
+        html+="<div style='display:none;' id='found_results_info'>";
+        html+="</div>";
         html+="</div>";
         inner_content.innerHTML=html
      }
@@ -360,8 +362,9 @@
             success: function(result){
               html = "<div style='position:absolute; overflow:auto; height: 75%; top:15%; width: 40%;'>";
               html+="<table cellspacing='0' style='position:absolute; width:100%;'>"
-              //console.log(result)
-              for (var nurse_id in result) {          
+              total_results = 0;
+              for (var nurse_id in result) {
+                    total_results+=1;
                     first_name = result[nurse_id]["first_name"]
                     last_name = result[nurse_id]["last_name"]
                     html+="<tr onmousedown='setActiveRow(this);' onmouseover='changeBackgroundColor(this);' onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
@@ -370,6 +373,12 @@
                 }
                 html += "</table></div>";
                 edit_nurse_content.innerHTML= html;
+                if (document.getElementById('found_results_info')){
+                  contacts = (total_results == 1)?'contact':'contacts';
+                  found_results_info = document.getElementById('found_results_info');
+                  found_results_info.style.display='inline'
+                  found_results_info.innerHTML="<span> Displaying " +  total_results + ' ' + contacts + "</span>"
+                }
               }
           });
        }
@@ -588,6 +597,16 @@
 
       #active_row{
         background-color: #6495ED !important;
+      }
+
+      #found_results_info{
+        position: absolute;
+        background-color: #2F4F4F;
+        border: 1px solid #2F4F4F;
+        color: #FFFFFF;
+        padding: 0% 5.4%;
+        top: 7%;
+        width: 29.1%;
       }
       
       #header{
