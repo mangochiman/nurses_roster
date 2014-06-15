@@ -321,11 +321,16 @@
               html = "<div style='position:absolute; overflow:auto; height: 75%; top:15%; width: 40%;'>";
               html+="<table cellspacing='0' style='position:absolute; width:100%;'>"
               for (var nurse_id in result) {              
-                  first_name = result[nurse_id]["first_name"]
-                  last_name = result[nurse_id]["last_name"]
-                  html+="<tr onmousedown='setActiveRow(this);' onmouseover='changeBackgroundColor(this);' onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
+                  first_name = result[nurse_id]["first_name"];
+                  last_name = result[nurse_id]["last_name"];
+                  gender = result[nurse_id]["gender"];
+                  grade = result[nurse_id]["grade"];
+                  date_created = result[nurse_id]["date_created"];
+                  html+="<tr onmousedown='setActiveRow(this);' onmouseover='changeBackgroundColor(this);'";
+                  html+="first_name=" + first_name + " last_name=" + last_name + " gender=" + gender + " grade=" + grade + " date_created=" + date_created + " "
+                  html+="onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
                   html+="<img style='width:30%;' src='/images/icons/nurse_64.png'/></td>"
-                  html+="<td><span>" + first_name + '</span></td><td><span> ' + last_name + "<span></td></tr>";                                                           
+                  html+="<td><span>" + first_name + '</span></td><td><span> ' + last_name + "<span></td></tr>";
                 }
                 html += "</table></div>";
                 edit_nurse_content.innerHTML= html;
@@ -365,9 +370,14 @@
               total_results = 0;
               for (var nurse_id in result) {
                     total_results+=1;
-                    first_name = result[nurse_id]["first_name"]
-                    last_name = result[nurse_id]["last_name"]
-                    html+="<tr onmousedown='setActiveRow(this);' onmouseover='changeBackgroundColor(this);' onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
+                    first_name = result[nurse_id]["first_name"];
+                    last_name = result[nurse_id]["last_name"];
+                    gender = result[nurse_id]["gender"];
+                    grade = result[nurse_id]["grade"];
+                    date_created = result[nurse_id]["date_created"];
+                    html+="<tr onmousedown='setActiveRow(this);' onmouseover='changeBackgroundColor(this);'";
+                    html+="first_name=" + first_name + " last_name=" + last_name + " gender=" + gender + " grade=" + grade + " date_created=" + date_created + " "
+                    html+="onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
                     html+="<img style='width:30%;' src='/images/icons/nurse_64.png'/></td>"
                     html+="<td><span>" + first_name + '</span></td><td><span> ' + last_name + "<span></td></tr>";    
                 }
