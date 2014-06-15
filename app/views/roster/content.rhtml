@@ -294,18 +294,20 @@
      function editNurseMenu(){
         var inner_content = document.getElementById('inner_content');
         html = "<div id='edit_nurse_menu'>";
-        html+= "<div id='left_div'>";
-        html+="<table style='position:absolute; width:100%; margin-left:1%;'>";
-        html+="<tr><td style='width:40%;'><span><input onkeyup='searchNurses(this);' placeholder= 'Filter contacts' name='search' type='text' id='search_input'/><img onclick='document.getElementById(\"search_input\").value=\"\"' src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
-        html+="</table>"
-        html+="</div>";
-        html+= "<div id='content_header'>";
-        html+="<span>Edit nurse</span>";
-        html+="</div>";
-        html+="<div id='edit_nurse_content'>";
-        html+="</div>";
-        html+="<div style='display:none;' id='found_results_info'>";
-        html+="</div>";
+          html+= "<div id='left_div'>";
+              html+="<table style='position:absolute; width:100%; margin-left:1%;'>";
+              html+="<tr><td style='width:40%;'><span><input onkeyup='searchNurses(this);' placeholder= 'Filter contacts' name='search' type='text' id='search_input'/><img onclick='document.getElementById(\"search_input\").value=\"\"' src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
+              html+="</table>"
+          html+="</div>";
+          html+= "<div id='content_header'>";
+            html+="<span>Edit nurse</span>";
+          html+="</div>";
+          html+="<div id='edit_nurse_content'>";
+          html+="</div>";
+          html+="<div style='display:none;' id='found_results_info'>";
+          html+="</div>";
+          html+="<div id='nurse_details'>";
+          html+="</div>";
         html+="</div>";
         inner_content.innerHTML=html
      }
@@ -326,7 +328,7 @@
                   gender = result[nurse_id]["gender"];
                   grade = result[nurse_id]["grade"];
                   date_created = result[nurse_id]["date_created"];
-                  html+="<tr onmousedown='setActiveRow(this);' onmouseover='changeBackgroundColor(this);'";
+                  html+="<tr onmousedown='setActiveRow(this); showNurseDetails(this);' onmouseover='changeBackgroundColor(this);'";
                   html+="first_name=" + first_name + " last_name=" + last_name + " gender=" + gender + " grade=" + grade + " date_created=" + date_created + " "
                   html+="onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
                   html+="<img style='width:30%;' src='/images/icons/nurse_64.png'/></td>"
@@ -375,7 +377,7 @@
                     gender = result[nurse_id]["gender"];
                     grade = result[nurse_id]["grade"];
                     date_created = result[nurse_id]["date_created"];
-                    html+="<tr onmousedown='setActiveRow(this);' onmouseover='changeBackgroundColor(this);'";
+                    html+="<tr onmousedown='setActiveRow(this); showNurseDetails(this);' onmouseover='changeBackgroundColor(this);'";
                     html+="first_name=" + first_name + " last_name=" + last_name + " gender=" + gender + " grade=" + grade + " date_created=" + date_created + " "
                     html+="onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
                     html+="<img style='width:30%;' src='/images/icons/nurse_64.png'/></td>"
@@ -393,7 +395,56 @@
           });
        }
      }
-     
+
+     function showNurseDetails(obj){
+        nurse_details = document.getElementById('nurse_details');
+        first_name = obj.getAttribute("first_name");
+        last_name = obj.getAttribute("last_name");
+        gender = obj.getAttribute("gender");
+        grade = obj.getAttribute("grade");
+        date_created = obj.getAttribute("date_created");
+        html = "";
+        html+="<div>";
+          html+="<table>";
+            html+="<tr>";
+              if (gender.match(/female/i)){
+                html+="<td rowspan='6'><span><img src='/images/icons/nurse_02.png'/></span></td>";
+              }
+              else {
+                html+="<td rowspan='6'><span><img src='/images/icons/nurse_03.png'/></span></td>";
+              }
+            html+="</tr>";
+            html+="<tr>";
+              html+="<td><span>First Name</span></td>";
+              html+="<td><span>" + first_name + "</span></td>";
+              html+="<td><span>&nbsp;</span></td>";
+            html+="</tr>";
+            html+="<tr>";
+              html+="<td><span>Last Name</span></td>";
+              html+="<td><span>" + last_name + "</span></td>";
+              html+="<td><span>&nbsp;</span></td>";
+            html+="</tr>";
+            html+="<tr>";
+              html+="<td><span>Gender</span></td>";
+              html+="<td><span>" + gender + "</span></td>";
+              html+="<td><span>&nbsp;</span></td>";
+            html+="</tr>";
+            html+="<tr>";
+              html+="<td><span>Grade</span></td>";
+              html+="<td><span>" + grade + "</span></td>";
+              html+="<td><span>&nbsp;</span></td>";
+            html+="</tr>";
+            html+="<tr>";
+              html+="<td><span>Date created</span></td>";
+              html+="<td><span>" + date_created + "</span></td>";
+              html+="<td><span>&nbsp;</span></td>";
+            html+="</tr>";
+          html+="</table>";
+        html+="</div>"
+        nurse_details.innerHTML=html;
+        console.log(first_name + '--' + last_name + '--' + gender + '--' + grade + '--' + date_created);
+     }
+
      function importFromCSVmenu(){
         var inner_content = document.getElementById('inner_content');
         document.getElementById('shield').style.display='inline';
@@ -618,7 +669,15 @@
         top: 7%;
         width: 29.1%;
       }
-      
+      #nurse_details{
+        position: absolute;
+        left: 41%;
+        height: 82%;
+        width: 58%;
+        top: 10%;
+        border: 1px solid #2F4F4F;
+      }
+
       #header{
         position: absolute;
         top: 5%;
