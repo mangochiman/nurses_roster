@@ -328,10 +328,11 @@
                   gender = result[nurse_id]["gender"];
                   grade = result[nurse_id]["grade"];
                   date_created = result[nurse_id]["date_created"];
+                  icon = (gender.toUpperCase() == 'MALE')?'male_nurse_64.png':'nurse_64.png';
                   html+="<tr onmousedown='setActiveRow(this); showNurseDetails(this);' onmouseover='changeBackgroundColor(this);'";
                   html+="first_name=" + first_name + " last_name=" + last_name + " gender=" + gender + " grade=" + grade + " date_created=" + date_created + " "
                   html+="onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
-                  html+="<img style='width:30%;' src='/images/icons/nurse_64.png'/></td>"
+                  html+="<img style='width:30%;' src='/images/icons/" + icon + "'/></td>"
                   html+="<td><span>" + first_name + '</span></td><td><span> ' + last_name + "<span></td></tr>";
                 }
                 html += "</table></div>";
@@ -377,10 +378,11 @@
                     gender = result[nurse_id]["gender"];
                     grade = result[nurse_id]["grade"];
                     date_created = result[nurse_id]["date_created"];
+                    icon = (gender.toUpperCase() == 'MALE')?'male_nurse_64.png':'nurse_64.png';
                     html+="<tr onmousedown='setActiveRow(this); showNurseDetails(this);' onmouseover='changeBackgroundColor(this);'";
                     html+="first_name=" + first_name + " last_name=" + last_name + " gender=" + gender + " grade=" + grade + " date_created=" + date_created + " "
                     html+="onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
-                    html+="<img style='width:30%;' src='/images/icons/nurse_64.png'/></td>"
+                    html+="<img style='width:30%;' src='/images/icons/" + icon + "'/></td>"
                     html+="<td><span>" + first_name + '</span></td><td><span> ' + last_name + "<span></td></tr>";    
                 }
                 html += "</table></div>";
