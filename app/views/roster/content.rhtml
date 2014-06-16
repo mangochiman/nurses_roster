@@ -418,16 +418,16 @@
             html+="</tr>";
             html+="<tr>";
               html+="<td><span>First Name</span></td>";
-              html+="<td><span><b>" + first_name + "</b></span></td>";
-              html+="<td id='edit_button'><span>Edit</span></td>";
+              html+="<td id='nurse_first_name_edit'><span><b>" + first_name + "</b></span></td>";
+              html+="<td id='edit_button'><span onclick='editNurseFirstName();'>Edit</span></td>";
             html+="</tr>";
             html+="<tr style='line-height: 7px; !important;'>";
               html+="<td colspan='3'>&nbsp;</td>";
             html+="</tr>";
             html+="<tr>";
               html+="<td><span>Last Name</span></td>";
-              html+="<td><span><b>" + last_name + "</b></span></td>";
-              html+="<td id='edit_button'><span>Edit</span></td>";
+              html+="<td id='nurse_last_name_edit'><span><b>" + last_name + "</b></span></td>";
+              html+="<td id='edit_button'><span onclick='editNurseLastName();'>Edit</span></td>";
             html+="</tr>";
             html+="<tr style='line-height: 7px; !important;'>";
               html+="<td colspan='3'>&nbsp;</td>";
@@ -435,7 +435,7 @@
             html+="<tr>";
               html+="<td><span>Gender</span></td>";
               html+="<td><span><b>" + gender + "</b></span></td>";
-              html+="<td id='edit_button'><span>Edit</span></td>";
+              html+="<td id='edit_button'><span onclick='editNurseGender();'>Edit</span></td>";
             html+="</tr>";
             html+="<tr style='line-height: 7px; !important;'>";
               html+="<td colspan='3'>&nbsp;</td>";
@@ -443,7 +443,7 @@
             html+="<tr>";
               html+="<td><span>Grade</span></td>";
               html+="<td><span><b>" + grade + "</b></span></td>";
-              html+="<td id='edit_button'><span>Edit</span></td>";
+              html+="<td id='edit_button'><span onclick='editNurseGrade();'>Edit</span></td>";
             html+="</tr>";
             html+="<tr style='line-height: 7px; !important;'>";
               html+="<td colspan='3'>&nbsp;</td>";
@@ -473,12 +473,12 @@
 
         html+= "<div id='edit_first_name_content'>";
         html+="<table style='position: absolute; left: 20%; top: 40%; width:80%;'>";
-        html+="<tr><td>First Name</td> <td><input type='text' name='first_name'/></td></tr>";  
+        html+="<tr><td>First Name</td> <td><input id='fname_input' type='text' name='first_name'/></td></tr>";
         html+="</table>"
         html+="</div>";
 
         html+= "<div id='edit_first_name_footer'>";
-        html+="<span id='edit_save'>Okay</span> <span id='edit_cancel'>Cancel</span>";
+        html+="<span id='edit_save' onclick='changeInnerHtml(\"fname_input\", \"nurse_first_name_edit\"); hideElements(\"edit_first_name_menu\")'>Okay</span> <span id='edit_cancel' onclick='hideElements(\"edit_first_name_menu\")'>Cancel</span>";
         html+="</div>";
 
         html+="</div>";
@@ -500,7 +500,7 @@
         html+="</div>";
 
         html+= "<div id='edit_last_name_footer'>";
-        html+="<span id='edit_save'>Okay</span> <span id='edit_cancel'>Cancel</span>";
+        html+="<span id='edit_save'>Okay</span> <span id='edit_cancel' onclick='hideElements(\"edit_last_name_menu\")'>Cancel</span>";
         html+="</div>";
 
         html+="</div>";
@@ -524,7 +524,7 @@
         html+="</div>";
 
         html+= "<div id='edit_gender_footer'>";
-        html+="<span id='edit_save'>Okay</span> <span id='edit_cancel'>Cancel</span>";
+        html+="<span id='edit_save'>Okay</span> <span id='edit_cancel' onclick='hideElements(\"edit_gender_menu\")'>Cancel</span>";
         html+="</div>";
 
         html+="</div>";
@@ -562,13 +562,30 @@
         html+="</div>";
 
         html+= "<div id='edit_gender_footer'>";
-        html+="<span id='edit_save'>Okay</span> <span id='edit_cancel'>Cancel</span>";
+        html+="<span id='edit_save'>Okay</span> <span id='edit_cancel' onclick='hideElements(\"edit_grade_menu\")'>Cancel</span>";
         html+="</div>";
 
         html+="</div>";
         inner_content.innerHTML+=html;
      }
-     
+
+     function hideElements(id){
+      if (document.getElementById(id)){
+        element = document.getElementById(id);
+        element.parentNode.removeChild(element);
+        document.getElementById('shield_two').style.display='none';
+      }
+     }
+
+     function changeInnerHtml(source_id, target_id){
+       if (source_id){
+         value = document.getElementById(source_id).value
+         if (document.getElementById(target_id)){
+           element = document.getElementById(target_id);
+           element.innerHTML="<span style='color:green'><b>" + value + "</b></span>"
+         }
+     }
+     }
      function importFromCSVmenu(){
         var inner_content = document.getElementById('inner_content');
         document.getElementById('shield').style.display='inline';
