@@ -464,7 +464,7 @@
 
      function editNurseFirstName(){
         var inner_content = document.getElementById('inner_content');
-        document.getElementById('shield').style.display='inline';
+        document.getElementById('shield_two').style.display='inline';
         html = "<div id='edit_first_name_menu'>";
 
         html+= "<div id='edit_first_name_header'>";
@@ -472,13 +472,13 @@
         html+="</div>";
 
         html+= "<div id='edit_first_name_content'>";
-        html+="<table style='margin-left: 20%; margin-top: 8%; width:80%;'>";
+        html+="<table style='position: absolute; left: 20%; top: 40%; width:80%;'>";
         html+="<tr><td>First Name</td> <td><input type='text' name='first_name'/></td></tr>";  
         html+="</table>"
         html+="</div>";
 
         html+= "<div id='edit_first_name_footer'>";
-        html+="<span id='save'>Okay</span> <span id='cancel_user'>Cancel</span>";
+        html+="<span id='edit_save'>Okay</span> <span id='edit_cancel'>Cancel</span>";
         html+="</div>";
 
         html+="</div></form>";
@@ -733,10 +733,56 @@
      
     </script>
     <style>
-      #content{
-
+      #edit_save{
+        background-color: #FFFFFF;
+        border: 1px solid #EDEBEB;
+        cursor: pointer;
+        left: 2%;
+        padding: 1.3% 18%;
+        position: absolute;
+        text-decoration: none;
+        top: 15%;
       }
-
+      #edit_cancel{
+        background-color: #FFFFFF;
+        border: 1px solid #EDEBEB;
+        cursor: pointer;
+        right: 2%;
+        padding: 1.3% 18%;
+        position: absolute;
+        text-decoration: none;
+        top: 15%;
+      }
+      #edit_first_name_menu{
+        z-index: 13;
+        position: absolute;
+        height: 32%;
+        width: 58%;
+        top: 30%;
+        background-color: white;
+        left: 41%;
+        border-bottom: 3px solid silver;
+      }
+      
+      #edit_first_name_header{
+        background-color: gray;
+        height: 50px;
+        width: 100%;
+        position: absolute;
+        left: 0%;
+        border-bottom: 2px solid black;
+      }
+      
+      #edit_first_name_footer{
+        background-color: gray;
+        height: 50px;
+        width: 100%;
+        position: absolute;
+        width: 100%;
+        position: absolute;
+        bottom: 0px;
+      }
+      
       tr.table_row td {
         border-bottom:1pt solid black;
       }
