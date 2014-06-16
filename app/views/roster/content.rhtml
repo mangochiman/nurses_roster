@@ -532,7 +532,41 @@
      }
 
      function editNurseGrade(){
+      var inner_content = document.getElementById('inner_content');
+        document.getElementById('shield_two').style.display='inline';
+        html = "<div id='edit_grade_menu' style='position:absolute; height:42%;'>";
 
+        html+= "<div id='edit_grade_header'>";
+        html+="<span style='position:absolute; left:20%; top:30%;'>Select grade</span>";
+        html+="</div>";
+
+        html+= "<div id='edit_grade_content'>";
+        html+="<table style='position: absolute; left: 40%; top: 22%; width:15%;'>";
+        html+="<tr>"
+        html+= "<td><span><img src='/images/icons/radio-button_off.png'/></span></td><td><span>A</span></td>";
+        html+="</tr>"
+
+        html+="<tr>"
+        html+= "<td><span><img src='/images/icons/radio-button_off.png'/></span></td><td><span>B</span></td>";
+        html+="</tr>"
+
+        html+="<tr>"
+        html+= "<td><span><img src='/images/icons/radio-button_off.png'/></span></td><td><span>C</span></td>";
+        html+="</tr>"
+
+        html+="<tr>"
+        html+= "<td><span><img src='/images/icons/radio-button_off.png'/></span></td><td><span>D</span></td>";
+        html+="</tr>"
+        
+        html+="</table>"
+        html+="</div>";
+
+        html+= "<div id='edit_gender_footer'>";
+        html+="<span id='edit_save'>Okay</span> <span id='edit_cancel'>Cancel</span>";
+        html+="</div>";
+
+        html+="</div>";
+        inner_content.innerHTML+=html;
      }
      
      function importFromCSVmenu(){
@@ -754,7 +788,7 @@
         text-decoration: none;
         top: 15%;
       }
-      #edit_first_name_menu, #edit_last_name_menu, #edit_gender_menu{
+      #edit_first_name_menu, #edit_last_name_menu, #edit_gender_menu, #edit_grade_menu{
         z-index: 13;
         position: absolute;
         height: 32%;
@@ -765,7 +799,7 @@
         border-bottom: 3px solid silver;
       }
       
-      #edit_first_name_header, #edit_last_name_header, #edit_gender_header{
+      #edit_first_name_header, #edit_last_name_header, #edit_gender_header, #edit_grade_header{
         background-color: gray;
         height: 50px;
         width: 100%;
@@ -774,7 +808,7 @@
         border-bottom: 2px solid black;
       }
       
-      #edit_first_name_footer, #edit_last_name_footer, #edit_gender_footer{
+      #edit_first_name_footer, #edit_last_name_footer, #edit_gender_footer, #edit_grade_footer{
         background-color: gray;
         height: 50px;
         width: 100%;
