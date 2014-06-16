@@ -27,19 +27,16 @@ class NursesController < ApplicationController
 	end
 
 	def create_updated_details
-		first_name = params[:first_name]
-        last_name = params[:last_name]
-		gender = params[:gender]
-        grade = params[:grade]
-		nurse_id = params[:nurse_id]
-		nurse = Nurse.find(nurse_id)
-		nurse.first_name = first_name
-		nurse.last_name = last_name
-		nurse.gender = gender
-		nurse.grade = grade
-		 if (nurse.save)
-			redirect_to :action => "list"
-		 end
+
+      first_name = params[:first_name]
+      last_name = params[:last_name]
+      nurse_id = params[:nurse_id]
+
+      nurse = Nurse.find(2)
+      nurse.first_name = first_name
+      nurse.save
+      render :text => true and return
+
 	end
 
   def display_all

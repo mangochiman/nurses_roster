@@ -360,13 +360,19 @@
      }
 
      function searchNurses(obj){
+       value = ""
+       if ((typeof obj) != 'undefined'){
+         if (obj.value){
+              value = obj.value
+         }
+       }
       if (document.getElementById('edit_nurse_content')){
          edit_nurse_content = document.getElementById('edit_nurse_content');
          names = []
          jQuery.ajax({
             type: "POST",
             url: "/nurses/search_nurses",
-            data: "value=" + obj.value,
+            data: "value=" + value,
             success: function(result){
               html = "<div style='position:absolute; overflow:auto; height: 75%; top:15%; width: 40%;'>";
               html+="<table cellspacing='0' style='position:absolute; width:100%;'>"
@@ -454,7 +460,7 @@
               html+="<td><span>&nbsp;</span></td>";
             html+="</tr>";
             html+="<tr style='line-height: 7px; !important;'>";
-              html+="<td colspan='3' id='save_edited_button'><span>Save</span></td>";
+              html+="<td colspan='3' id='save_edited_button' onclick='saveNurseEditedDetails();'><span>Save</span></td>";
             html+="</tr>";
           html+="</table>";
         html+="</div>"
@@ -495,12 +501,12 @@
 
         html+= "<div id='edit_first_name_content'>";
         html+="<table style='position: absolute; left: 20%; top: 40%; width:80%;'>";
-        html+="<tr><td>Last Name</td> <td><input type='text' name='last_name'/></td></tr>";
+        html+="<tr><td>Last Name</td> <td><input id='lname_input' type='text' name='last_name'/></td></tr>";
         html+="</table>"
         html+="</div>";
 
         html+= "<div id='edit_last_name_footer'>";
-        html+="<span id='edit_save'>Okay</span> <span id='edit_cancel' onclick='hideElements(\"edit_last_name_menu\")'>Cancel</span>";
+        html+="<span id='edit_save' onclick='changeInnerHtml(\"lname_input\", \"nurse_last_name_edit\"); hideElements(\"edit_last_name_menu\")'>Okay</span> <span id='edit_cancel' onclick='hideElements(\"edit_last_name_menu\")'>Cancel</span>";
         html+="</div>";
 
         html+="</div>";
@@ -582,10 +588,44 @@
          value = document.getElementById(source_id).value
          if (document.getElementById(target_id)){
            element = document.getElementById(target_id);
-           element.innerHTML="<span style='color:green'><b>" + value + "</b></span>"
+           element.innerHTML="<span style='color:red'><b>" + value + "</b></span>"
+           element.setAttribute("edited_value", value);
          }
+      }
      }
+
+     function saveNurseEditedDetails(){
+       fname_value = "";
+       lname_value = "";
+       fname_edit = document.getElementById('nurse_first_name_edit');
+       if (fname_edit.getAttribute('edited_value')){
+          fname_value = fname_edit.getAttribute('edited_value');
+       }
+       lname_edit = document.getElementById('nurse_last_name_edit');
+       if (lname_edit.getAttribute('edited_value')){
+          lname_value = lname_edit.getAttribute('edited_value');
+       }
+
+       if (fname_value.length >=1 || lname_value.length >=1){
+         jQuery.ajax({
+            type: "POST",
+            url: "/nurses/create_updated_details",
+            data: "first_name=" + fname_value + "&last_name=" + lname_value,
+            success: function(){
+             searchNurses();
+             element = document.getElementById('nurse_details');
+             html = "<div style='position:absolute; top: 25%; left:26%; font-size:14pt; color:green'>"
+             html+="<span><center>You have successfully edited <br />details!!<center></span>"
+             html+="</div>"
+             element.innerHTML=html;
+            }
+          });
+       }
+       else{
+         alert("No changes detected");
+       }
      }
+     
      function importFromCSVmenu(){
         var inner_content = document.getElementById('inner_content');
         document.getElementById('shield').style.display='inline';
