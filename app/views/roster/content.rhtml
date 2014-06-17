@@ -340,11 +340,11 @@
                 edit_nurse_content.innerHTML= html;
               }
           });
-         value=window.clearInterval(value);
+         window.clearInterval(value);
        }
      }
 
-     var value=setInterval('addDeleteNurseContent()', 500);
+     var c=setInterval('addDeleteNurseContent()', 500);
      function addDeleteNurseContent(){
        if (document.getElementById('delete_nurse_content')){
          edit_nurse_content = document.getElementById('delete_nurse_content');
@@ -373,7 +373,7 @@
                 edit_nurse_content.innerHTML= html;
               }
           });
-         value=window.clearInterval(value);
+         window.clearInterval(c);
        }
      }
 
