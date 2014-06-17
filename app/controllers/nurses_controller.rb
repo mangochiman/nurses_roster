@@ -12,12 +12,12 @@ class NursesController < ApplicationController
     last_name = params[:last_name]
 		gender = params[:gender]
     grade = params[:grade]
-=begin
+
     Nurse.create(:first_name =>first_name,
 						 :last_name =>last_name,
 						 :gender => gender, 
 						 :grade => grade )
-=end
+
     render :text => true and return
 	end
 
