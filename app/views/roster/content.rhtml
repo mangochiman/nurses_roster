@@ -627,8 +627,32 @@
           });
        }
        else{
-         alert("No changes detected");
+         noChangesDetected();
        }
+     }
+
+     function noChangesDetected(){
+        inner_content = document.getElementById('inner_content');
+        document.getElementById('shield_two').style.display='inline';
+        html = "<div id='warning_menu' style='left:43%; width:54%;'>";
+
+        html+= "<div id='warning_header' style='background-color: #FF3030;'>";
+        html+="<span style='position:absolute; left:20%; top:36%;'></span>";
+        html+="</div>";
+
+        html+= "<div id='warning_content'>";
+        html+="<table style='position: absolute; left: 20%; top: 30%; width:50%;'>";
+        html+="<tr><td rowspan='2'><img src='/images/icons/dialog-warning-64.png'/></td><td><span style='color:red; font-weight:bold;'>Error</span></td></tr>"
+        html+="<tr><td colspan='2'><span style='color:red;'>No changes detected</span></td></tr>";
+        html+="</table>"
+        html+="</div>";
+
+        html+="<div id='warning_footer' style='background-color: #FF3030;'>";
+        html+="<span id='okay' onclick='hideElements(\"warning_menu\")'>Okay</span>";
+        html+="</div>";
+
+        html+="</div>";
+        inner_content.innerHTML+=html;
      }
      
      function importFromCSVmenu(){
@@ -830,6 +854,16 @@
      
     </script>
     <style>
+      #okay{
+        background-color: #FFFFFF;
+        border: 1px solid #EDEBEB;
+        left: 2%;
+        padding: 1.5% 44%;
+        position: absolute;
+        text-decoration: none;
+        top: 14%;
+        cursor: pointer;
+      }
       #edit_save{
         background-color: #FFFFFF;
         border: 1px solid #EDEBEB;
@@ -850,7 +884,7 @@
         text-decoration: none;
         top: 15%;
       }
-      #edit_first_name_menu, #edit_last_name_menu, #edit_gender_menu, #edit_grade_menu{
+      #edit_first_name_menu, #edit_last_name_menu, #edit_gender_menu, #edit_grade_menu, #warning_menu{
         z-index: 13;
         position: absolute;
         height: 32%;
@@ -861,7 +895,7 @@
         border-bottom: 3px solid silver;
       }
       
-      #edit_first_name_header, #edit_last_name_header, #edit_gender_header, #edit_grade_header{
+      #edit_first_name_header, #edit_last_name_header, #edit_gender_header, #edit_grade_header, #warning_header{
         background-color: gray;
         height: 50px;
         width: 100%;
@@ -870,7 +904,7 @@
         border-bottom: 2px solid black;
       }
       
-      #edit_first_name_footer, #edit_last_name_footer, #edit_gender_footer, #edit_grade_footer{
+      #edit_first_name_footer, #edit_last_name_footer, #edit_gender_footer, #edit_grade_footer, #warning_footer{
         background-color: gray;
         height: 50px;
         width: 100%;
