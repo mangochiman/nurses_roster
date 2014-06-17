@@ -32,9 +32,10 @@ class NursesController < ApplicationController
       last_name = params[:last_name]
       nurse_id = params[:nurse_id]
 
-      nurse = Nurse.find(2)
-      nurse.first_name = first_name
-      nurse.save
+      nurse = Nurse.find(nurse_id)
+      nurse.first_name = first_name unless first_name.blank?
+      nurse.last_name = last_name unless last_name.blank?
+      nurse.save!
       render :text => true and return
 
 	end

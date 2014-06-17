@@ -330,6 +330,7 @@
                   date_created = result[nurse_id]["date_created"];
                   icon = (gender.toUpperCase() == 'MALE')?'male_nurse_64.png':'nurse_64.png';
                   html+="<tr onmousedown='setActiveRow(this); showNurseDetails(this);' onmouseover='changeBackgroundColor(this);'";
+                  html+="id=" + nurse_id + " ";
                   html+="first_name=" + first_name + " last_name=" + last_name + " gender=" + gender + " grade=" + grade + " date_created=" + date_created + " "
                   html+="onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
                   html+="<img style='width:30%;' src='/images/icons/" + icon + "'/></td>"
@@ -386,6 +387,7 @@
                     date_created = result[nurse_id]["date_created"];
                     icon = (gender.toUpperCase() == 'MALE')?'male_nurse_64.png':'nurse_64.png';
                     html+="<tr onmousedown='setActiveRow(this); showNurseDetails(this);' onmouseover='changeBackgroundColor(this);'";
+                    html+="id=" + nurse_id + " ";
                     html+="first_name=" + first_name + " last_name=" + last_name + " gender=" + gender + " grade=" + grade + " date_created=" + date_created + " "
                     html+="onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
                     html+="<img style='width:30%;' src='/images/icons/" + icon + "'/></td>"
@@ -406,6 +408,7 @@
 
      function showNurseDetails(obj){
         nurse_details = document.getElementById('nurse_details');
+        nurse_id = obj.id;
         first_name = obj.getAttribute("first_name");
         last_name = obj.getAttribute("last_name");
         gender = obj.getAttribute("gender");
@@ -424,7 +427,7 @@
             html+="</tr>";
             html+="<tr>";
               html+="<td><span>First Name</span></td>";
-              html+="<td id='nurse_first_name_edit'><span><b>" + first_name + "</b></span></td>";
+              html+="<td id='nurse_first_name_edit' nurse_id=" + nurse_id + "><span><b>" + first_name + "</b></span></td>";
               html+="<td id='edit_button'><span onclick='editNurseFirstName();'>Edit</span></td>";
             html+="</tr>";
             html+="<tr style='line-height: 7px; !important;'>";
@@ -432,7 +435,7 @@
             html+="</tr>";
             html+="<tr>";
               html+="<td><span>Last Name</span></td>";
-              html+="<td id='nurse_last_name_edit'><span><b>" + last_name + "</b></span></td>";
+              html+="<td id='nurse_last_name_edit' nurse_id=" + nurse_id + "><span><b>" + last_name + "</b></span></td>";
               html+="<td id='edit_button'><span onclick='editNurseLastName();'>Edit</span></td>";
             html+="</tr>";
             html+="<tr style='line-height: 7px; !important;'>";
@@ -440,7 +443,7 @@
             html+="</tr>";
             html+="<tr>";
               html+="<td><span>Gender</span></td>";
-              html+="<td><span><b>" + gender + "</b></span></td>";
+              html+="<td nurse_id=" + nurse_id + "><span><b>" + gender + "</b></span></td>";
               html+="<td id='edit_button'><span onclick='editNurseGender();'>Edit</span></td>";
             html+="</tr>";
             html+="<tr style='line-height: 7px; !important;'>";
@@ -448,7 +451,7 @@
             html+="</tr>";
             html+="<tr>";
               html+="<td><span>Grade</span></td>";
-              html+="<td><span><b>" + grade + "</b></span></td>";
+              html+="<td nurse_id=" + nurse_id + "><span><b>" + grade + "</b></span></td>";
               html+="<td id='edit_button'><span onclick='editNurseGrade();'>Edit</span></td>";
             html+="</tr>";
             html+="<tr style='line-height: 7px; !important;'>";
@@ -598,6 +601,7 @@
        fname_value = "";
        lname_value = "";
        fname_edit = document.getElementById('nurse_first_name_edit');
+       nurse_id = fname_edit.getAttribute('nurse_id');
        if (fname_edit.getAttribute('edited_value')){
           fname_value = fname_edit.getAttribute('edited_value');
        }
@@ -610,7 +614,7 @@
          jQuery.ajax({
             type: "POST",
             url: "/nurses/create_updated_details",
-            data: "first_name=" + fname_value + "&last_name=" + lname_value,
+            data: "first_name=" + fname_value + "&last_name=" + lname_value + "&nurse_id=" + nurse_id,
             success: function(){
              searchNurses();
              element = document.getElementById('nurse_details');
