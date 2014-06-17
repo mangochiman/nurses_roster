@@ -352,11 +352,11 @@
      }
 
      function setActiveRow(obj){
-      if (document.getElementById('active_row')){
-        active_row = document.getElementById('active_row');
-        active_row.removeAttribute("id");
-      }
-      obj.id="active_row";
+       if (document.getElementsByClassName('active_row')){
+          element = document.getElementsByClassName('active_row')[0];
+          if (element) element.classList.remove("active_row");
+       }
+       obj.classList.add("active_row");
      }
 
      function searchNurses(obj){
@@ -883,7 +883,7 @@
         cursor: pointer;
       }
 
-      #active_row{
+      .active_row{
         background-color: #6495ED !important;
       }
 
