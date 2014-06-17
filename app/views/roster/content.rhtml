@@ -606,14 +606,31 @@
               html+="<td><span>&nbsp;</span></td>";
             html+="</tr>";
             html+="<tr style='line-height: 7px; !important;'>";
-              html+="<td colspan='2' id='delete_nurse_button' onclick=''><span>Delete</span></td>";
+              html+="<td colspan='2' id='delete_nurse_button' nurse_id=" + nurse_id + " onclick='confirmDelete(this);'><span>Delete</span></td>";
             html+="</tr>";
           html+="</table>";
         html+="</div>"
         nurse_details.innerHTML=html;
         console.log(first_name + '--' + last_name + '--' + gender + '--' + grade + '--' + date_created);
      }
-     
+
+     function deleteNurse(nurse_id){
+      jQuery.ajax({
+            type: "POST",
+            url: "/nurses/delete_nurse",
+            data: "nurse_id=" + nurse_id,
+            success: function(){
+               searchNursesToBeDeleted();
+               nurse_details = document.getElementById('nurse_details');
+               html = "<div>";
+               html+="<span style='position:absolute; top:30%; left:12%; font-size:14pt; color:green;'>One record has been successfully deleted</span>";
+               html+="<span style='position:absolute; top:36%; left:22%; font-size:14pt; color:green;'>Select another record to delete</span>";
+               html+="<div>";
+               nurse_details.innerHTML=html;
+            }
+          });
+     }
+
      function editNurseFirstName(){
         var inner_content = document.getElementById('inner_content');
         document.getElementById('shield_two').style.display='inline';
@@ -797,7 +814,35 @@
         html+="</div>";
         inner_content.innerHTML+=html;
      }
-     
+
+     function confirmDelete(obj){
+        nurse_id = obj.getAttribute("nurse_id")
+        inner_content = document.getElementById('inner_content');
+        document.getElementById('shield_two').style.display='inline';
+        html = "<div id='warning_menu' style='left:41.3%; width:57.5%;'>";
+
+        html+= "<div id='warning_header' style='background-color: gray; height:64px;'>";
+        html+="<table style='position:absolute; left:32%;'>"
+        html+="<tr><td rowspan='2'><img style='height:40%;' src='/images/icons/dialog-warning-64.png'/></td><td><span style='font-weight:bold;'>Delete</span></td></tr>"
+        html+="</table>";
+        html+="</div>";
+
+        html+= "<div id='warning_content'>";
+        html+="<table style='position: absolute; left: 20%; top: 45%; width:80%;'>";
+ 
+        html+="<tr><td colspan='2'><span>One record will be deleted. Continue?</span></td></tr>";
+        html+="</table>"
+        html+="</div>";
+
+        html+="<div id='warning_footer' style='background-color: gray;'>";
+        html+="<span style='padding: 1.3% 15%; top: 15%;' id='okay' onclick='deleteNurse(nurse_id); hideElements(\"warning_menu\")'>Okay</span>";
+        html+="<span style='padding: 1.3% 15%; top: 15%;' id='cancel' onclick='hideElements(\"warning_menu\")'>Cancel</span>";
+        html+="</div>";
+
+        html+="</div>";
+        inner_content.innerHTML+=html;
+     }
+
      function importFromCSVmenu(){
         var inner_content = document.getElementById('inner_content');
         document.getElementById('shield').style.display='inline';
@@ -1003,6 +1048,10 @@
      
     </script>
     <style>
+      #warning_menu img{
+        width: 67%;
+      }
+      
       #delete_nurse_button span{
          position: absolute;
          border-top: 1px solid #96d1f8;

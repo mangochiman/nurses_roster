@@ -71,4 +71,10 @@ class NursesController < ApplicationController
       end
       render :json => nurse_hash and return
     end
+
+    def delete_nurse
+      nurse_id = params[:nurse_id]
+      Nurse.find(nurse_id).delete
+      render :text => true and return
+    end
 end
