@@ -617,11 +617,12 @@
             data: "first_name=" + fname_value + "&last_name=" + lname_value + "&nurse_id=" + nurse_id,
             success: function(){
              searchNurses();
-             element = document.getElementById('nurse_details');
-             html = "<div style='position:absolute; top: 25%; left:26%; font-size:14pt; color:green'>"
-             html+="<span><center>You have successfully edited <br />details!!<center></span>"
-             html+="</div>"
-             element.innerHTML=html;
+             window.setTimeout(function(){
+              obj = document.getElementById(nurse_id);
+              obj.classList.add("active_row");
+              showNurseDetails(obj);
+             },200);
+              
             }
           });
        }
