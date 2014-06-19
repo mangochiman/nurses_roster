@@ -61,6 +61,8 @@
                 html+="<td onclick='importFromCSVmenu();'>";
               <% elsif caption.match(/Delete Nurse/i) %>
                 html+="<td onclick='deleteNurseMenu(); addDeleteNurseContent();'>";
+              <% elsif caption.match(/View Nurses/i) %>
+                html+="<td onclick='viewNurseMenu(); addViewNursesContent();'>";
               <% else %>
                 html+="<td>";
               <% end %>
@@ -374,6 +376,165 @@
        }
      }
 
+     function searchNursesToBeViewed(obj){
+       value = ""
+       if ((typeof obj) != 'undefined'){
+         if (obj.value){
+              value = obj.value
+         }
+       }
+      if (document.getElementById('view_nurse_content')){
+         view_nurse_content = document.getElementById('view_nurse_content');
+         jQuery.ajax({
+            type: "POST",
+            url: "/nurses/search_nurses",
+            data: "value=" + value,
+            success: function(result){
+              html = "<div style='position:absolute; overflow:auto; height: 75%; top:15%; width: 40%;'>";
+              html+="<table cellspacing='0' style='position:absolute; width:100%;'>"
+              total_results = 0;
+              for (var nurse_id in result) {
+                    total_results+=1;
+                    first_name = result[nurse_id]["first_name"];
+                    last_name = result[nurse_id]["last_name"];
+                    gender = result[nurse_id]["gender"];
+                    grade = result[nurse_id]["grade"];
+                    date_created = result[nurse_id]["date_created"];
+                    icon = (gender.toUpperCase() == 'MALE')?'male_nurse_64.png':'nurse_64.png';
+                    html+="<tr onmousedown='setActiveRow(this); showNurseDetailsToBeDeleted(this);' onmouseover='changeBackgroundColor(this);'";
+                    html+="id=" + nurse_id + " ";
+                    html+="first_name=" + first_name + " last_name=" + last_name + " gender=" + gender + " grade=" + grade + " date_created=" + date_created + " "
+                    html+="onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
+                    html+="<img style='width:30%;' src='/images/icons/" + icon + "'/></td>"
+                    html+="<td><span>" + first_name + '</span></td><td><span> ' + last_name + "<span></td></tr>";
+                }
+                html += "</table></div>";
+                view_nurse_content.innerHTML= html;
+                if (document.getElementById('found_results_info')){
+                  contacts = (total_results == 1)?'contact':'contacts';
+                  found_results_info = document.getElementById('found_results_info');
+                  found_results_info.style.display='inline'
+                  found_results_info.innerHTML="<span> Displaying " +  total_results + ' ' + contacts + "</span>"
+                }
+              }
+          });
+       }
+     }
+
+     function viewNurseMenu(){
+        inner_content = document.getElementById('inner_content');
+        html = "<div id='view_nurse_menu'>";
+          html+= "<div id='left_div'>";
+              html+="<table style='position:absolute; width:100%; margin-left:1%;'>";
+              html+="<tr><td style='width:40%;'><span><input onkeyup='searchNursesToBeViewed(this);' placeholder= 'Filter contacts' name='search' type='text' id='search_input'/><img onclick='document.getElementById(\"search_input\").value=\"\"; searchNurses();' src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
+              html+="</table>"
+          html+="</div>";
+          html+= "<div id='content_header'>";
+            html+="<span>View nurses</span>";
+          html+="</div>";
+          html+="<div id='view_nurse_content'>";
+          html+="</div>";
+          html+="<div style='display:none;' id='found_results_info'>";
+          html+="</div>";
+          html+="<div id='nurse_details'>";
+          html+="</div>";
+        html+="</div>";
+        inner_content.innerHTML=html
+     }
+
+     function addViewNursesContent(){
+       if (document.getElementById('view_nurse_content')){
+         view_nurse_content = document.getElementById('view_nurse_content');
+         jQuery.ajax({
+            type: "POST",
+            url: "/nurses/display_all",
+            data: "",
+            success: function(result){
+              html = "<div style='position:absolute; overflow:auto; height: 75%; top:15%; width: 40%;'>";
+              html+="<table cellspacing='0' style='position:absolute; width:100%;'>"
+              for (var nurse_id in result) {
+                  first_name = result[nurse_id]["first_name"];
+                  last_name = result[nurse_id]["last_name"];
+                  gender = result[nurse_id]["gender"];
+                  grade = result[nurse_id]["grade"];
+                  date_created = result[nurse_id]["date_created"];
+                  icon = (gender.toUpperCase() == 'MALE')?'male_nurse_64.png':'nurse_64.png';
+                  html+="<tr onmousedown='setActiveRow(this); showNurseDetailsToBeViewed(this);' onmouseover='changeBackgroundColor(this);'";
+                  html+="id=" + nurse_id + " ";
+                  html+="first_name=" + first_name + " last_name=" + last_name + " gender=" + gender + " grade=" + grade + " date_created=" + date_created + " "
+                  html+="onmouseout='resetBackgroundColor(this);' class='table_row' style='height: 1em !important; border-bottom: 1px solid gray;'><td>"
+                  html+="<img style='width:30%;' src='/images/icons/" + icon + "'/></td>"
+                  html+="<td><span>" + first_name + '</span></td><td><span> ' + last_name + "<span></td></tr>";
+                }
+                html += "</table></div>";
+                view_nurse_content.innerHTML= html;
+              }
+          });
+       }
+     }
+
+      function showNurseDetailsToBeViewed(obj){
+        nurse_details = document.getElementById('nurse_details');
+        nurse_id = obj.id;
+        first_name = obj.getAttribute("first_name");
+        last_name = obj.getAttribute("last_name");
+        gender = obj.getAttribute("gender");
+        grade = obj.getAttribute("grade");
+        date_created = obj.getAttribute("date_created");
+        html = "";
+        html+="<div>";
+          html+="<table style='position:absolute; width:80%; top:15%;'>";
+            html+="<tr>";
+              if (gender.match(/female/i)){
+                html+="<td rowspan='10'><span><img src='/images/icons/nurse_02.png'/></span></td>";
+              }
+              else {
+                html+="<td rowspan='10'><span><img src='/images/icons/nurse_03.png'/></span></td>";
+              }
+            html+="</tr>";
+            html+="<tr>";
+              html+="<td><span>First Name</span></td>";
+              html+="<td id='nurse_first_name_edit' nurse_id=" + nurse_id + "><span><b>" + first_name + "</b></span></td>";
+
+            html+="</tr>";
+            html+="<tr style='line-height: 7px; !important;'>";
+              html+="<td colspan='2'>&nbsp;</td>";
+            html+="</tr>";
+            html+="<tr>";
+              html+="<td><span>Last Name</span></td>";
+              html+="<td id='nurse_last_name_edit' nurse_id=" + nurse_id + "><span><b>" + last_name + "</b></span></td>";
+
+            html+="</tr>";
+            html+="<tr style='line-height: 7px; !important;'>";
+              html+="<td colspan='2'>&nbsp;</td>";
+            html+="</tr>";
+            html+="<tr>";
+              html+="<td><span>Gender</span></td>";
+              html+="<td nurse_id=" + nurse_id + "><span><b>" + gender + "</b></span></td>";
+
+            html+="</tr>";
+            html+="<tr style='line-height: 7px; !important;'>";
+              html+="<td colspan='2'>&nbsp;</td>";
+            html+="</tr>";
+            html+="<tr>";
+              html+="<td><span>Grade</span></td>";
+              html+="<td nurse_id=" + nurse_id + "><span><b>" + grade + "</b></span></td>";
+
+            html+="</tr>";
+            html+="<tr style='line-height: 7px; !important;'>";
+              html+="<td colspan='2'>&nbsp;</td>";
+            html+="</tr>";
+            html+="<tr>";
+              html+="<td><span>Date created</span></td>";
+              html+="<td><span><b>" + date_created + "</b></span></td>";
+              html+="<td><span>&nbsp;</span></td>";
+            html+="</tr>";
+   
+          html+="</table>";
+        html+="</div>"
+        nurse_details.innerHTML=html;       
+     }
+     
      function changeBackgroundColor(obj){
       obj.style.backgroundColor='#F0FFFF'
      }
@@ -1445,7 +1606,7 @@
       cursor: pointer;
     }
 
-    #edit_nurse_menu{
+    #edit_nurse_menu, #view_nurse_menu{
       position: absolute;
       width: 100%;
       left: 0%;
