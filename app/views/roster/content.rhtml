@@ -438,6 +438,9 @@
           html+="</div>";
           html+="<div id='nurse_details'>";
           html+="</div>";
+          html+="<div id='view_all'>"
+          html+="<span>View all</span"
+          html+="</div>";
         html+="</div>";
         inner_content.innerHTML=html
      }
@@ -1206,6 +1209,25 @@
      
     </script>
     <style>
+      #view_all span{
+        background-color: #468fbf;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius:6px;
+        color: #fff;
+        font-family: 'Oswald';
+        text-decoration: none;
+        cursor: pointer;
+        position: absolute;
+        bottom: 2.5%;
+        left: 57.5%;
+        padding: 3px 10%;
+      }
+
+   #view_all span:hover{
+     border-top-color: #ccc;
+   background: #ccc;
+    }
       #warning_menu img{
         width: 67%;
       }
