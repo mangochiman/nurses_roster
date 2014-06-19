@@ -56,11 +56,11 @@
               <% if caption.match(/New Nurse/i) %>
                 html+="<td onclick='createNewNurse();'>";
               <% elsif caption.match(/Edit Nurse/i) %>
-                html+="<td onclick='editNurseMenu();'>";
+                html+="<td onclick='editNurseMenu(); searchNurses()'>";
               <% elsif caption.match(/Import from CSV/i) %>
                 html+="<td onclick='importFromCSVmenu();'>";
               <% elsif caption.match(/Delete Nurse/i) %>
-                html+="<td onclick='deleteNurseMenu();'>";
+                html+="<td onclick='deleteNurseMenu(); addDeleteNurseContent();'>";
               <% else %>
                 html+="<td>";
               <% end %>
@@ -296,7 +296,7 @@
         html = "<div id='edit_nurse_menu'>";
           html+= "<div id='left_div'>";
               html+="<table style='position:absolute; width:100%; margin-left:1%;'>";
-              html+="<tr><td style='width:40%;'><span><input onkeyup='searchNurses(this);' placeholder= 'Filter contacts' name='search' type='text' id='search_input'/><img onclick='document.getElementById(\"search_input\").value=\"\"' src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
+              html+="<tr><td style='width:40%;'><span><input onkeyup='searchNurses(this);' placeholder= 'Filter contacts' name='search' type='text' id='search_input'/><img onclick='document.getElementById(\"search_input\").value=\"\"; searchNurses();' src='/images/icons/clear_02.png' id='clear_image'/></span></td></tr>"
               html+="</table>"
           html+="</div>";
           html+= "<div id='content_header'>";
@@ -311,7 +311,7 @@
         html+="</div>";
         inner_content.innerHTML=html
      }
-     var value=setInterval('addEditNurseContent()', 500);
+
      function addEditNurseContent(){
        if (document.getElementById('edit_nurse_content')){
          edit_nurse_content = document.getElementById('edit_nurse_content');
@@ -340,11 +340,9 @@
                 edit_nurse_content.innerHTML= html;
               }
           });
-         window.clearInterval(value);
        }
      }
 
-     var c=setInterval('addDeleteNurseContent()', 500);
      function addDeleteNurseContent(){
        if (document.getElementById('delete_nurse_content')){
          edit_nurse_content = document.getElementById('delete_nurse_content');
@@ -373,7 +371,6 @@
                 edit_nurse_content.innerHTML= html;
               }
           });
-         window.clearInterval(c);
        }
      }
 
