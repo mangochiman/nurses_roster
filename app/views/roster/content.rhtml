@@ -439,7 +439,7 @@
           html+="<div id='nurse_details'>";
           html+="</div>";
           html+="<div id='view_all'>"
-          html+="<span>View all</span"
+          html+="<span onclick='viewAllNurses();'>View all</span"
           html+="</div>";
         html+="</div>";
         inner_content.innerHTML=html
@@ -471,6 +471,54 @@
                 }
                 html += "</table></div>";
                 view_nurse_content.innerHTML= html;
+              }
+          });
+       }
+     }
+
+     function viewAllNurses(obj){
+      value = ""
+       if ((typeof obj) != 'undefined'){
+         if (obj.value){
+              value = obj.value
+         }
+       }
+      if (document.getElementById('nurse_details')){
+         nurse_details = document.getElementById('nurse_details');
+         jQuery.ajax({
+            type: "POST",
+            url: "/nurses/search_nurses",
+            data: "value=" + value,
+            success: function(result){
+              html = "<div style='position:absolute; overflow:auto; height: 75%; top:8%; width: 100%;'>";
+              html+="<span style='position: fixed; right:15.5%; top:19%; z-index: 1;'>Filter <input type='text'></input></span>"
+              html+="<table cellspacing='0' style='position:absolute; width:100%;'>"
+
+              html+="<tr class='view_all_header' style='line-height: 2.5em; background-color:#FFE7BA;'>";
+                html+="<td><span>First Name</span></td>";
+                html+="<td><span>Last Name</span></td>";
+                html+="<td><span>Gender</span></td>";
+                html+="<td><span>Grade</span></td>";
+                html+="<td><span>Date Created</span></td>";
+              html+="</tr>";
+              
+              for (var nurse_id in result) {
+                    first_name = result[nurse_id]["first_name"];
+                    last_name = result[nurse_id]["last_name"];
+                    gender = result[nurse_id]["gender"];
+                    grade = result[nurse_id]["grade"];
+                    date_created = result[nurse_id]["date_created"];
+                    html+="<tr class='view_all' style='line-height: 1.5em;'>";
+                        html+="<td>" + first_name + "</td>";
+                        html+="<td>" + last_name +  "</td>";
+                        html+="<td>" + gender[0] + "</td>";
+                        html+="<td>" + grade + "</td>";
+                        html+="<td>" + date_created + "</td>";
+                    html+="</tr>";
+                }
+
+                html += "</table></div>";
+                nurse_details.innerHTML= html;
               }
           });
        }
@@ -1209,6 +1257,14 @@
      
     </script>
     <style>
+      .view_all_header td{
+        border-bottom: 1px solid black;
+      }
+      
+      .view_all td{
+        border-bottom: 1px solid black;
+      }
+
       #view_all span{
         background-color: #388E8E;
         -moz-border-radius: 5px;
