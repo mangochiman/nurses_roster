@@ -438,7 +438,8 @@
           html+="</div>";
           html+="<div id='nurse_details'>";
           html+="</div>";
-           html+="<span style='position: fixed; right:15.5%; top:19%; z-index: 1;'>Filter <input type='text' placeholder='First or Last name or combine' onkeyup='viewAllNurses(this);'></input></span>"
+           html+="<span style='position: fixed; right:15.5%; top:19%; z-index: 1;'>Filter <input id='filter_nurses' type='text' placeholder='First or Last name or combine' onkeyup='viewAllNurses(this);'></input></span>";
+           html+="<span style='position:fixed; right: 18%; top:18.5%; z-index: 1;'><img onclick='document.getElementById(\"filter_nurses\").value=\"\"; viewAllNurses();' src='/images/icons/clear_02.png' id='clear_image'/></span>"
           html+="<div id='view_all'>"
           html+="<span onclick='viewAllNurses();'>View all</span"
           html+="</div>";
@@ -1716,6 +1717,7 @@
       position: absolute;
       left: 72%;
       top: 3.5%;
+      cursor: pointer;
     }
     td input{
       /*border: 2px solid #808080;*/
