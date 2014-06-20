@@ -510,11 +510,11 @@
                     grade = result[nurse_id]["grade"];
                     date_created = result[nurse_id]["date_created"];
                     html+="<tr class='view_all' style='line-height: 1.5em;'>";
-                        html+="<td>" + first_name + "</td>";
-                        html+="<td>" + last_name +  "</td>";
-                        html+="<td>" + gender[0] + "</td>";
-                        html+="<td>" + grade + "</td>";
-                        html+="<td>" + date_created + "</td>";
+                        html+="<td style='border-right: 2px solid #9ACD32'><span><center>" + first_name + "</center></span></td>";
+                        html+="<td style='border-right: 2px solid #9ACD32'><span><center>" + last_name +  "</center></span></td>";
+                        html+="<td style='border-right: 2px solid #9ACD32'><span><center>" + gender[0] + "</center></span></td>";
+                        html+="<td style='border-right: 2px solid #9ACD32'><span><center>" + grade + "</center></span></td>";
+                        html+="<td><span><center>" + date_created + "</center></span></td>";
                     html+="</tr>";
                 }
 
@@ -1260,6 +1260,11 @@
     <style>
       .view_all_header td{
         border-bottom: 1px solid black;
+      }
+
+      .view_all:hover{
+        background-color: #F1EDC2;
+        cursor: crosshair;
       }
       
       .view_all td{
