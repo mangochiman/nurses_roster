@@ -1,5 +1,9 @@
 class RosterController < ApplicationController
 
+  def create_roster
+
+  end
+  
 	def schedule
 		available_shifts = ShiftType.all.map(&:name)
 		available_nurses = Nurse.all.map(&:id)

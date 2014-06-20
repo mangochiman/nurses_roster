@@ -227,6 +227,7 @@
         html+="</div>";
         
         html+= "<div id='create_roster_footer'>";
+        html+="<span id='okay_button'>Okay</span>";
         html+="<span onclick='hideCreateRosterPopup();' id='cancel_button'>Cancel</span>";
         html+="</div>";
         
@@ -1256,6 +1257,43 @@
      function rejectAddNurseRecord(){
       window.location='/roster/content'
      }
+
+     function createRoster(){
+      start_date = document.getElementById('start_date');
+      end_date = document.getElementById('end_date');
+      jQuery.ajax({
+            type: "POST",
+            url: "/roster/create_roster",
+            data: "",
+            success: function(result){
+                showViewRosterPrompt();
+              }
+          });
+     }
+
+     function showViewRosterPrompt(){
+      //TO BE CONTINUED
+        inner_content = document.getElementById('inner_content');
+        document.getElementById('shield_two').style.display='inline';
+        html = "<div id='roster_prompt_menu' style='left:43%; width:54%;'>";
+
+        html+= "<div id='roster_prompt_header' style='background-color: #FF3030;'>";
+        html+="<span style='position:absolute; left:20%; top:36%;'></span>";
+        html+="</div>";
+
+        html+= "<div id='roster_prompt_content'>";
+        html+="<table style='position: absolute; left: 20%; top: 30%; width:50%;'>";
+        
+        html+="</table>"
+        html+="</div>";
+
+        html+="<div id='roster_prompt_footer' style='background-color: #FF3030;'>";
+        html+="<span id='okay' onclick='hideElements(\"roster_prompt_menu\")'>Okay</span>";
+        html+="</div>";
+
+        html+="</div>";
+        inner_content.innerHTML+=html;
+     }
      
     </script>
     <style>
@@ -1612,11 +1650,22 @@
       font: 18px Georgia, casans-serif;
     }
 
-    #cancel_button{
+    #okay_button{
       background-color: #FFFFFF;
       border: 1px solid #EDEBEB;
       left: 2%;
-      padding: 1.5% 43%;
+      padding: 1.5% 14%;
+      position: absolute;
+      text-decoration: none;
+      top: 15%;
+      cursor: pointer;
+    }
+    
+    #cancel_button{
+      background-color: #FFFFFF;
+      border: 1px solid #EDEBEB;
+      right: 2%;
+      padding: 1.5% 12%;
       position: absolute;
       text-decoration: none;
       top: 15%;
