@@ -1,7 +1,7 @@
 class RosterController < ApplicationController
 
   def create_roster
-
+    render :text => true and return
   end
   
 	def schedule

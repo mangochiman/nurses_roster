@@ -227,7 +227,7 @@
         html+="</div>";
         
         html+= "<div id='create_roster_footer'>";
-        html+="<span id='okay_button'>Okay</span>";
+        html+="<span id='okay_button' onclick='generateRoster();'>Okay</span>";
         html+="<span onclick='hideCreateRosterPopup();' id='cancel_button'>Cancel</span>";
         html+="</div>";
         
@@ -1258,7 +1258,8 @@
       window.location='/roster/content'
      }
 
-     function createRoster(){
+     function generateRoster(){
+
       start_date = document.getElementById('start_date');
       end_date = document.getElementById('end_date');
       jQuery.ajax({
@@ -1273,8 +1274,16 @@
 
      function showViewRosterPrompt(){
       //TO BE CONTINUED
+      if (document.getElementById('create_roster_menu')){
+        rmenu = document.getElementById('create_roster_menu');
+        rmenu.parentNode.removeChild(rmenu);
+      }
+
+      if (document.getElementById('shield')){
+        //document.getElementById('shield').style.display='none';
+      }
         inner_content = document.getElementById('inner_content');
-        document.getElementById('shield_two').style.display='inline';
+        //document.getElementById('shield_two').style.display='inline';
         html = "<div id='roster_prompt_menu' style='left:24%; width:54%;'>";
 
         html+= "<div id='roster_prompt_header' style='background-color: #FF3030;'>";
@@ -1296,7 +1305,7 @@
      
     </script>
     <style>
-      #roster_prompt_menu{
+    #roster_prompt_menu{
       z-index: 12;
       position: absolute;
       height: 24%;
@@ -1306,6 +1315,7 @@
       left: 5%;
       border-bottom: 3px solid silver;
       border-radius: 8px;
+      border: 2px solid white;
     }
 
     #roster_prompt_footer{
@@ -1316,6 +1326,7 @@
       width: 100%;
       position: absolute;
       bottom: 0px;
+      border-radius: 0 0 8px 8px;
     }
       .view_all_header td{
         border-bottom: 1px solid black;
