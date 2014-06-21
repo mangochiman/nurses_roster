@@ -1275,20 +1275,19 @@
       //TO BE CONTINUED
         inner_content = document.getElementById('inner_content');
         document.getElementById('shield_two').style.display='inline';
-        html = "<div id='roster_prompt_menu' style='left:43%; width:54%;'>";
+        html = "<div id='roster_prompt_menu' style='left:24%; width:54%;'>";
 
         html+= "<div id='roster_prompt_header' style='background-color: #FF3030;'>";
         html+="<span style='position:absolute; left:20%; top:36%;'></span>";
         html+="</div>";
 
-        html+= "<div id='roster_prompt_content'>";
-        html+="<table style='position: absolute; left: 20%; top: 30%; width:50%;'>";
-        
-        html+="</table>"
+        html+= "<div id='roster_prompt_content' style='background-color:black; color:white;'>";
+        html+="<span style='font-size: 14pt;'><center style='margin-top:4%;'>Roster has been successfully generated. <br />You can view it now</center></span>"
         html+="</div>";
 
-        html+="<div id='roster_prompt_footer' style='background-color: #FF3030;'>";
-        html+="<span id='okay' onclick='hideElements(\"roster_prompt_menu\")'>Okay</span>";
+        html+="<div id='roster_prompt_footer' style='background-color: #BDB76B;'>";
+        html+="<span id='okay_button' onclick=''>View</span>";
+        html+="<span id='cancel_button' onclick='window.location=\"/roster/content\"'>Cancel</span>";
         html+="</div>";
 
         html+="</div>";
@@ -1297,6 +1296,27 @@
      
     </script>
     <style>
+      #roster_prompt_menu{
+      z-index: 12;
+      position: absolute;
+      height: 24%;
+      width: 90%;
+      top: 33%;
+      background-color: black;
+      left: 5%;
+      border-bottom: 3px solid silver;
+      border-radius: 8px;
+    }
+
+    #roster_prompt_footer{
+      background-color: gray;
+      height: 50px;
+      width: 100%;
+      position: absolute;
+      width: 100%;
+      position: absolute;
+      bottom: 0px;
+    }
       .view_all_header td{
         border-bottom: 1px solid black;
       }
