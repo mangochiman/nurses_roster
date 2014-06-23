@@ -8,7 +8,7 @@ class RosterController < ApplicationController
 		available_nurses = Nurse.all.map(&:id)
 		free_shifts = available_shifts
 		start_date = start_date.to_date
-		end_date = end_date
+		end_date = end_date.to_date
 		roster_dates = (start_date..end_date).to_a
 		roster = {}
     shift_constraints = YAML.load_file("#{Rails.root.to_s}/config/constraints.yml")
@@ -18,7 +18,7 @@ class RosterController < ApplicationController
 			roster[rdate] = {}
 			while !(free_shifts.blank?)
 				random_shift = free_shifts.shuffle.last
-        required = shift_constraints[random_shift]["maximum_staff"]
+        required = 3#shift_constraints[random_shift]["maximum_staff"]
 				roster[rdate][random_shift] = []
         random_nurses = Roster.randomize_nurses(required) if (roster[rdate].keys.blank?)
         random_nurses = Roster.randomize_available_nurses(available_nurses, roster, rdate, required) unless (roster[rdate].keys.blank?)
@@ -164,4 +164,9 @@ class RosterController < ApplicationController
                       ["Edit Password", 'password_01.png']
                     ]
   end
+
+  def process_csv_file
+    raise params.inspect
+  end
+  
 end

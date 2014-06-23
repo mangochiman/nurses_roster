@@ -1059,7 +1059,7 @@
         var inner_content = document.getElementById('inner_content');
         document.getElementById('shield').style.display='inline';
         html = "<div id='create_csv_menu'>";
-
+        html+="id='upload_csv'action='/roster/process_csv_file' enctype='multipart/form-data' method='post'>";
         html+= "<div id='create_csv_header'>";
         html+="<span style='position:absolute; top:4%; left:9%; top:30%;'>Upload CSV file</span>";
         html+="</div>";
@@ -1071,9 +1071,12 @@
         html+="</div>";
 
         html+= "<div id='create_roster_footer'>";
+ 
+        html+="<span onclick='document.getElementById(\"upload_csv\").submit();' id='okay_button'>Send</span>";
         html+="<span onclick='hideCreateCSVPopup();' id='cancel_button'>Cancel</span>";
         html+="</div>";
 
+        html+="</form>";
         html+="</div>";
         inner_content.innerHTML+=html;
      }
@@ -1302,9 +1305,66 @@
         html+="</div>";
         inner_content.innerHTML+=html;
      }
-     
+
+     function pleaseWaitMessage(){
+        inner_content = document.getElementById('inner_content');
+        //document.getElementById('shield_two').style.display='inline';
+        html= "<div id='please_wait_menu' style='left:24%; width:54%;'>";
+
+        html+="<div id='please_wait_header' style='background-color: #FF3030;'>";
+        html+="<span style='position:absolute; left:20%; top:36%;'></span>";
+        html+="</div>";
+
+        html+="<div id='please_wait_content' style='background-color:black; color:white;'>";
+        html+="<span style='font-size: 14pt;'><center style='margin-top:3%;'>Generating. Please wait <span id='progress'></span></center></span>"
+        html+="</div>";
+
+        html+="<div id='please_wait_footer' style='background-color: #BDB76B; height:20px;'>";
+        html+="</div>";
+
+        html+="</div>";
+        inner_content.innerHTML+=html;
+     }
+
+     function changeProgress(){
+        if (document.getElementById('progress')){
+          progress = document.getElementById('progress').innerHTML;
+            document.getElementById('progress').innerHTML='.'
+ 
+            document.getElementById('progress').innerHTML+='.'
+ 
+            document.getElementById('progress').innerHTML+='.'
+            document.getElementById('progress').innerHTML+='.'
+            document.getElementById('progress').innerHTML=''
+ 
+     }
+}
+     window.setInterval("changeProgress();", 1000);
     </script>
     <style>
+    #please_wait_menu{
+      z-index: 12;
+      position: absolute;
+      height: 10%;
+      width: 90%;
+      top: 33%;
+      background-color: black;
+      left: 5%;
+      
+      border-radius: 8px;
+      border-bottom: 4px solid blue;
+    }
+
+    #please_wait_footer{
+      background-color: gray;
+      height: 50px;
+      width: 100%;
+      position: absolute;
+      width: 100%;
+      position: absolute;
+      bottom: 0px;
+      border-radius: 0 0 8px 8px;
+    }
     #roster_prompt_menu{
       z-index: 12;
       position: absolute;
