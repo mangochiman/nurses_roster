@@ -1059,7 +1059,6 @@
         var inner_content = document.getElementById('inner_content');
         document.getElementById('shield').style.display='inline';
         html = "<div id='create_csv_menu'>";
-        html+="id='upload_csv'action='/roster/process_csv_file' enctype='multipart/form-data' method='post'>";
         html+= "<div id='create_csv_header'>";
         html+="<span style='position:absolute; top:4%; left:9%; top:30%;'>Upload CSV file</span>";
         html+="</div>";
@@ -1076,7 +1075,6 @@
         html+="<span onclick='hideCreateCSVPopup();' id='cancel_button'>Cancel</span>";
         html+="</div>";
 
-        html+="</form>";
         html+="</div>";
         inner_content.innerHTML+=html;
      }
