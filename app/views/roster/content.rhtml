@@ -1314,7 +1314,9 @@
         html+="</div>";
 
         html+="<div id='please_wait_content' style='background-color:black; color:white;'>";
-        html+="<span style='font-size: 14pt;'><center style='margin-top:3%;'>Generating. Please wait <span id='progress'></span></center></span>"
+        html+="<table style='position:absolute; color:white; font-size:14pt; left:20%; top:5%;'>"
+        html+="<tr><td>Generating. Please wait</td> <td id='progress' style='font-weight:bold;'></td></tr>"
+        html+="</table>"
         html+="</div>";
 
         html+="<div id='please_wait_footer' style='background-color: #BDB76B; height:20px;'>";
@@ -1326,18 +1328,16 @@
 
      function changeProgress(){
         if (document.getElementById('progress')){
-          progress = document.getElementById('progress').innerHTML;
-            document.getElementById('progress').innerHTML='.'
- 
-            document.getElementById('progress').innerHTML+='.'
- 
-            document.getElementById('progress').innerHTML+='.'
-            document.getElementById('progress').innerHTML+='.'
-            document.getElementById('progress').innerHTML=''
- 
+            progress = document.getElementById('progress').innerHTML;
+            if (progress.length == 3) document.getElementById('progress').innerHTML='';
+            if (progress.length == 2) document.getElementById('progress').innerHTML='...';
+            if (progress.length == 1) document.getElementById('progress').innerHTML='..';
+            if (progress.length == 0) document.getElementById('progress').innerHTML='.';
+            document.getElementById('shield_two').style.display='inline';
+            document.getElementById("shield_two").style.cursor="progress";
      }
 }
-     window.setInterval("changeProgress();", 1000);
+     window.setInterval("changeProgress();", 500);
     </script>
     <style>
     #please_wait_menu{
@@ -1351,6 +1351,7 @@
       
       border-radius: 8px;
       border-bottom: 4px solid blue;
+      cursor:  progress
     }
 
     #please_wait_footer{
