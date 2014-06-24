@@ -1267,24 +1267,35 @@
             type: "POST",
             url: "/roster/create_roster",
             data: "start_date=" + start_date + '&end_date=' + end_date,
+            beforeSend:function(){
+              pleaseWaitMessage();
+            },
             success: function(result){
+                if (document.getElementById('please_wait_menu')){
+                  please_wait_menu = document.getElementById('please_wait_menu');
+                  please_wait_menu.parentNode.removeChild(please_wait_menu);
+                }
                 showViewRosterPrompt();
               }
           });
      }
 
      function showViewRosterPrompt(){
-      //TO BE CONTINUED
-      if (document.getElementById('create_roster_menu')){
-        rmenu = document.getElementById('create_roster_menu');
-        rmenu.parentNode.removeChild(rmenu);
-      }
+      
+        if (document.getElementById('create_roster_menu')){
+          rmenu = document.getElementById('create_roster_menu');
+          rmenu.parentNode.removeChild(rmenu);
+        }
+        
+        if (document.getElementById('shield')){
+          document.getElementById('shield').style.display='none';
+        }
 
-      if (document.getElementById('shield')){
-        //document.getElementById('shield').style.display='none';
-      }
+        if (document.getElementById('shield_two')){
+          document.getElementById('shield_two').style.display='inline';
+        }
+        document.getElementById('shield_two').style.display='inline';
         inner_content = document.getElementById('inner_content');
-        //document.getElementById('shield_two').style.display='inline';
         html = "<div id='roster_prompt_menu' style='left:24%; width:54%;'>";
 
         html+= "<div id='roster_prompt_header' style='background-color: #FF3030;'>";
@@ -1296,8 +1307,8 @@
         html+="</div>";
 
         html+="<div id='roster_prompt_footer' style='background-color: #BDB76B;'>";
-        html+="<span id='okay_button' onclick=''>View</span>";
-        html+="<span id='cancel_button' onclick='window.location=\"/roster/content\"'>Cancel</span>";
+        html+="<span id='okay_button' onclick=''>View Now</span>";
+        html+="<span id='cancel_button' onclick='window.location=\"/roster/content\"'>View Later</span>";
         html+="</div>";
 
         html+="</div>";
@@ -1305,8 +1316,11 @@
      }
 
      function pleaseWaitMessage(){
+         if (document.getElementById('create_roster_menu')){
+          rmenu = document.getElementById('create_roster_menu');
+          rmenu.parentNode.removeChild(rmenu);
+        }
         inner_content = document.getElementById('inner_content');
-        //document.getElementById('shield_two').style.display='inline';
         html= "<div id='please_wait_menu' style='left:24%; width:54%;'>";
 
         html+="<div id='please_wait_header' style='background-color: #FF3030;'>";
@@ -1335,7 +1349,7 @@
             if (progress.length == 0) document.getElementById('progress').innerHTML='.';
             document.getElementById('shield_two').style.display='inline';
             document.getElementById("shield_two").style.cursor="progress";
-     }
+      }
 }
      window.setInterval("changeProgress();", 500);
     </script>
