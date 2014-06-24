@@ -1,3 +1,4 @@
+require 'csv'
 class RosterController < ApplicationController
 
   def create_roster
@@ -166,7 +167,25 @@ class RosterController < ApplicationController
   end
 
   def process_csv_file
-    raise params[:file].path.inspect
+    csv_text = File.read(params[:file].path)
+    csv = CSV.parse(csv_text, :headers => true)
+    header = csv[0]
+    csv.each do |row|
+      next if row == header
+      row = row.to_s.split(/,/)
+      employee_number = row[0] #There is need to add this field in nurse table
+      first_name = row[1]
+      last_name = row[2]
+      gender = row[3]
+      grade = row[4]
+      Nurse.create(
+          :first_name => first_name,
+          :last_name => last_name,
+          :gender => gender,
+          :grade => grade
+      )
+    end
+    redirect_to :action => 'content'
   end
   
 end
