@@ -166,7 +166,7 @@ class RosterController < ApplicationController
   end
 
   def process_csv_file
-    raise params.inspect
+    raise params[:file].path.inspect
   end
   
 end

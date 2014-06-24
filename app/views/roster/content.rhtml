@@ -1063,14 +1063,14 @@
         html+="<span style='position:absolute; top:4%; left:9%; top:30%;'>Upload CSV file</span>";
         html+="</div>";
 
-        html+= "<div id='create_roster_content'>";
-        html+="<div style='position: absolute; left:10%; width:80%; margin-top:7%;'><span>Browse file</span><input style='position:absolute; width:48%; left:25%;' id='uploadFile' placeholder='Choose File' disabled='disabled'/>"
+        html+= "<div id='create_roster_content'>";       
+        html+="<div style='position: absolute; left:10%; width:80%; margin-top:7%;'><span>Browse file</span>"
+        html+="<input style='position:absolute; width:48%; left:25%;' id='uploadFile' placeholder='Choose File' disabled='disabled'/>"
         html+="<div class='fileUpload'><span onclick='getFile()'>Upload</span>"
-        html+="<div style='height:0px !important; width:0px !important;' id='hide_me'><input id='upfile' type='file' onchange='sub(this);' /></div></div></div>"
+        html+="</div></div>"
         html+="</div>";
 
         html+= "<div id='create_roster_footer'>";
- 
         html+="<span onclick='document.getElementById(\"upload_csv\").submit();' id='okay_button'>Send</span>";
         html+="<span onclick='hideCreateCSVPopup();' id='cancel_button'>Cancel</span>";
         html+="</div>";
@@ -1080,7 +1080,7 @@
      }
 
        function getFile(){
-         document.getElementById("upfile").click();
+         document.getElementById("file").click();
         }
 
        function sub(obj){
@@ -1866,11 +1866,6 @@
         position: absolute;
         width: 80%;
       }
-
-      #hide_me{
-        position: absolute;
-        height: 0%;
-      }
       
       .fileUpload span{
          border-top: 1px solid #96d1f8;
@@ -2078,7 +2073,11 @@
       <div id="inner_content">
         
       </div>
-      
+      <div id="upload" style="display:none;">
+        <%= form_tag("process_csv_file", :multipart => true, :id => 'upload_csv') %>      
+            <%= file_field_tag'file', :onchange => 'sub(this);'%>
+        </form_tag>
+      </div>
       <div id="footer">
         <div id="logout">
           <span>logout</span>
