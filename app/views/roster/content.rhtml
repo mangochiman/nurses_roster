@@ -1328,8 +1328,8 @@
         html+="</div>";
 
         html+="<div id='please_wait_content' style='background-color:black; color:white;'>";
-        html+="<table style='position:absolute; color:white; font-size:14pt; left:20%; top:5%;'>"
-        html+="<tr><td>Generating. Please wait</td> <td id='progress' style='font-weight:bold;'></td></tr>"
+        html+="<table style='position:absolute; color:white; font-size:14pt; left:18%; top:5%;'>"
+        html+="<tr><td>Generating Roster. Please wait</td> <td id='progress' style='font-weight:bold;'></td></tr>"
         html+="</table>"
         html+="</div>";
 
@@ -1350,8 +1350,26 @@
             document.getElementById('shield_two').style.display='inline';
             document.getElementById("shield_two").style.cursor="progress";
       }
-}
+    }
      window.setInterval("changeProgress();", 500);
+
+     function viewRoster(){
+      jQuery.ajax({
+            type: "POST",
+            url: "/roster/view_main_roster",
+            data: "",
+            beforeSend:function(){
+
+            },
+            success: function(roster_hash){
+              console.log(roster_hash)
+              for (var nurse_id in roster_hash){
+
+              }
+            }
+          });
+     }
+     
     </script>
     <style>
     #please_wait_menu{

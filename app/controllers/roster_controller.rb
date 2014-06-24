@@ -187,5 +187,19 @@ class RosterController < ApplicationController
     end
     redirect_to :action => 'content'
   end
-  
+
+  def view_main_roster
+		roster_obj = Roster.all(:limit => 20)
+		roster_hash = {}
+		roster_obj.each do |roster|
+			nurse_id = roster.nurse_id
+			roster_date = roster.shift.shift_date.to_s
+			shift_name = roster.shift.shift_type.name
+			roster_hash[nurse_id] = {} if roster_hash[nurse_id].blank?
+			roster_hash[nurse_id][roster_date] = {} if roster_hash[nurse_id][roster_date].blank?
+			roster_hash[nurse_id][roster_date] = shift_name
+		end
+
+    render :json => roster_hash and return
+  end
 end
