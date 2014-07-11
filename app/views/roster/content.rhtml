@@ -1354,10 +1354,21 @@
      window.setInterval("changeProgress();", 500);
 
      function viewRoster(){
-        roster_dates = ['2014-06-05', '2014-06-06', '2014-06-07', '2014-06-08', '2014-06-09',
-                        '2014-06-10', '2014-06-11', '2014-06-12', '2014-06-13', '2014-06-14',
-                        '2014-06-15', '2014-06-16', '2014-06-17', '2014-06-18', '2014-06-19'];
-                      
+        var roster_dates = [];
+
+        jQuery.ajax({
+          type: "POST",
+          url: "/roster/return_roster_dates",
+          data: "",
+          success: function(rdates){
+            roster_dates = rdates;
+          }
+        });
+
+
+        alert(roster_dates);
+
+
         html = "<div id='main_roster' style=''>";
         html+="<table style='position:absolute; width:60%;'>";
         html+="<tr>";
