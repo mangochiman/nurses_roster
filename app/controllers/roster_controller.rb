@@ -199,7 +199,12 @@ class RosterController < ApplicationController
 			roster_hash[nurse_id][roster_date] = {} if roster_hash[nurse_id][roster_date].blank?
 			roster_hash[nurse_id][roster_date] = shift_name
 		end
-
     render :json => roster_hash and return
   end
+
+  def return_roster_dates
+    roster_dates = Roster.all(:limit => 60).collect{|roster|roster.shift.shift_date}.uniq.sort
+    render :json => roster_dates and return
+  end
+  
 end
