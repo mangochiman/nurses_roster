@@ -1353,22 +1353,24 @@
     }
      window.setInterval("changeProgress();", 500);
 
+
+     function getRosterDates() {
+        return JSON.parse($.ajax({
+            type: 'GET',
+            url: '/roster/return_roster_dates',
+            dataType: 'json',
+            global: false,
+            async:false,
+            success: function(data) {
+              return data;
+            }
+        }).responseText);
+    }
+
+
+
      function viewRoster(){
-        var roster_dates = [];
-
-        jQuery.ajax({
-          type: "POST",
-          url: "/roster/return_roster_dates",
-          data: "",
-          success: function(rdates){
-            roster_dates = rdates;
-          }
-        });
-
-
-        alert(roster_dates);
-
-
+        roster_dates = getRosterDates();
         html = "<div id='main_roster' style=''>";
         html+="<table style='position:absolute; width:60%;'>";
         html+="<tr>";
@@ -1398,7 +1400,6 @@
             }
             html+="</table>";
             html+="</div>";
-            console.log(html);
           }
         });
         
