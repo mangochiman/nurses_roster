@@ -1371,12 +1371,12 @@
 
      function viewRoster(){
         roster_dates = getRosterDates();
-        html = "<div id='main_roster' style=''>";
-        html+="<table style='position:absolute; width:60%;'>";
-        html+="<tr>";
-        html+="<td>&nbsp;</td>";
+        html = "<div id='main_roster'>";
+        html+="<table cellspacing='0' style='position:absolute; width:100%;'>";
+        html+="<tr style='background-color:#D1EEEE; line-height:2em;'>";
+        html+="<td style='min-width:60px; background-color:white; border-bottom: 1px solid black;'>&nbsp;</td>";
         for(i=0; i < roster_dates.length; i++){
-          html+="<td><span>" + roster_dates[i] + "</span></td>";
+          html+="<td style='min-width:120px; border-bottom: 1px solid black;'><center><span>" + roster_dates[i] + "</span></center></td>";
         }
         html+="</tr>";
         
@@ -1388,18 +1388,20 @@
 
           },
           success: function(roster_hash){
+              inner_content = document.getElementById('inner_content');
               for (var nurse_id in roster_hash){
                 html+="<tr>";
-                html+="<td>" + nurse_id + "</td>";
+                html+="<td style='background-color:#D1EEEE; border-bottom: 1px solid black;border-right: 1px solid black;'>" + nurse_id + "</td>";
                 for(i=0; i < roster_dates.length; i++){
                   shift_date = roster_dates[i];
-                  shift = roster_hash[nurse_id][shift_date] || 'N/A';
-                  html+="<td>" + shift + "</td>";
+                  shift = roster_hash[nurse_id][shift_date] || "";
+                  html+="<td style='border-bottom: 1px solid black; border-right: 1px solid black;'><center><span>" + shift + "</span></center></td>";
                 }
                 html+="</tr>";
-            }
+              }
             html+="</table>";
             html+="</div>";
+            inner_content.innerHTML=html;
           }
         });
         
@@ -1407,6 +1409,16 @@
      
     </script>
     <style>
+		#main_roster{
+			overflow:auto;
+			position: absolute;
+			z-index: 50;
+			width: 98%;
+			left: 0.5;
+			height: 70%;
+			top: 11%;
+		}
+
     #please_wait_menu{
       z-index: 12;
       position: absolute;

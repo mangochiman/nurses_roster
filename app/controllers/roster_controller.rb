@@ -189,7 +189,7 @@ class RosterController < ApplicationController
   end
 
   def view_main_roster
-		roster_obj = Roster.all(:limit => 20)
+		roster_obj = Roster.all(:limit => 200)
 		roster_hash = {}
 		roster_obj.each do |roster|
 			nurse_id = roster.nurse_id
@@ -203,7 +203,7 @@ class RosterController < ApplicationController
   end
 
   def return_roster_dates
-    roster_dates = Roster.all(:limit => 60).collect{|roster|roster.shift.shift_date}.uniq.sort
+    roster_dates = Roster.all.collect{|roster|roster.shift.shift_date}.uniq.sort
     render :json => roster_dates and return
   end
   
