@@ -19,7 +19,12 @@ class RosterController < ApplicationController
 			roster[rdate] = {}
 			while !(free_shifts.blank?)
 				random_shift = free_shifts.shuffle.last
-        required = 3#shift_constraints[random_shift]["maximum_staff"]
+        if (shift_constraints[random_shift])
+            required = shift_constraints[random_shift]["maximum_staff"] unless shift_constraints[random_shift]["maximum_staff"].blank?
+            required = rand(10) if shift_constraints[random_shift]["maximum_staff"].blank?
+        else
+          required = rand(10)
+        end
 				roster[rdate][random_shift] = []
         random_nurses = Roster.randomize_nurses(required) if (roster[rdate].keys.blank?)
         random_nurses = Roster.randomize_available_nurses(available_nurses, roster, rdate, required) unless (roster[rdate].keys.blank?)
@@ -189,11 +194,11 @@ class RosterController < ApplicationController
   end
 
   def view_main_roster
-		roster_obj = Roster.all(:limit => 200)
+		roster_obj = Roster.all
 		roster_hash = {}
 		roster_obj.each do |roster|
 			nurse_id = roster.nurse_id
-			roster_date = roster.shift.shift_date.to_s
+			roster_date = roster.shift.shift_date.strftime("%d-%b-%Y")
 			shift_name = roster.shift.shift_type.name
 			roster_hash[nurse_id] = {} if roster_hash[nurse_id].blank?
 			roster_hash[nurse_id][roster_date] = {} if roster_hash[nurse_id][roster_date].blank?
@@ -203,7 +208,7 @@ class RosterController < ApplicationController
   end
 
   def return_roster_dates
-    roster_dates = Roster.all.collect{|roster|roster.shift.shift_date}.uniq.sort
+    roster_dates = Roster.all.collect{|roster|roster.shift.shift_date.strftime("%d-%b-%Y")}.uniq.sort
     render :json => roster_dates and return
   end
   
