@@ -25,6 +25,8 @@
               <%  next if image.nil? %>
               <% if caption.match(/Create Roster/i) %>
                 html+="<td onclick='createRoster();'>";
+              <% elsif caption.match(/View Roster/i) %>
+                html+="<td onclick='viewRoster();'>";
               <% else %>
                 html+="<td>";
               <% end %>
