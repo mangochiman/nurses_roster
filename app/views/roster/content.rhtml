@@ -1270,7 +1270,7 @@
             url: "/roster/create_roster",
             data: "start_date=" + start_date + '&end_date=' + end_date,
             beforeSend:function(){
-              pleaseWaitMessage();
+              pleaseWaitMessage("Generating Roster. Please wait");
             },
             success: function(result){
                 if (document.getElementById('please_wait_menu')){
@@ -1317,7 +1317,7 @@
         inner_content.innerHTML+=html;
      }
 
-     function pleaseWaitMessage(){
+     function pleaseWaitMessage(message){
          if (document.getElementById('create_roster_menu')){
           rmenu = document.getElementById('create_roster_menu');
           rmenu.parentNode.removeChild(rmenu);
@@ -1331,7 +1331,7 @@
 
         html+="<div id='please_wait_content' style='background-color:black; color:white;'>";
         html+="<table style='position:absolute; color:white; font-size:14pt; left:18%; top:5%;'>"
-        html+="<tr><td>Generating Roster. Please wait</td> <td id='progress' style='font-weight:bold;'></td></tr>"
+        html+="<tr><td>" + message + "</td> <td id='progress' style='font-weight:bold;'></td></tr>"
         html+="</table>"
         html+="</div>";
 
@@ -1372,24 +1372,30 @@
 
 
      function viewRoster(){
-        roster_dates = getRosterDates();
-        html = "<div id='main_roster'>";
-        html+="<table cellspacing='0' style='position:absolute; width:100%;'>";
-        html+="<tr style='background-color:#D1EEEE; line-height:2em;'>";
-        html+="<td style='min-width:60px; background-color:white; border-bottom: 1px solid black;'>&nbsp;</td>";
-        for(i=0; i < roster_dates.length; i++){
-          html+="<td style='min-width:120px; border-bottom: 1px solid black;'><center><span>" + roster_dates[i] + "</span></center></td>";
-        }
-        html+="</tr>";
-        
+        roster_dates = getRosterDates();        
         jQuery.ajax({
           type: "POST",
           url: "/roster/view_main_roster",
           data: "",
           beforeSend:function(){
-
+            pleaseWaitMessage("Iniatilizing. Please wait");
           },
           success: function(roster_hash){
+						document.getElementById('shield_two').style.display='none';
+
+						if (document.getElementById('please_wait_menu')){
+                please_wait_menu = document.getElementById('please_wait_menu');
+                please_wait_menu.parentNode.removeChild(please_wait_menu);
+            }
+
+						html = "<div id='main_roster'>";
+						html+="<table cellspacing='0' style='position:absolute; width:100%;'>";
+						html+="<tr style='background-color:#D1EEEE; line-height:2em;'>";
+						html+="<td style='min-width:60px; background-color:white; border-bottom: 1px solid black;'>&nbsp;</td>";
+				    for(i=0; i < roster_dates.length; i++){
+				      html+="<td style='min-width:120px; border-bottom: 1px solid black;'><center><span>" + roster_dates[i] + "</span></center></td>";
+				    }
+        		html+="</tr>";
               inner_content = document.getElementById('inner_content');
               for (var nurse_id in roster_hash){
                 html+="<tr>";
