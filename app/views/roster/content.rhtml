@@ -1414,9 +1414,56 @@
         });
         
      }
-     
+
+     function showRosterSummaryByDate(e){
+        rdate = e //e.getAttribute('rdate');
+        jQuery.ajax({
+            type: "POST",
+            url: "/roster/roster_summary_by_date",
+            data: "rdate=" + rdate,
+            success: function(result){
+              roster_summary = eval(result);
+							inner_content = document.getElementById('inner_content');
+							html = "<div id='warning_menu' style='height:30%; left:43%; width:36%; border-left: 1px solid black; border-right: 1px solid black;'>";
+
+						  html+= "<div id='warning_header' style='background-color: #36648B; height:40px'>";
+						  html+="<span style='position:absolute; left:34%; top:36%;'>" + rdate + "</span>";
+						  html+="</div>";
+
+						  html+= "<div id='warning_content' >";
+						  html+="<table style='position: absolute; left: 5%; top: 25%; width:80%;'>";
+						  for (var roster in roster_summary){
+                html+="<tr>";
+                html+="<td>" + roster + "</td>";
+			          html+="<td>" + roster_summary[roster]["count"] + "</td>";
+                html+="</tr>";
+              }
+						  html+="</table>"
+						  html+="</div>";
+
+						  html+="<div id='warning_footer' style='background-color: gray; height:42px;'>";
+						  html+="<span style='padding: 1.5% 41.5%;' id='okay' onclick='hideElements(\"warning_menu\")'>Okay</span>";
+						  html+="</div>";
+
+						  html+="</div>";
+							inner_content.innerHTML+=html;
+            }
+        });
+     }
+
     </script>
     <style>
+
+		#roster_summary_footer{
+			background-color: gray;
+      height: 50px;
+      width: 100%;
+      position: absolute;
+      width: 100%;
+      position: absolute;
+      bottom: 0px;
+		}
+
 		#main_roster{
 			overflow:auto;
 			position: absolute;

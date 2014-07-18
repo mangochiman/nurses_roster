@@ -83,4 +83,12 @@ class Nurse < ActiveRecord::Base
 
 		return roster_rejection_by_nurse
 	end
+
+  def self.names(id)
+    nurse = Nurse.find(id)
+    fname = nurse.first_name
+    lname = nurse.last_name
+    return fname + ' ' + lname
+  end
+  
 end

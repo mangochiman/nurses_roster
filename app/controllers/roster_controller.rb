@@ -211,5 +211,35 @@ class RosterController < ApplicationController
     roster_dates = Roster.all.collect{|roster|roster.shift.shift_date.strftime("%d-%b-%Y")}.uniq.sort
     render :json => roster_dates and return
   end
+
+  def roster_summary_by_date
+    rdate = params[:rdate].to_date
+    roster = {}
+    shifts = Shift.find(:all, :conditions => ["DATE(shift_date) =?", rdate])
+    shifts.each do |shift|
+      shift_name = shift.shift_type.name
+      roster[shift_name] = {} if roster[shift_name].blank?
+      roster[shift_name]["count"] = 0 if roster[shift_name]["count"].blank?
+      roster[shift_name]["count"] += 1
+    end
+    render :json => roster and return
+  end
+
+  def roster_summary_by_nurse
+    nurse_id = params[:nurse_id]
+    start_date = params[:start_date].to_date rescue nil #To be used later
+    end_date = params[:end_date].to_date rescue nil #To be used later
+    nurse_roster = Roster.find(:all, :conditions => ["nurse_id =?", nurse_id])
+    roster = {}
+    nurse_names = Nurse.names(nurse_id)
+    roster["names"] = nurse_names
+    nurse_roster.each do |r|
+      shift_name = r.shift.shift_type.name
+      roster[shift_name] = {} if roster[shift_name].blank?
+      roster[shift_name]["count"] = 0 if roster[shift_name]["count"].blank?
+      roster[shift_name]["count"] += 1
+    end
+    render :json => roster and return
+  end
   
 end
