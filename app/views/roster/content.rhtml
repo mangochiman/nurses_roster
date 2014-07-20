@@ -1381,32 +1381,32 @@
             pleaseWaitMessage("Iniatilizing. Please wait");
           },
           success: function(roster_hash){
-						document.getElementById('shield_two').style.display='none';
+            document.getElementById('shield_two').style.display='none';
 
-						if (document.getElementById('please_wait_menu')){
+            if (document.getElementById('please_wait_menu')){
                 please_wait_menu = document.getElementById('please_wait_menu');
                 please_wait_menu.parentNode.removeChild(please_wait_menu);
             }
 
-						html = "<div id='main_roster'>";
-						html+="<table cellspacing='0' style='position:absolute; width:100%;'>";
-						html+="<tr style='background-color:#D1EEEE; line-height:2em;'>";
-						html+="<td style='min-width:60px; background-color:white; border-bottom: 1px solid black;'>&nbsp;</td>";
-				    for(i=0; i < roster_dates.length; i++){
-				      html+="<td style='min-width:120px; border-bottom: 1px solid black;'><center><span>" + roster_dates[i] + "</span></center></td>";
-				    }
-        		html+="</tr>";
-              inner_content = document.getElementById('inner_content');
-              for (var nurse_id in roster_hash){
-                html+="<tr>";
-                html+="<td style='background-color:#D1EEEE; border-bottom: 1px solid black;border-right: 1px solid black;'>" + nurse_id + "</td>";
-                for(i=0; i < roster_dates.length; i++){
-                  shift_date = roster_dates[i];
-                  shift = roster_hash[nurse_id][shift_date] || "";
-                  html+="<td style='border-bottom: 1px solid black; border-right: 1px solid black;'><center><span>" + shift + "</span></center></td>";
-                }
-                html+="</tr>";
+            html = "<div id='main_roster'>";
+            html+="<table cellspacing='0' style='position:absolute; width:100%;'>";
+            html+="<tr style='background-color:#D1EEEE; line-height:2em;'>";
+            html+="<td style='min-width:60px; background-color:white; border-bottom: 1px solid black;'>&nbsp;</td>";
+            for(i=0; i < roster_dates.length; i++){
+              html+="<td onclick='showRosterSummaryByDate(this)' class='roster_header' style='min-width:120px; border-bottom: 1px solid black;' rdate=" + roster_dates[i] + "><center><span>" + roster_dates[i] + "</span></center></td>";
+            }
+            html+="</tr>";
+            inner_content = document.getElementById('inner_content');
+            for (var nurse_id in roster_hash){
+              html+="<tr>";
+              html+="<td style='background-color:#D1EEEE; border-bottom: 1px solid black;border-right: 1px solid black;'>" + nurse_id + "</td>";
+              for(i=0; i < roster_dates.length; i++){
+                shift_date = roster_dates[i];
+                shift = roster_hash[nurse_id][shift_date] || "";
+                html+="<td style='border-bottom: 1px solid black; border-right: 1px solid black;'><center><span>" + shift + "</span></center></td>";
               }
+              html+="</tr>";
+            }
             html+="</table>";
             html+="</div>";
             inner_content.innerHTML=html;
@@ -1416,7 +1416,7 @@
      }
 
      function showRosterSummaryByDate(e){
-        rdate = e //e.getAttribute('rdate');
+        rdate = e.getAttribute('rdate');
         old_value = $('#shield').css('z-index');
         jQuery.ajax({
             type: "POST",
@@ -1427,14 +1427,14 @@
               $('#shield').css('z-index', 51);
               roster_summary = eval(result);
               inner_content = document.getElementById('inner_content');
-              html = "<div id='warning_menu' style='z-index:100; height:30%; left:43%; width:36%; border-left: 1px solid black; border-right: 1px solid black;'>";
+              html = "<div id='warning_menu' style='z-index:100; height:34%; left:33.5%; width:36%; border-left: 1px solid black; border-right: 1px solid black;'>";
 
               html+= "<div id='warning_header' style='background-color: #36648B; height:40px'>";
               html+="<span style='position:absolute; left:34%; top:36%;'>" + rdate + "</span>";
               html+="</div>";
 
-              html+= "<div id='warning_content' >";
-              html+="<table style='position: absolute; left: 5%; top: 25%; width:80%;'>";
+              html+= "<div id='warning_content' style='position:relative; overflow:auto; height:56%; margin-top:13%;'>";
+              html+="<table style='position: absolute; left: 5%; top: 4%; width:80%;'>";
               for (var roster in roster_summary){
                 html+="<tr>";
                 html+="<td>" + roster + "</td>";
