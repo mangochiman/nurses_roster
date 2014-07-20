@@ -1417,38 +1417,81 @@
 
      function showRosterSummaryByDate(e){
         rdate = e //e.getAttribute('rdate');
+        old_value = $('#shield').css('z-index');
         jQuery.ajax({
             type: "POST",
             url: "/roster/roster_summary_by_date",
             data: "rdate=" + rdate,
             success: function(result){
+              showShieldOne();
+              $('#shield').css('z-index', 51);
               roster_summary = eval(result);
-							inner_content = document.getElementById('inner_content');
-							html = "<div id='warning_menu' style='height:30%; left:43%; width:36%; border-left: 1px solid black; border-right: 1px solid black;'>";
+              inner_content = document.getElementById('inner_content');
+              html = "<div id='warning_menu' style='z-index:100; height:30%; left:43%; width:36%; border-left: 1px solid black; border-right: 1px solid black;'>";
 
-						  html+= "<div id='warning_header' style='background-color: #36648B; height:40px'>";
-						  html+="<span style='position:absolute; left:34%; top:36%;'>" + rdate + "</span>";
-						  html+="</div>";
+              html+= "<div id='warning_header' style='background-color: #36648B; height:40px'>";
+              html+="<span style='position:absolute; left:34%; top:36%;'>" + rdate + "</span>";
+              html+="</div>";
 
-						  html+= "<div id='warning_content' >";
-						  html+="<table style='position: absolute; left: 5%; top: 25%; width:80%;'>";
-						  for (var roster in roster_summary){
+              html+= "<div id='warning_content' >";
+              html+="<table style='position: absolute; left: 5%; top: 25%; width:80%;'>";
+              for (var roster in roster_summary){
                 html+="<tr>";
                 html+="<td>" + roster + "</td>";
-			          html+="<td>" + roster_summary[roster]["count"] + "</td>";
+                html+="<td>" + roster_summary[roster]["count"] + "</td>";
                 html+="</tr>";
               }
-						  html+="</table>"
-						  html+="</div>";
+              html+="</table>"
+              html+="</div>";
 
-						  html+="<div id='warning_footer' style='background-color: gray; height:42px;'>";
-						  html+="<span style='padding: 1.5% 41.5%;' id='okay' onclick='hideElements(\"warning_menu\")'>Okay</span>";
-						  html+="</div>";
+              html+="<div id='warning_footer' style='background-color: gray; height:42px;'>";
+              html+="<span style='padding: 1.5% 41.5%;' id='okay' onclick='hideElements(\"warning_menu\"); hideShield(); resetZindexValues(\"shield\", old_value)'>Okay</span>";
+              html+="</div>";
 
-						  html+="</div>";
-							inner_content.innerHTML+=html;
+              html+="</div>";
+              inner_content.innerHTML+=html;
             }
         });
+     }
+
+     function resetZindexValues(id, old_value){
+      old_value = parseInt(old_value);
+      //if (!old_value.match(/NaN/i)){
+      $('#' + id).css('z-index', parseInt(old_value));
+      //}
+     }
+
+     function showShieldOne(){
+       if (document.getElementById('shield')){
+        document.getElementById('shield').style.display='inline';
+        hideShieldTwo();
+       }
+     }
+
+     function showShieldTwo(){
+       if (document.getElementById('shield_two')){
+        document.getElementById('shield_two').style.display='inline';
+        hideShieldOne();
+       }
+     }
+
+     function hideShieldOne(){
+       if (document.getElementById('shield')){
+        document.getElementById('shield').style.display='none';
+       }
+     }
+
+     function hideShieldTwo(){
+       if (document.getElementById('shield_two')){
+        document.getElementById('shield_two').style.display='none';
+       }
+     }
+
+     function hideShield(){
+       shield_one = document.getElementById('shield');
+       shield_two = document.getElementById('shield_two');
+       if (shield_one.style.display.match(/inline/i)){shield_one.style.display='none'};
+       if (shield_two.style.display.match(/inline/i)){shield_two.style.display='none'};
      }
 
     </script>
