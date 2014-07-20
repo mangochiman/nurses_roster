@@ -1399,7 +1399,7 @@
             inner_content = document.getElementById('inner_content');
             for (var nurse_id in roster_hash){
               html+="<tr>";
-              html+="<td style='background-color:#D1EEEE; border-bottom: 1px solid black;border-right: 1px solid black;'>" + nurse_id + "</td>";
+              html+="<td class='nurse_names' onclick='showRosterSummaryByNurse(this)' style='background-color:#D1EEEE; border-bottom: 1px solid black;border-right: 1px solid black;' nurse_id=" + nurse_id + ">" + nurse_id + "</td>";
               for(i=0; i < roster_dates.length; i++){
                 shift_date = roster_dates[i];
                 shift = roster_hash[nurse_id][shift_date] || "";
@@ -1454,6 +1454,48 @@
         });
      }
 
+     function showRosterSummaryByNurse(e){
+        nurse_id = e.getAttribute('nurse_id');
+        old_value = $('#shield').css('z-index');
+        jQuery.ajax({
+            type: "POST",
+            url: "/roster/roster_summary_by_nurse",
+            data: "nurse_id=" + nurse_id,
+            success: function(result){
+              showShieldOne();
+              $('#shield').css('z-index', 51);
+              roster_summary = eval(result);
+              nurse_names = result["names"];
+              console.log(nurse_names);
+              inner_content = document.getElementById('inner_content');
+              html = "<div id='warning_menu' style='z-index:100; height:34%; left:33.5%; width:36%; border-left: 1px solid black; border-right: 1px solid black;'>";
+
+              html+= "<div id='warning_header' style='background-color: #36648B; height:40px'>";
+              html+="<span style='position:absolute; left:6%; top:36%;'>" +  nurse_names + "</span>";
+              html+="</div>";
+
+              html+= "<div id='warning_content' style='position:relative; overflow:auto; height:56%; margin-top:13%;'>";
+              html+="<table style='position: absolute; left: 5%; top: 4%; width:80%;'>";
+              for (var roster in roster_summary){
+                if (roster.match(/names/i))continue;
+                html+="<tr>";
+                html+="<td>" + roster + "</td>";
+                html+="<td>" + roster_summary[roster]["count"] + "</td>";
+                html+="</tr>";
+              }
+              html+="</table>"
+              html+="</div>";
+
+              html+="<div id='warning_footer' style='background-color: gray; height:42px;'>";
+              html+="<span style='padding: 1.5% 41.5%;' id='okay' onclick='hideElements(\"warning_menu\"); hideShield(); resetZindexValues(\"shield\", old_value)'>Okay</span>";
+              html+="</div>";
+
+              html+="</div>";
+              inner_content.innerHTML+=html;
+            }
+        });
+     }
+     
      function resetZindexValues(id, old_value){
       old_value = parseInt(old_value);
       //if (!old_value.match(/NaN/i)){
@@ -1496,26 +1538,41 @@
 
     </script>
     <style>
+    .nurse_names{
+      cursor: pointer;
+    }
 
-		#roster_summary_footer{
-			background-color: gray;
+    .nurse_names:hover{
+      background-color: #4682B4 !important;
+    }
+    
+    .roster_header{
+      cursor: pointer;
+    }
+    
+    .roster_header:hover{
+      background-color: #4682B4;
+    }
+
+    #roster_summary_footer{
+      background-color: gray;
       height: 50px;
       width: 100%;
       position: absolute;
       width: 100%;
       position: absolute;
       bottom: 0px;
-		}
+    }
 
-		#main_roster{
-			overflow:auto;
-			position: absolute;
-			z-index: 50;
-			width: 98%;
-			left: 0.5;
-			height: 70%;
-			top: 11%;
-		}
+    #main_roster{
+      overflow:auto;
+      position: absolute;
+      z-index: 50;
+      width: 98%;
+      left: 0.5;
+      height: 70%;
+      top: 11%;
+    }
 
     #please_wait_menu{
       z-index: 12;
