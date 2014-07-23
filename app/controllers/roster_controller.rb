@@ -241,5 +241,23 @@ class RosterController < ApplicationController
     end
     render :json => roster and return
   end
+
+  def roster_summary_by_shift
+    shift_name = params[:shift_name]
+    rdate = params[:rdate].to_date
+    shift_type_id = ShiftType.find_by_name(shift_name).id
+    roster_data = Roster.find(:all, :joins => [:shift], :conditions => ["shift_type_id =? AND
+        DATE(shift_date) =?", shift_type_id, rdate])
+    names = {}
+    roster_data.each do |roster|
+      nurse_id = roster.nurse_id
+      nurse_names = Nurse.names(nurse_id)
+      names[nurse_id] = {}
+      names[nurse_id] = nurse_names
+    end
+    total_nurses = names.keys.length
+    names["total_nurses"] = total_nurses
+    render :json => names and return
+  end
   
 end
