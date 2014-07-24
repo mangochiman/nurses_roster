@@ -27,6 +27,8 @@
                 html+="<td onclick='createRoster();'>";
               <% elsif caption.match(/View Roster/i) %>
                 html+="<td onclick='viewRoster();'>";
+              <% elsif caption.match(/Edit Roster/i) %>
+                html+="<td onclick='viewRosterToBeEdited();'>";
               <% else %>
                 html+="<td>";
               <% end %>
@@ -1422,6 +1424,55 @@
         
      }
 
+     function viewRosterToBeEdited(){
+        roster_dates = getRosterDates();
+        jQuery.ajax({
+          type: "POST",
+          url: "/roster/view_main_roster",
+          data: "",
+          beforeSend:function(){
+            pleaseWaitMessage("Iniatilizing. Please wait");
+          },
+          success: function(roster_hash){
+            document.getElementById('shield_two').style.display='none';
+
+            if (document.getElementById('please_wait_menu')){
+                please_wait_menu = document.getElementById('please_wait_menu');
+                please_wait_menu.parentNode.removeChild(please_wait_menu);
+            }
+
+            html = "<div id='main_roster'>";
+            html+="<table cellspacing='0' style='position:absolute; width:100%;'>";
+            html+="<tr style='background-color:#D1EEEE; line-height:2em;'>";
+            html+="<td style='min-width:60px; background-color:white; border-bottom: 1px solid black;'>&nbsp;</td>";
+            for(i=0; i < roster_dates.length; i++){
+              html+="<td onclick='showRosterSummaryByDate(this)' class='roster_header' style='min-width:120px; border-bottom: 1px solid black;' rdate=" + roster_dates[i] + "><center><span>" + roster_dates[i] + "</span></center></td>";
+            }
+            html+="</tr>";
+            inner_content = document.getElementById('inner_content');
+            for (var nurse_id in roster_hash){
+              html+="<tr>";
+              html+="<td class='nurse_names' onclick='showRosterSummaryByNurse(this)' style='background-color:#D1EEEE; border-bottom: 1px solid black;border-right: 1px solid black;' nurse_id=" + nurse_id + ">" + nurse_id + "</td>";
+              for(i=0; i < roster_dates.length; i++){
+                shift_date = roster_dates[i];
+                shift = roster_hash[nurse_id][shift_date] || "";
+                shift_quoted = "'" + shift + "'"
+                html+="<td  style='border-bottom: 1px solid black; border-right: 1px solid black;' rdate=" + shift_date + " shift_name= " + shift_quoted + "><center><span>" + shift + "</span></center></td>";
+             }
+              html+="</tr>";
+            }
+            html+="</table>";
+            html+="</div>";
+            html+="<div class='buttons' style='position:absolute;bottom:18.5%; left:0%; z-index:100; width:100%;'>";
+            html+="<span id='save_changes'>Save</span>";
+            html+="<span id='cancel_changes'>Cancel</span>";
+            html+="</div>";
+            inner_content.innerHTML=html;
+          }
+        });
+
+     }
+     
      function showRosterSummaryByDate(e){
         rdate = e.getAttribute('rdate');
         old_value = $('#shield').css('z-index');
@@ -1585,6 +1636,30 @@
 
     </script>
     <style>
+    .buttons #save_changes{
+      background-color: #F8F8FF;
+      border: 1px solid #008B00;
+      left: 6.5%;
+      padding: 10px 100px;
+      position: absolute;
+      text-decoration: none;
+      top: 14%;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .buttons #cancel_changes{
+      background-color: #F8F8FF;
+      border: 1px solid #008B00;
+      left: 64%;
+      padding: 10px 100px;
+      position: absolute;
+      text-decoration: none;
+      top: 14%;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    
     .roster_shift{
       cursor: pointer;
     }
