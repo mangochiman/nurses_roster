@@ -1450,6 +1450,7 @@
             }
             html+="</tr>";
             inner_content = document.getElementById('inner_content');
+            
             for (var nurse_id in roster_hash){
               html+="<tr>";
               html+="<td class='nurse_names' onclick='showRosterSummaryByNurse(this)' style='background-color:#D1EEEE; border-bottom: 1px solid black;border-right: 1px solid black;' nurse_id=" + nurse_id + ">" + nurse_id + "</td>";
@@ -1457,7 +1458,10 @@
                 shift_date = roster_dates[i];
                 shift = roster_hash[nurse_id][shift_date] || "";
                 shift_quoted = "'" + shift + "'"
-                html+="<td  style='border-bottom: 1px solid black; border-right: 1px solid black;' rdate=" + shift_date + " shift_name= " + shift_quoted + "><center><span>" + shift + "</span></center></td>";
+                if(shift.length > 11) shift = shift.substring(0, 9) + '...';
+                img = "<img style='float:right;' src='/images/down.png' class='drop_down'/>"
+                if(shift.length == 0) img = '';
+                html+="<td  style='border-bottom: 1px solid black; border-right: 1px solid black;' rdate=" + shift_date + " shift_name= " + shift_quoted + "><center><span>" + shift + img + "</span></center></td>";
              }
               html+="</tr>";
             }
@@ -1636,6 +1640,10 @@
 
     </script>
     <style>
+    .drop_down img{
+      position: absolute;
+      left: 10% !important;
+    }
     .buttons #save_changes{
       background-color: #F8F8FF;
       border: 1px solid #008B00;
