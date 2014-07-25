@@ -1597,6 +1597,37 @@
             }
         });
      }
+
+     function showAvailableShifts(){
+        shifts = [
+                  "Day Off Shift", "Early Shift", "Late Shift", "Long Day Shift", //"Night Shift"
+                 ];
+        inner_content = document.getElementById('inner_content');
+        html = "<div id='warning_menu' style='z-index:100; height:30%; left:33.5%; width:25%; border-left: 1px solid black; border-right: 1px solid black;'>";
+
+        html+= "<div id='warning_header' style='background-color: #36648B; height:40px'>";
+        html+="<span style='position:absolute; left:6%; top:36%;'>Select Shift</span>";
+        html+="</div>";
+
+        html+= "<div id='warning_content' style='position:relative; overflow:auto; height:56%; margin-top:17%;'>";
+        html+="<table style='position: absolute; left: 0; top: 4%; width:100%;'>";
+
+        for (i=0; i<shifts.length; i++){
+          html+="<tr>";
+          html+="<td class='shifts_options'>" + shifts[i] + "</td>";
+          html+="</tr>";
+        }
+        
+        html+="</table>"
+        html+="</div>";
+
+        html+="<div id='warning_footer' style='background-color: gray; height:42px;'>";
+        html+="<span style='padding: 1.5% 38.3%;' id='okay' onclick='hideElements(\"warning_menu\"); hideShield(); resetZindexValues(\"shield\", old_value)'>Okay</span>";
+        html+="</div>";
+
+        html+="</div>";
+        inner_content.innerHTML+=html;
+     }
      
      function resetZindexValues(id, old_value){
       old_value = parseInt(old_value);
@@ -1640,6 +1671,15 @@
 
     </script>
     <style>
+    .shifts_options{
+      border-bottom: 1px solid #008B00;
+    }
+
+    .shifts_options:hover{
+      cursor: pointer;
+      background-color: #FF7F24;
+    }
+    
     .drop_down img{
       position: absolute;
       left: 10% !important;
