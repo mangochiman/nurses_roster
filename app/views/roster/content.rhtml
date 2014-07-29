@@ -1462,7 +1462,7 @@
                 if(shift.length > 11) shift = shift.substring(0, 9) + '...';
                 img = "<img style='float:right;' src='/images/down.png' class='drop_down' onmousedown='showAvailableShifts();'/>"
                 if(shift.length == 0) img = '';
-                html+="<td  style='border-bottom: 1px solid black; border-right: 1px solid black;' rdate=" + shift_date + " shift_name= " + shift_quoted + "><center><span>" + shift + img + "</span></center></td>";
+                html+="<td  class='edit_data' onclick='setActiveCell(this);' style='border-bottom: 1px solid black; border-right: 1px solid black;' rdate=" + shift_date + " shift_name= " + shift_quoted + "><center><span>" + shift + img + "</span></center></td>";
              }
               html+="</tr>";
             }
@@ -1652,7 +1652,12 @@
       }
     }
 
-
+     function setActiveCell(e){
+        active_cell = document.getElementById('active_cell');
+        if (active_cell) active_cell.removeAttribute('id');
+        e.setAttribute("id", "active_cell");
+     }
+     
      function resetZindexValues(id, old_value){
       old_value = parseInt(old_value);
       //if (!old_value.match(/NaN/i)){
@@ -1695,6 +1700,17 @@
 
     </script>
     <style>
+    #active_cell{
+       background-color: #6495ED;
+        color: white;
+
+    }
+    
+    .edit_data:hover{
+        background-color: #6495ED;
+        color: white;
+        cursor: pointer;
+    }
     .shifts_options{
       border-bottom: 1px solid #008B00;
     }
