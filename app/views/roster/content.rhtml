@@ -1459,7 +1459,7 @@
                 shift = roster_hash[nurse_id][shift_date] || "";
                 shift_quoted = "'" + shift + "'"
                 if(shift.length > 11) shift = shift.substring(0, 9) + '...';
-                img = "<img style='float:right;' src='/images/down.png' class='drop_down'/>"
+                img = "<img style='float:right;' src='/images/down.png' class='drop_down' onmousedown='showAvailableShifts();'/>"
                 if(shift.length == 0) img = '';
                 html+="<td  style='border-bottom: 1px solid black; border-right: 1px solid black;' rdate=" + shift_date + " shift_name= " + shift_quoted + "><center><span>" + shift + img + "</span></center></td>";
              }
@@ -1598,12 +1598,12 @@
         });
      }
 
-     function showAvailableShifts(){
+     function availableShifts(){
         shifts = [
                   "Day Off Shift", "Early Shift", "Late Shift", "Long Day Shift", //"Night Shift"
                  ];
         inner_content = document.getElementById('inner_content');
-        html = "<div id='warning_menu' style='z-index:100; height:30%; left:33.5%; width:25%; border-left: 1px solid black; border-right: 1px solid black;'>";
+        html = "<div id='warning_menu' class='shift_options' style='z-index:100; height:30%; left:33.5%; width:25%; border-left: 1px solid black; border-right: 1px solid black;'>";
 
         html+= "<div id='warning_header' style='background-color: #36648B; height:40px'>";
         html+="<span style='position:absolute; left:6%; top:36%;'>Select Shift</span>";
@@ -1623,13 +1623,36 @@
 
         html+="<div id='warning_footer' style='background-color: gray; height:42px;'>";
         html+="<span style='padding: 1.5% 11%;' id='okay' onclick='hideElements(\"warning_menu\"); '>Okay</span>";
-         html+="<span style='padding: 1.5% 7%; top:14%;' id='cancel' onclick='hideElements(\"warning_menu\"); '>Cancel</span>";
+         html+="<span style='padding: 1.5% 7%; top:14%;' id='cancel' onclick='removeElement(\"warning_menu\"); '>Cancel</span>";
         html+="</div>";
 
         html+="</div>";
         inner_content.innerHTML+=html;
      }
-     
+
+     $( "td").click( function(event) {
+      $("#divId").css( {position:"absolute", top:event.pageY, left: event.pageX - 200});
+     });
+
+      function removeElement(id){
+        element = document.getElementById(id);
+        element.parentNode.removeChild(element)
+      }
+      
+      function showAvailableShifts(){
+      var drop_downs = document.getElementsByClassName('drop_down');
+      for( var i = 0; i < drop_downs.length; i++ ) {
+        drop_downs[i].onclick = function (event) {
+          availableShifts();
+          $(".shift_options").css({
+                            top:event.pageY,
+                            left: event.pageX - 185
+                          });
+        };
+      }
+    }
+
+
      function resetZindexValues(id, old_value){
       old_value = parseInt(old_value);
       //if (!old_value.match(/NaN/i)){
