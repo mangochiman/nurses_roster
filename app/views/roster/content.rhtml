@@ -13,7 +13,8 @@
       var users_menu = "<%= @users_menu %>";
       var settings_menu = "<%= @settings_menu %>";
       var extra_settings_menu = "<%= @extra_settings_menu %>";
-
+      var old_zindex_value = $('#shield_two').css('z-index');
+      
       function loadRosterData(obj){
         //setActiveTab(obj);
         var inner_content = document.getElementById('inner_content');
@@ -1352,7 +1353,7 @@
             if (progress.length == 1) document.getElementById('progress').innerHTML='..';
             if (progress.length == 0) document.getElementById('progress').innerHTML='.';
             document.getElementById('shield_two').style.display='inline';
-            document.getElementById("shield_two").style.cursor="progress";
+            //document.getElementById("shield_two").style.cursor="progress";
       }
     }
      window.setInterval("changeProgress();", 500);
@@ -1603,7 +1604,7 @@
                   "Day Off Shift", "Early Shift", "Late Shift", "Long Day Shift", //"Night Shift"
                  ];
         inner_content = document.getElementById('inner_content');
-        html = "<div id='warning_menu' class='shift_options' style='z-index:100; height:30%; left:33.5%; width:25%; border-left: 1px solid black; border-right: 1px solid black;'>";
+        html = "<div id='warning_menu' class='shift_options' style='z-index:103; height:30%; left:33.5%; width:25%; border-left: 1px solid black; border-right: 1px solid black;'>";
 
         html+= "<div id='warning_header' style='background-color: #36648B; height:40px'>";
         html+="<span style='position:absolute; left:6%; top:36%;'>Select Shift</span>";
@@ -1622,17 +1623,13 @@
         html+="</div>";
 
         html+="<div id='warning_footer' style='background-color: gray; height:42px;'>";
-        html+="<span style='padding: 1.5% 11%;' id='okay' onclick='hideElements(\"warning_menu\"); '>Okay</span>";
-         html+="<span style='padding: 1.5% 7%; top:14%;' id='cancel' onclick='removeElement(\"warning_menu\"); '>Cancel</span>";
+        html+="<span style='padding: 1.5% 11%;' id='okay' onclick='hideElements(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield();'>Okay</span>";
+         html+="<span style='padding: 1.5% 7%; top:14%;' id='cancel' onclick='removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield();'>Cancel</span>";
         html+="</div>";
 
         html+="</div>";
         inner_content.innerHTML+=html;
      }
-
-     $( "td").click( function(event) {
-      $("#divId").css( {position:"absolute", top:event.pageY, left: event.pageX - 200});
-     });
 
       function removeElement(id){
         element = document.getElementById(id);
@@ -1641,6 +1638,7 @@
       
       function showAvailableShifts(){
       var drop_downs = document.getElementsByClassName('drop_down');
+      old_zindex_value = $('#shield_two').css('z-index');
       for( var i = 0; i < drop_downs.length; i++ ) {
         drop_downs[i].onclick = function (event) {
           availableShifts();
@@ -1648,6 +1646,8 @@
                             top:event.pageY,
                             left: event.pageX - 185
                           });
+            showShieldTwo();
+            $('#shield_two').css('z-index', 102);
         };
       }
     }
@@ -2120,7 +2120,7 @@
       opacity: 0.87;
     }
     #shield_two{
-      z-index: 12 !important;
+      z-index: 12;
       opacity: 0.20 !Important;
     }
 
