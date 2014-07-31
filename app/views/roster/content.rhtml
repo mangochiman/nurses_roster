@@ -14,6 +14,7 @@
       var settings_menu = "<%= @settings_menu %>";
       var extra_settings_menu = "<%= @extra_settings_menu %>";
       var old_zindex_value = $('#shield_two').css('z-index');
+      var changes = {}
       
       function loadRosterData(obj){
         //setActiveTab(obj);
@@ -1472,7 +1473,7 @@
                 if(shift.length > 11) shift = shift.substring(0, 9) + '...';
                 img = "<img style='float:right;' src='/images/down.png' class='drop_down' onmousedown='showAvailableShifts();'/>"
                 if(shift.length == 0) img = '';
-                html+="<td  class='edit_data' onmousedown='setActiveCell(this); showAvailableShiftsTwo(this);' style='border-bottom: 1px solid black; border-right: 1px solid black;' rdate=" + shift_date + " shift_name= " + shift_quoted + "><center><span>" + shift + img + "</span></center></td>";
+                html+="<td  class='edit_data' onmousedown='setActiveCell(this); showAvailableShiftsTwo(this);' style='border-bottom: 1px solid black; border-right: 1px solid black;' nurse_id=" + nurse_id + " rdate=" + shift_date + " shift_name= " + shift_quoted + "><center><span>" + shift + img + "</span></center></td>";
              }
               html+="</tr>";
             }
@@ -1633,8 +1634,8 @@
         html+="</div>";
 
         html+="<div id='warning_footer' style='background-color: gray; height:42px;'>";
-        html+="<span style='padding: 1.5% 11%;' id='okay' onmousdown='hideElements(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield();'>Okay</span>";
-         html+="<span style='padding: 1.5% 7%; top:14%;' id='cancel' onmousedown='removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield();'>Cancel</span>";
+        html+="<span style='padding: 1.5% 11%;' id='okay' onmousedown='updateSelectedShift(this); removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield();'>Okay</span>";
+         html+="<span style='padding: 1.5% 7%; top:14%;' id='cancel' onmousedown='removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield(); deselectActiveCell();'>Cancel</span>";
         html+="</div>";
 
         html+="</div>";
@@ -1648,7 +1649,23 @@
       }
 
       function updateSelectedShift(element){
-
+        active_cell = document.getElementById('active_cell');
+        nurse_id = active_cell.getAttribute('nurse_id');
+        rdate = active_cell.getAttribute('rdate')
+        new_shift = document.getElementById('selected_shift').innerHTML
+        if (changes[nurse_id]){
+          if (changes[nurse_id][rdate] != new_shift){
+            changes[nurse_id][rdate] = new_shift
+            active_cell.innerHTML = new_shift
+            $('#active_cell').removeClass("edited").addClass("edited");
+          }
+        }
+        else{
+          changes[nurse_id] = {}
+          changes[nurse_id][rdate] = new_shift
+          active_cell.innerHTML = new_shift
+          $('#active_cell').removeClass("edited").addClass("edited");
+        }
       }
       
       function removeElement(id){
@@ -1690,6 +1707,11 @@
         active_cell = document.getElementById('active_cell');
         if (active_cell) active_cell.removeAttribute('id');
         e.setAttribute("id", "active_cell");
+     }
+
+     function deselectActiveCell(){
+        active_cell = document.getElementById('active_cell');
+        if (active_cell) active_cell.removeAttribute('id');
      }
      
      function resetZindexValues(id, old_value){
@@ -1734,6 +1756,15 @@
 
     </script>
     <style>
+    .edited{
+      background-color: #006400 !important;
+      color: white !important;
+    }
+
+    .edited:hover{
+      background-color: #556B2F !important;
+    }
+    
     #active_cell{
        background-color: #6495ED;
         color: white;
