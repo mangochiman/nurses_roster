@@ -211,7 +211,17 @@
           element.setAttribute("id", 'active_tab');
           eval(load_function);
         }
+        else{
+          element = document.getElementsByClassName("home")[0];
+          load_function = element.getAttribute('onclick');
 
+          atab = document.getElementById('active_tab');
+          if (atab){
+            atab.removeAttribute('id');
+          }
+          element.setAttribute("id", 'active_tab');
+          eval(load_function);
+        }
       }
 
       function createRoster(){
@@ -1615,7 +1625,7 @@
 
         for (i=0; i<shifts.length; i++){
           html+="<tr>";
-          html+="<td class='shifts_options'>" + shifts[i] + "</td>";
+          html+="<td onmousedown='highlightSelectedShift(this);'class='shifts_options'>" + shifts[i] + "</td>";
           html+="</tr>";
         }
         
@@ -1623,14 +1633,24 @@
         html+="</div>";
 
         html+="<div id='warning_footer' style='background-color: gray; height:42px;'>";
-        html+="<span style='padding: 1.5% 11%;' id='okay' onclick='hideElements(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield();'>Okay</span>";
-         html+="<span style='padding: 1.5% 7%; top:14%;' id='cancel' onclick='removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield();'>Cancel</span>";
+        html+="<span style='padding: 1.5% 11%;' id='okay' onmousdown='hideElements(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield();'>Okay</span>";
+         html+="<span style='padding: 1.5% 7%; top:14%;' id='cancel' onmousedown='removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield();'>Cancel</span>";
         html+="</div>";
 
         html+="</div>";
         inner_content.innerHTML+=html;
      }
 
+      function highlightSelectedShift(element){
+        selected_shift = document.getElementById('selected_shift');
+        if (selected_shift) selected_shift.removeAttribute('id');
+        element.setAttribute("id", "selected_shift");
+      }
+
+      function updateSelectedShift(element){
+
+      }
+      
       function removeElement(id){
         element = document.getElementById(id);
         element.parentNode.removeChild(element)
@@ -1731,6 +1751,10 @@
 
     .shifts_options:hover{
       cursor: pointer;
+      background-color: #FF7F24;
+    }
+
+    #selected_shift{
       background-color: #FF7F24;
     }
     
