@@ -1656,14 +1656,19 @@
         if (changes[nurse_id]){
           if (changes[nurse_id][rdate] != new_shift){
             changes[nurse_id][rdate] = new_shift
-            active_cell.innerHTML = new_shift
+            if(new_shift.length > 11) new_shift = new_shift.substring(0, 9) + '...';
+            img = "<img style='float:right;' src='/images/down.png' class='drop_down' onmousedown='showAvailableShifts();'/>"
+
+            active_cell.innerHTML = new_shift + img
             $('#active_cell').removeClass("edited").addClass("edited");
           }
         }
         else{
           changes[nurse_id] = {}
           changes[nurse_id][rdate] = new_shift
-          active_cell.innerHTML = new_shift
+          if(new_shift.length > 11) new_shift = new_shift.substring(0, 9) + '...';
+          img = "<img style='float:right;' src='/images/down.png' class='drop_down' onmousedown='showAvailableShifts();'/>"
+          active_cell.innerHTML = new_shift + img
           $('#active_cell').removeClass("edited").addClass("edited");
         }
       }
