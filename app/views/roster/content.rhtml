@@ -1480,8 +1480,8 @@
             html+="</table>";
             html+="</div>";
             html+="<div class='buttons' style='position:absolute;bottom:18.5%; left:0%; z-index:100; width:100%;'>";
-            html+="<span id='save_changes'>Save</span>";
-            html+="<span id='cancel_changes'>Cancel</span>";
+            html+="<span id='save_changes' onmousedown='saveRosterChangesPopup();'>Save</span>";
+            html+="<span id='cancel_changes' onmousedown='cancelRosterChangesPopup();'>Cancel</span>";
             html+="</div>";
             inner_content.innerHTML=html;
           }
