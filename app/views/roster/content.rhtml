@@ -1647,7 +1647,34 @@
         setResetBackgroundColor();
      }
 
-     function cancelChanges(){
+     function saveRosterChangesPopup(){
+        inner_content = document.getElementById('inner_content');
+        html = "<div id='warning_menu' style='z-index:103; height:25%; left:17.5%; width:70%; border-left: 1px solid black; border-right: 1px solid black;'>";
+
+        html+="<div id='warning_header' style='background-color: #36648B; height:40px'>";
+        html+="<span style='position:absolute; left:7%; top:36%; color:white; font-weight:bold;'>Save Changes</span>";
+        html+="</div>";
+
+        html+="<div id='warning_content' style='position:relative; overflow:auto; height:40%; margin-top:10%;'>";
+        html+="<table style='position: absolute; left: 0; top: 2%; width:100%;'>";
+
+        html+="<tr>";
+        html+="<td><span><center>New changes have been detected. Are you sure you want to save?</center></span></td>";
+        html+="</tr>";
+
+        html+="</table>"
+        html+="</div>";
+
+        html+="<div id='warning_footer' style='background-color: gray; height:50px;'>";
+        html+="<span style='padding: 1.5% 7%;' id='okay' onmousedown='removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield();'>Save and Stay</span>";
+        html+="<span style='padding: 1.5% 7%; top:14%;' id='cancel' onmousedown='removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield();'>Save and Exit</span>";
+        html+="</div>";
+
+        html+="</div>";
+        inner_content.innerHTML+=html;
+     }
+     
+     function cancelRosterChangesPopup(){
         inner_content = document.getElementById('inner_content');
         html = "<div id='warning_menu' style='z-index:103; height:25%; left:17.5%; width:70%; border-left: 1px solid black; border-right: 1px solid black;'>";
 
