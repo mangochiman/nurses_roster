@@ -15,7 +15,7 @@
       var extra_settings_menu = "<%= @extra_settings_menu %>";
       var old_zindex_value = $('#shield_two').css('z-index');
       var changes = {}
-      
+      var mode = 'set'
       function loadRosterData(obj){
         //setActiveTab(obj);
         var inner_content = document.getElementById('inner_content');
@@ -1615,32 +1615,73 @@
                   "Day Off Shift", "Early Shift", "Late Shift", "Long Day Shift", //"Night Shift"
                  ];
         inner_content = document.getElementById('inner_content');
-        html = "<div id='warning_menu' class='shift_options' style='z-index:103; height:30%; left:33.5%; width:25%; border-left: 1px solid black; border-right: 1px solid black;'>";
+        html = "<div id='warning_menu' class='shift_options' style='z-index:103; height:33%; left:33.5%; width:25%; border-left: 1px solid black; border-right: 1px solid black;'>";
 
         html+= "<div id='warning_header' style='background-color: #36648B; height:40px'>";
         html+="<span style='position:absolute; left:6%; top:36%;'>Select Shift</span>";
         html+="</div>";
 
-        html+= "<div id='warning_content' style='position:relative; overflow:auto; height:56%; margin-top:17%;'>";
+        html+= "<div id='warning_content' style='position:relative; overflow:auto; height:60%; margin-top:17%;'>";
         html+="<table style='position: absolute; left: 0; top: 4%; width:100%;'>";
 
         for (i=0; i<shifts.length; i++){
           html+="<tr>";
-          html+="<td onmousedown='highlightSelectedShift(this);'class='shifts_options'>" + shifts[i] + "</td>";
+          html+="<td onmousedown='removeResetMode(); highlightSelectedShift(this);'class='shifts_options'>" + shifts[i] + "</td>";
           html+="</tr>";
         }
-        
+
+        html+="<tr>";
+        html+="<td style='background-color: #76EE00' onmousedown='setResetMode(); highlightSelectedShift(this);'class='shifts_options'> Reset</td>";
+        html+="</tr>";
+
         html+="</table>"
         html+="</div>";
 
         html+="<div id='warning_footer' style='background-color: gray; height:42px;'>";
-        html+="<span style='padding: 1.5% 11%;' id='okay' onmousedown='updateSelectedShift(this); removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield();'>Okay</span>";
+        html+="<span style='padding: 1.5% 11%;' id='okay' onmousedown='resetShiftChange(); updateSelectedShift(this); removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield();'>Okay</span>";
          html+="<span style='padding: 1.5% 7%; top:14%;' id='cancel' onmousedown='removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_zindex_value); hideShield(); deselectActiveCell();'>Cancel</span>";
         html+="</div>";
 
         html+="</div>";
         inner_content.innerHTML+=html;
      }
+
+      function setResetMode(){
+      //We dont want to be changing the okay button when editing and resetting shift
+      //Therefore we will be checking the current mode value to do the logic for us
+        mode = 'reset';
+      }
+
+      function removeResetMode(){
+      //We dont want to be changing the okay button when editing and resetting shift
+      //Therefore we will be checking the current mode value to do the logic for us
+        mode = 'set';
+      }
+      
+      function resetShiftChange(){
+        if (mode == 'set') return;
+        active_cell = document.getElementById('active_cell');
+        nurse_id_copy = active_cell.getAttribute('nurse_id');
+        rdate = active_cell.getAttribute('rdate');
+        if ($('#active_cell').hasClass("edited")){
+          old_shift = active_cell.getAttribute('shift_name');
+          if(old_shift.length > 11) old_shift = old_shift.substring(0, 9) + '...';
+          img = "<img style='float:right;' src='/images/down.png' class='drop_down' onmousedown='showAvailableShifts();'/>";
+          active_cell.innerHTML = old_shift + img;
+
+          reset_changes = {}
+          for (var nurse_id in changes){
+            reset_changes[nurse_id] = {}
+            for (var key in changes[nurse_id]){
+             if (key == rdate && nurse_id == nurse_id_copy) continue;
+              reset_changes[nurse_id][key] = changes[nurse_id][key];
+            }
+          }
+          changes = reset_changes;
+          $('#active_cell').removeClass("edited");
+        }
+        active_cell.removeAttribute('id');
+      }
 
       function highlightSelectedShift(element){
         selected_shift = document.getElementById('selected_shift');
@@ -1649,6 +1690,7 @@
       }
 
       function updateSelectedShift(element){
+        if (mode == 'reset') return;
         active_cell = document.getElementById('active_cell');
         nurse_id = active_cell.getAttribute('nurse_id');
         rdate = active_cell.getAttribute('rdate')
@@ -1787,11 +1829,11 @@
 
     .shifts_options:hover{
       cursor: pointer;
-      background-color: #FF7F24;
+      background-color: #FF7F24 !important;
     }
 
     #selected_shift{
-      background-color: #FF7F24;
+      background-color: #FF7F24 !important;
     }
     
     .drop_down img{
