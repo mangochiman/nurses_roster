@@ -1631,7 +1631,7 @@
         }
 
         html+="<tr>";
-        html+="<td style='background-color: #76EE00' onmousedown='setResetMode(); highlightSelectedShift(this);'class='shifts_options'> Reset</td>";
+        html+="<td class='reset' style='background-color: #76EE00' onmousedown='setResetMode(); highlightSelectedShift(this);'class='shifts_options'> Reset</td>";
         html+="</tr>";
 
         html+="</table>"
@@ -1644,8 +1644,29 @@
 
         html+="</div>";
         inner_content.innerHTML+=html;
+        setResetBackgroundColor();
      }
 
+      function setResetBackgroundColor(){
+        edited_elements = $(".edited");
+        if (edited_elements.length == 0){
+          $(".reset").css(
+                  {
+                    backgroundColor:'#A9A9A9',
+                    cursor:'pointer'
+                  }
+                );
+        }
+        else{
+          $(".reset").css(
+                  {
+                    backgroundColor:'#76EE00',
+                    cursor:'pointer'
+                  }
+                );
+        }
+      }
+      
       function setResetMode(){
       //We dont want to be changing the okay button when editing and resetting shift
       //Therefore we will be checking the current mode value to do the logic for us
