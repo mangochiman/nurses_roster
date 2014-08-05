@@ -1752,7 +1752,9 @@
              if (key == rdate && nurse_id == nurse_id_copy) continue;
               reset_changes[nurse_id][key] = changes[nurse_id][key];
             }
+            if (jQuery.isEmptyObject(reset_changes[nurse_id])) delete reset_changes[nurse_id];
           }
+          
           changes = reset_changes;
           $('#active_cell').removeClass("edited");
         }
