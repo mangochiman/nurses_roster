@@ -259,5 +259,23 @@ class RosterController < ApplicationController
     names["total_nurses"] = total_nurses
     render :json => names and return
   end
+
+  def save_changes
+    roster_changes = params
+    roster_changes.each do |key, values|
+      next if key.match(/controller|action/i)
+      nurse_id = key
+      values = values.to_a.flatten
+      shift_date = values[0]
+      rshift = values[1]
+      shift_type_id = ShiftType.find_by_name(rshift).id
+      roster = Roster.find(:last, :joins => [:shift], :conditions => ["nurse_id =? AND
+              DATE(shift_date) =?", nurse_id, shift_date.to_date])
+      shift = roster.shift
+      shift.shift_type_id = shift_type_id
+      shift.save!
+    end
+    render :text => true and return
+  end
   
 end
