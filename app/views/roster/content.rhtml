@@ -1458,14 +1458,14 @@
             html+="<tr style='background-color:#D1EEEE; line-height:2em;'>";
             html+="<td style='min-width:60px; background-color:white; border-bottom: 1px solid black;'>&nbsp;</td>";
             for(i=0; i < roster_dates.length; i++){
-              html+="<td onclick='showRosterSummaryByDate(this)' class='roster_header' style='min-width:120px; border-bottom: 1px solid black;' rdate=" + roster_dates[i] + "><center><span>" + roster_dates[i] + "</span></center></td>";
+              html+="<td class='roster_header' style='min-width:120px; border-bottom: 1px solid black;' rdate=" + roster_dates[i] + "><center><span>" + roster_dates[i] + "</span></center></td>";
             }
             html+="</tr>";
             inner_content = document.getElementById('inner_content');
             
             for (var nurse_id in roster_hash){
               html+="<tr>";
-              html+="<td class='nurse_names' onclick='showRosterSummaryByNurse(this)' style='background-color:#D1EEEE; border-bottom: 1px solid black;border-right: 1px solid black;' nurse_id=" + nurse_id + ">" + nurse_id + "</td>";
+              html+="<td class='nurse_names' style='background-color:#D1EEEE; border-bottom: 1px solid black;border-right: 1px solid black;' nurse_id=" + nurse_id + ">" + nurse_id + "</td>";
               for(i=0; i < roster_dates.length; i++){
                 shift_date = roster_dates[i];
                 shift = roster_hash[nurse_id][shift_date] || "";
