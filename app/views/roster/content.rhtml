@@ -1669,8 +1669,8 @@
         html+="</div>";
 
         html+="<div id='warning_footer' style='background-color: gray; height:50px;'>";
-        html+="<span style='padding: 1.5% 7%;' id='okay' onmousedown='saveChanges(); removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_value); hideShield();'>Save and Stay</span>";
-        html+="<span style='left:39%; padding: 1.5% 7%; top:14%;' id='okay' onmousedown='removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_value); hideShield();'>Save and Exit</span>";
+        html+="<span style='padding: 1.5% 7%;' id='okay' onmousedown='saveAndStay(); removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_value); hideShield();'>Save and Stay</span>";
+        html+="<span style='left:39%; padding: 1.5% 7%; top:14%;' id='okay' onmousedown='saveAndExit(); removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_value); hideShield();'>Save and Exit</span>";
 		html+="<span style='padding: 1.5% 7%; top:14%;' id='cancel' onmousedown='removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_value); hideShield();'>Cancel</span>"; 
 
         html+="</div>";
@@ -1694,6 +1694,39 @@
           main_roster = document.getElementById('main_roster');
           main_roster.parentNode.removeChild(main_roster);
           viewRosterToBeEdited();
+        }
+        });
+     }
+	
+	function saveAndStay(){
+        jQuery.ajax({
+        type: "POST",
+        url: "/roster/save_changes",
+        data: changes,
+        beforeSend:function(){
+            pleaseWaitMessage("Saving. Please wait");
+          },
+        success: function(){
+          please_wait_menu = document.getElementById('please_wait_menu');
+          please_wait_menu.parentNode.removeChild(please_wait_menu);
+          changes = {}
+          main_roster = document.getElementById('main_roster');
+          main_roster.parentNode.removeChild(main_roster);
+          viewRosterToBeEdited();
+        }
+        });
+     }
+
+	function saveAndExit(){
+        jQuery.ajax({
+        type: "POST",
+        url: "/roster/save_changes",
+        data: changes,
+        beforeSend:function(){
+            pleaseWaitMessage("Saving. Please wait");
+          },
+        success: function(){
+			window.location = window.location.href;
         }
         });
      }
