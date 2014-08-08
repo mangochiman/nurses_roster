@@ -1754,8 +1754,8 @@
         html+="</div>";
 
         html+="<div id='warning_footer' style='background-color: gray; height:50px;'>";
-        html+="<span style='padding: 1.5% 7%;' id='okay' onmousedown='removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_value); hideShield();'>Save and Stay</span>";
-        html+="<span style='left:41%;padding: 1.5% 7%;' id='okay' onmousedown='removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_value); hideShield();'>Save and Exit</span>";
+        html+="<span style='padding: 1.5% 7%;' id='okay' onmousedown='saveAndStay(); removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_value); hideShield();'>Save and Stay</span>";
+        html+="<span style='left:41%;padding: 1.5% 7%;' id='okay' onmousedown='saveAndExit(); removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_value); hideShield();'>Save and Exit</span>";
         html+="<span style='padding: 1.5% 7%; top:14%;' id='cancel' onmousedown='removeElement(\"warning_menu\"); resetZindexValues(\"shield_two\", old_value); hideShield();'>Yes</span>";
         html+="</div>";
 
